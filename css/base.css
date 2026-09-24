@@ -1,0 +1,225 @@
+/* =============================================================================
+   LOCO BLOW · BASE
+   Reset + las superficies que dibuja el navegador y casi nadie viste:
+   selección, cursor, barra de scroll, anillo de foco, subrayado, viñetas.
+   ========================================================================== */
+
+/* Una sola fuente variable para toda la web: peso 300–900, anchura 100–125.
+   Recortada y convertida con tools/subset-fuente.py (82 KB).                 */
+@font-face {
+  font-family: "Mona Sans";
+  src: url("../assets/fonts/mona-sans-var.woff2") format("woff2-variations"),
+       url("../assets/fonts/mona-sans-var.woff2") format("woff2");
+  font-weight: 300 900;
+  font-stretch: 100% 125%;
+  font-style: normal;
+  font-display: swap;
+}
+
+
+/* --- RESERVA CON LAS MISMAS MÉTRICAS ----------------------------------------
+   `font-display: swap` pinta primero con la fuente del sistema y cambia cuando
+   llega la real. Si las dos ocupan distinto, el texto entero se recoloca, y
+   eso cuenta como desplazamiento de maquetación (CLS), que Google usa para
+   posicionar.
+
+   Estas caras no descargan nada: son Arial y Arial Bold reescaladas para
+   ocupar lo mismo que Mona Sans a 400 y a 800. Los porcentajes salen de las
+   tablas de las fuentes, no a ojo: los recalcula tools/metricas-fallback.py,
+   y hay que volver a pegarlos si cambia la fuente o su recorte.
+   -------------------------------------------------------------------------- */
+
+@font-face {
+  font-family: "Mona fallback";
+  src: local("Arial"), local("Helvetica Neue"), local("Liberation Sans"), local("Arimo");
+  font-weight: 300 599;
+  size-adjust: 105.21%;
+  ascent-override: 103.60%;
+  descent-override: 30.41%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: "Mona fallback";
+  src: local("Arial Bold"), local("Arial-BoldMT"), local("Helvetica Neue Bold"),
+       local("Liberation Sans Bold"), local("Arimo Bold");
+  font-weight: 600 900;
+  size-adjust: 104.20%;
+  ascent-override: 104.61%;
+  descent-override: 30.71%;
+  line-gap-override: 0%;
+}
+
+/* --- RESET ---------------------------------------------------------------- */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+* { margin: 0; }
+
+/* El `display:none` del atributo [hidden] lo pone la hoja del navegador, con
+   la especificidad más baja que existe: cualquier `display` de autor lo pisa
+   y el elemento sigue a la vista. Pasa siempre con botones y flex. */
+[hidden] { display: none !important; }
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  scrollbar-gutter: stable;
+  /* La barra es fija: sin esto, un salto de ancla deja el titular debajo. */
+  scroll-padding-top: calc(var(--nav-marca) + var(--s3) * 2 + var(--s4));
+  /* Sin scroll-behavior: smooth global. Un salto de ancla debe ser inmediato;
+     el scroll suave secuestra el control del usuario.                        */
+}
+
+body {
+  min-height: 100svh;
+  background-color: var(--suelo);
+  color: var(--tinta);
+  font-family: var(--ff);
+  font-size: var(--fs-body);
+  font-weight: var(--w-texto);
+  font-stretch: 100%;
+  line-height: var(--lh-body);
+  letter-spacing: var(--tr-body);
+  font-synthesis: none;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: clip;
+}
+
+img, picture, svg, video, canvas {
+  display: block;
+  max-width: 100%;
+}
+
+img { height: auto; }
+
+input, button, textarea, select {
+  font: inherit;
+  letter-spacing: inherit;
+  color: inherit;
+}
+
+button { background: none; border: 0; padding: 0; }
+
+p, h1, h2, h3, h4, li, figcaption, dd, dt { overflow-wrap: break-word; }
+
+/* Con :where() no pesa nada: la clase de cada lista puede darle su relleno
+   (la tira de la muestra, la barra de estilos) sin pelear con esto.        */
+:where(ul[role="list"], ol[role="list"]) { list-style: none; padding: 0; }
+
+:where(h1, h2, h3, h4) { text-wrap: balance; }
+:where(p, li, figcaption) { text-wrap: pretty; }
+
+/* --- SUPERFICIES DEL NAVEGADOR -------------------------------------------- */
+/* Todo lo de aquí abajo trae un valor por defecto que no pertenece a ningún
+   sistema de diseño. Vestirlas es lo que separa una página construida de una
+   página ensamblada.                                                         */
+
+::selection {
+  background-color: var(--tinta);
+  color: var(--claro);
+  text-shadow: none;
+}
+
+:root {
+  accent-color: var(--tinta);
+  caret-color: var(--tinta);
+  scrollbar-color: var(--filete-fn) var(--suelo);
+  scrollbar-width: thin;
+}
+
+::-webkit-scrollbar { width: 11px; height: 11px; }
+::-webkit-scrollbar-track { background: var(--suelo); }
+::-webkit-scrollbar-thumb {
+  background: var(--filete-fn);
+  border: 3px solid var(--suelo);   /* filete de aire: el pulgar queda fino   */
+}
+::-webkit-scrollbar-thumb:hover { background: var(--tinta-3); }
+::-webkit-scrollbar-corner { background: var(--suelo); }
+
+::placeholder { color: var(--tinta-3); opacity: 1; }
+
+::marker { color: var(--tinta-3); }
+
+:where(button, a, input, select, summary, [tabindex]) {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* El foco es un filete de tinta a escuadra, separado 3 px: 13:1 sobre el
+   gris. Sobre un bloque negro o sobre la banda negra se invierte a claro.   */
+:focus-visible {
+  outline: 2px solid var(--tinta);
+  outline-offset: 3px;
+}
+.en-negro :focus-visible,
+:focus-visible.en-negro { outline-color: var(--claro); }
+
+/* Sin :focus sin -visible: el ratón no debe dejar anillos por la página.     */
+:focus:not(:focus-visible) { outline: none; }
+
+a {
+  color: inherit;
+  text-decoration-color: color-mix(in srgb, currentColor 40%, transparent);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.22em;
+  transition: text-decoration-color var(--t-fast) ease,
+              color var(--t-fast) ease;
+}
+@media (hover: hover) and (pointer: fine) {
+  a:hover { text-decoration-color: currentColor; }
+}
+
+/* --- SALTO AL CONTENIDO ---------------------------------------------------- */
+
+.skip {
+  position: absolute;
+  left: var(--gutter);
+  top: 0;
+  z-index: 100;
+  transform: translateY(-140%);
+  background: var(--tinta);
+  color: var(--claro);
+  padding: var(--s3) var(--s5);
+  min-height: var(--touch);
+  display: inline-flex;
+  align-items: center;
+  font-size: var(--fs-label);
+  font-weight: var(--w-label);
+  font-stretch: 125%;
+  letter-spacing: var(--tr-label);
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: transform var(--t-ui) var(--ease-out);
+}
+.skip:focus-visible { transform: translateY(0); outline-color: var(--tinta); }
+
+.visually-hidden:not(:focus):not(:active) {
+  position: absolute;
+  width: 1px; height: 1px;
+  margin: -1px; padding: 0; border: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* --- MOVIMIENTO REDUCIDO --------------------------------------------------- */
+/* En serio: no basta con desactivar dos cosas. Se cortan los desplazamientos,
+   los revelados y los vídeos en bucle; se conservan opacidad y color, que
+   ayudan a entender lo que pasa. Cada módulo de js consulta la misma media
+   query.                                                                     */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 1ms !important;
+    scroll-behavior: auto !important;
+  }
+  /* Se devuelven los cambios que sí comunican, ya sin desplazamiento. */
+  a, button, .btn, [data-state] {
+    transition-property: color, background-color, border-color,
+                         text-decoration-color, opacity !important;
+    transition-duration: 140ms !important;
+  }
+  [data-revelar] { opacity: 1 !important; transform: none !important; clip-path: none !important; }
+}

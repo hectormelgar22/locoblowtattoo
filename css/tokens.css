@@ -1,0 +1,120 @@
+/* =============================================================================
+   LOCO BLOW · TOKENS
+   Sale del cartel del rebranding (post fijado del 10/09/2026): negro sobre
+   gris cálido, una palabra enorme, lo demás pequeño, ancho y entre corchetes.
+   La web es monocroma a propósito: el color lo ponen los tatuajes.
+   Cada contraste de aquí está medido con tools/contraste.py, no estimado.
+   ========================================================================== */
+
+:root {
+  color-scheme: light;
+
+  /* --- SUELO · el gris del cartel ------------------------------------------ */
+  /* #D4D3CF medido en dos capturas distintas del post (mediana de la zona
+     sin texto). PROVISIONAL: pendiente de confirmar con el archivo original
+     del rebranding; la compresión de Instagram mueve el gris uno o dos
+     puntos, no más.                                                          */
+  --suelo:         #D4D3CF;
+  --suelo-hondo:   #CAC9C4;   /* huecos de foto y vídeo, campos             */
+
+  /* --- TINTA · el negro del cartel, con un punto de calor ------------------ */
+  --tinta:         #0B0B0A;   /* 13.14:1  titulares, texto, lo pulsable      */
+  --tinta-viva:    #2A2927;   /* al pasar por encima de un bloque negro      */
+  --tinta-2:       #302F2C;   /*  8.94:1  texto secundario                   */
+  --tinta-3:       #4D4C49;   /*  5.73:1  pies y etiquetas (5.18 en hondo)   */
+  --tinta-off:     #8B8A87;   /*  2.30:1  SOLO controles deshabilitados      */
+
+  /* --- FILETES -------------------------------------------------------------- */
+  --filete:        #ABAAA6;   /* decorativo: separa, no señala               */
+  --filete-fn:     #686764;   /*  3.78:1  FUNCIONAL: borde de un control     */
+
+  /* --- BANDA NEGRA · el cartel en negativo ---------------------------------- */
+  /* Para el pie y para lo que va sobre vídeo. Mismo sistema, invertido.      */
+  --claro:         #EEEDE9;   /* 16.81:1  texto sobre bloque negro           */
+  --noche-2:       #ABAAA7;   /*  8.48:1  secundario sobre negro             */
+  --noche-3:       #878683;   /*  5.41:1  pies sobre negro                   */
+  --noche-fn:      #666562;   /*  3.38:1  borde funcional sobre negro        */
+  --noche-filete:  #363532;   /* decorativo sobre negro                      */
+
+  /* Lo interactivo tiene un solo color, y es la tinta. No hay un acento
+     inventado: en el rebranding no aparece ninguno. Un bloque negro macizo
+     con texto claro se ve desde lejos sobre este gris, que es justo lo que
+     hace el propio cartel con la palabra.                                     */
+
+  /* --- TIPOGRAFIA ----------------------------------------------------------- */
+  /* Una sola familia variable (peso 300–900, anchura 100–125):
+       800 · anchura 100  → titulares; es la más parecida a «Loco Blow.»
+       650 · anchura 125  → etiquetas; es la línea «ESTD · TATTOO · 2015»
+       400 · anchura 100  → texto
+       300                → los corchetes finos de [A CORUÑA]              */
+  --ff: "Mona Sans", "Mona fallback", Arial, sans-serif;
+
+  /* El titular de cada servicio («Láser.»): el cartel, a todo el ancho. */
+  --fs-cartel: clamp(3.5rem,  0.25rem + 17vw,  12.5rem);
+  --fs-d1:    clamp(3rem,     1.55rem + 7.2vw,  8rem);
+  --fs-d2:    clamp(2.25rem,  1.55rem + 3.5vw,  4.5rem);
+  --fs-d3:    clamp(1.5rem,   1.25rem + 1.25vw, 2.25rem);
+  --fs-d4:    clamp(1.1875rem, 1.1rem + 0.45vw, 1.4375rem);
+  --fs-lead:  clamp(1.125rem, 1.06rem + 0.32vw, 1.375rem);
+  --fs-body:  1.0625rem;
+  --fs-sm:    0.9375rem;
+  --fs-xs:    0.8125rem;
+  --fs-label: 0.75rem;
+
+  /* Tracking por escalón: la palabra del logotipo va muy apretada y la
+     etiqueta ancha casi suelta. Un único valor global estaría mal en los dos
+     extremos.                                                                 */
+  --tr-d1:   -0.045em;
+  --tr-d2:   -0.035em;
+  --tr-d3:   -0.022em;
+  --tr-d4:   -0.012em;
+  --tr-lead: -0.006em;
+  --tr-body:  0em;
+  --tr-sm:    0.002em;
+  --tr-label: 0.045em;
+
+  --lh-d1: 0.88;  --lh-d2: 0.94;  --lh-d3: 1.04;  --lh-d4: 1.2;
+  --lh-lead: 1.42; --lh-body: 1.58; --lh-sm: 1.5;  --lh-label: 1.25;
+
+  --w-display: 800;
+  --w-titulo:  720;
+  --w-lead:    450;
+  --w-texto:   400;
+  --w-label:   650;
+  --w-fino:    300;
+
+  --measure:       64ch;
+  --measure-tight: 42ch;
+
+  /* --- ESPACIO · un solo ritmo -------------------------------------------- */
+  --s1: 0.25rem;  --s2: 0.5rem;   --s3: 0.75rem;  --s4: 1rem;
+  --s5: 1.5rem;   --s6: 2rem;     --s7: 3rem;     --s8: 4rem;
+  --s9: 6rem;     --s10: 8rem;    --s11: 12rem;
+
+  /* --- RETICULA ------------------------------------------------------------ */
+  --gutter: clamp(1rem, 0.55rem + 2.2vw, 3rem);   /* 16 px en móvil          */
+  --maxw:   90rem;
+  --touch:  44px;
+  --nav-marca: 2.25rem;   /* alto fijo del logotipo en la barra: de aquí
+                             sale el alto de la barra, que se reserva antes
+                             de que llegue nada                             */
+
+  /* --- SUPERFICIE ------------------------------------------------------------ */
+  --r: 0;          /* radio cero en toda la web                              */
+  --hair: 1px;     /* filetes de un píxel; sin sombras blandas en ningún sitio */
+
+  /* --- MOVIMIENTO ------------------------------------------------------------ */
+  --ease-out:    cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
+
+  --t-press:  120ms;
+  --t-fast:   160ms;
+  --t-ui:     200ms;
+  --t-panel:  280ms;
+  --t-reveal: 560ms;
+
+  /* --- CAPAS ------------------------------------------------------------------ */
+  --z-sticky: 20;  --z-nav: 40;  --z-panel: 60;
+  --z-wasap: 70;   --z-visor: 80; --z-edad: 90;
+}

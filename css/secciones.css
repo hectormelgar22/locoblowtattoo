@@ -1,0 +1,481 @@
+/* =============================================================================
+   LOCO BLOW · SECCIONES
+   Las piezas de cada página: la portada y el índice del inicio, la cabecera
+   de cada servicio con su titular en cartel, los pasos en negro y los
+   estilos de la página de tatuajes. Lo que comparten todas (barra, vídeo,
+   preguntas, pie) vive en site.css; las fotos, en galeria.css.
+   ========================================================================== */
+
+/* El alto de la barra, y el de la barra de estilos debajo: de aquí sale
+   dónde se paran las anclas para no quedar tapadas.                        */
+:root {
+  /* La barra mide lo que su pieza más alta (los botones de 44 px, más que
+     el logotipo), su relleno y su filete: 69 px.                           */
+  --alto-nav: calc(max(var(--nav-marca), var(--touch)) + var(--s3) * 2 + var(--hair));
+  --alto-estilos: calc(var(--touch) + var(--hair) * 2);
+}
+
+/* ============================================================================
+   INICIO
+   ============================================================================ */
+
+/* --- PORTADA · el cartel del logotipo ------------------------------------- */
+/* El cartel del PDF del estudio, tal cual, ocupando la primera pantalla; al
+   pie, separado por un filete, lo que hay que hacer. En el móvil cabe entero,
+   con el botón de cita incluido, en 390 × 844. El tamaño lo pone la altura
+   de la pantalla: el cartel es casi cuadrado y en horizontal se saldría.   */
+
+.portada {
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
+  min-height: calc(100svh - var(--alto-nav) - var(--s3) * 2);
+  padding-block: var(--s4) var(--s6);
+}
+.portada__cartel {
+  display: grid;
+  place-items: center;
+  margin: 0;
+  padding-block: var(--s5) var(--s7);
+  color: var(--tinta);
+}
+.portada__cartel .marca-cartel {
+  width: min(100%, clamp(15rem, calc((100svh - 23rem) * 1.072), 38rem));
+  height: auto;
+}
+
+.portada__pie {
+  display: grid;
+  gap: var(--s5);
+  padding-top: var(--s5);
+  border-top: var(--hair) solid var(--filete-fn);
+}
+.portada__entradilla { color: var(--tinta); max-width: 36ch; }
+.portada__acciones { display: flex; flex-wrap: wrap; gap: var(--s3); }
+.portada__acciones .btn { flex: 1 1 14rem; }
+.portada__nota { flex-basis: 100%; }
+
+@media (min-width: 60rem) {
+  .portada { padding-block: var(--s5) var(--s7); }
+  .portada__pie {
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: end;
+    column-gap: var(--s8);
+  }
+  .portada__acciones { justify-content: flex-end; max-width: 34rem; }
+  .portada__acciones .btn { flex: 0 0 auto; }
+  .portada__nota { text-align: right; }
+}
+
+/* --- EL ESTUDIO · mosaico del local -------------------------------------- */
+/* El vídeo del estudio y las fotos del local, a tamaños distintos y
+   descolgados: un collage, no una fila de tres iguales.                    */
+
+.mosaico {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--s3);
+}
+.mosaico__video { grid-column: 1 / -1; }
+.mosaico__foto .rejilla__lamina { aspect-ratio: auto; }
+.mosaico__foto img { height: auto; }
+.mosaico__nota { margin-top: var(--s6); max-width: 52ch; }
+
+@media (min-width: 48rem) {
+  .mosaico {
+    grid-template-columns: minmax(0, 6fr) minmax(0, 4fr) minmax(0, 3fr);
+    column-gap: var(--s4);
+  }
+  .mosaico__video { grid-column: auto; }
+  .mosaico__foto--1 { align-self: end; }
+  .mosaico__foto--2 { align-self: start; margin-top: var(--s9); }
+}
+@media (min-width: 60rem) {
+  .mosaico { column-gap: var(--s5); }
+  .mosaico__video .video { max-width: none; }
+}
+
+/* --- TRABAJOS · la muestra ------------------------------------------------- */
+/* En el móvil, una tira que se desliza de lado con la siguiente foto cortada
+   en el borde, para que se vea que sigue. En escritorio, cuatro columnas.   */
+
+.muestra {
+  display: flex;
+  gap: var(--s3);
+  margin: 0 calc(var(--gutter) * -1);
+  padding: 0 var(--gutter);
+  scroll-padding-inline: var(--gutter);
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+.muestra::-webkit-scrollbar { display: none; }
+.muestra__item { flex: 0 0 62%; min-width: 0; scroll-snap-align: start; }
+.muestra__accion { margin-top: var(--s6); }
+
+@media (min-width: 48rem) {
+  .muestra {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: var(--s5) var(--s4);
+    margin: 0;
+    padding: 0;
+    overflow: visible;
+  }
+  .muestra__item { flex: none; }
+}
+
+/* --- LO QUE HACEMOS · el índice de las cuatro páginas --------------------- */
+/* Filas de un cartel: el corchete con el servicio, el nombre enorme y lo
+   que es. Toda la fila lleva a su página (el enlace se estira con ::after),
+   menos los estilos de tatuaje, que van cada uno a su sección.             */
+
+.indice { border-top: var(--hair) solid var(--filete-fn); }
+
+.indice__fila {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 5.5rem;
+  align-items: start;
+  gap: var(--s4);
+  padding-block: var(--s6);
+  border-bottom: var(--hair) solid var(--filete);
+}
+.indice__fila--sin-media { grid-template-columns: minmax(0, 1fr); }
+
+.indice__texto { display: grid; gap: var(--s2); min-width: 0; container-type: inline-size; }
+
+/* El nombre al tamaño grande, con tope por su palabra más larga
+   (--letras, lo pone paginas.js): «Micropigmentación» no puede partirse. */
+.indice__nombre {
+  margin: 0;
+  /* 0,56: lo que mide de media una letra de Mona Sans a 800, medido con
+     «Micropigmentación» (0,54) y un poco de margen.                      */
+  font-size: min(var(--fs-d2), calc(100cqi / (var(--letras, 8) * 0.56)));
+  font-weight: var(--w-display);
+  font-feature-settings: "ss01" 1;
+  line-height: var(--lh-d2);
+  letter-spacing: var(--tr-d2);
+}
+.indice__enlace {
+  display: inline;
+  color: var(--tinta);
+  text-decoration: none;
+}
+.indice__enlace::after { content: ""; position: absolute; inset: 0; }
+/* La flecha de la casa, a la escala del nombre. */
+.indice__enlace .flecha {
+  display: inline-block;
+  width: 0.26em; height: 0.26em;
+  margin-left: 0.14em;
+  border-top-width: 0.055em;
+  border-right-width: 0.055em;
+  vertical-align: 0.14em;
+  translate: 0 0;
+}
+.indice__enlace:focus-visible { outline: none; }
+.indice__enlace:focus-visible::after { outline: 2px solid var(--tinta); outline-offset: 4px; }
+@media (hover: hover) and (pointer: fine) {
+  .indice__fila:hover .indice__enlace .flecha { translate: 0.12em 0; }
+  .indice__fila:hover .indice__media img { transform: scale(1.03); }
+}
+
+.indice__resumen { color: var(--tinta-2); max-width: 44ch; }
+
+/* Los estilos, por encima del enlace estirado: cada uno lleva a su sección. */
+.indice__estilos {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s2);
+  margin-top: var(--s3);
+}
+.indice__estilos .chip { min-height: 2.25rem; padding-inline: var(--s3); text-decoration: none; }
+
+.indice__media { overflow: hidden; background: var(--suelo-hondo); aspect-ratio: 4 / 5; }
+.indice__media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--t-panel) var(--ease-out);
+}
+
+@media (min-width: 60rem) {
+  .indice__fila {
+    grid-template-columns: minmax(0, 1fr) 11rem;
+    column-gap: var(--s8);
+    padding-block: var(--s7);
+    align-items: center;
+  }
+  .indice__fila--sin-media { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* --- DÓNDE ESTAMOS ------------------------------------------------------- */
+/* La dirección de titular, al tamaño grande: es el sitio al que hay que ir. */
+
+.cab--cartel h2 {
+  /* Tope por el ancho: «Voluntariado,» son unos 7,5 em, y a 128 px en su
+     columna no cabía y partía la palabra. Con 11,5vw cabe siempre entera. */
+  font-size: min(var(--fs-d1), 11.5vw);
+  line-height: var(--lh-d1);
+  letter-spacing: var(--tr-d1);
+  grid-column: 1 / -1;
+}
+@media (min-width: 60rem) {
+  .cab--cartel .lead { grid-column: 2; }
+}
+
+.contacto { display: grid; gap: var(--s6); }
+.contacto__lista { border-top: var(--hair) solid var(--filete-fn); }
+.contacto__lista > div {
+  display: grid;
+  grid-template-columns: 7rem minmax(0, 1fr);
+  gap: var(--s4);
+  padding-block: var(--s4);
+  border-bottom: var(--hair) solid var(--filete);
+}
+.contacto__lista dt { padding-top: 0.2em; }
+.contacto__lista dd { margin: 0; }
+/* Enlaces con caja propia: se pasa de los 24 px que pide WCAG 2.5.8. */
+.contacto__lista a { display: inline-block; padding-block: 3px; }
+
+@media (min-width: 60rem) {
+  .contacto {
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    column-gap: var(--s8);
+    align-items: end;
+  }
+  .contacto__accion { justify-self: end; }
+}
+
+/* ============================================================================
+   PÁGINA DE UN SERVICIO
+   ============================================================================ */
+
+/* --- CABECERA · el servicio en cartel ------------------------------------ */
+/* El nombre del servicio con su punto, como «Blow.», al tamaño más grande de
+   la web y a todo el ancho. Debajo, lo que es y el botón; al lado, su vídeo
+   o su primera foto.                                                      */
+
+.scab {
+  display: grid;
+  grid-template-areas: "titular" "texto" "media";
+  gap: var(--s6);
+  padding-block: var(--s6) var(--s8);
+}
+.scab__titular { grid-area: titular; display: grid; gap: var(--s3); container-type: inline-size; }
+.scab__h1 {
+  margin: 0;
+  /* Tope por la palabra más larga (--letras): «Láser.» llena la pantalla y
+     «Micropigmentación» cabe entera sin partirse.                           */
+  font-size: min(var(--fs-cartel), calc(100cqi / (var(--letras, 8) * 0.56)));
+  font-weight: var(--w-display);
+  font-feature-settings: "ss01" 1;
+  line-height: 0.86;
+  letter-spacing: -0.05em;
+  text-wrap: balance;
+}
+.scab__texto { grid-area: texto; display: grid; gap: var(--s5); align-content: start; }
+.scab__entradilla { color: var(--tinta); max-width: 40ch; }
+.scab__acciones { display: flex; flex-wrap: wrap; gap: var(--s3); }
+.scab__acciones .btn { flex: 1 1 14rem; }
+.scab__media { grid-area: media; }
+.scab__media > img { width: 100%; height: auto; aspect-ratio: 4 / 5; object-fit: cover; }
+/* En una tableta, a todo el ancho, el vídeo mediría casi una pantalla. */
+.scab__media .video, .scab__media > img { max-width: 30rem; }
+@media (min-width: 36rem) {
+  .scab__acciones .btn { flex: 0 0 auto; }
+}
+
+/* Lo que hay que saber: pares dato–valor, con un filete encima de cada uno. */
+.datos {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 12rem), 1fr));
+  gap: var(--s4) var(--s5);
+}
+.datos > div { padding-top: var(--s2); border-top: var(--hair) solid var(--filete); }
+.datos dd { margin: var(--s1) 0 0; font-size: var(--fs-sm); }
+
+@media (min-width: 60rem) {
+  /* Composición de cartel: el titular arriba a la izquierda, lo que hay que
+     saber abajo, y el vídeo o la foto a la derecha, de arriba abajo.       */
+  .scab {
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    grid-template-rows: auto 1fr;
+    grid-template-areas:
+      "titular media"
+      "texto   media";
+    column-gap: var(--s8);
+    row-gap: var(--s7);
+    padding-block: var(--s7) var(--s9);
+  }
+  .scab__texto { align-self: end; }
+  .scab__media { align-self: end; }
+  .scab__media .video, .scab__media > img { margin-left: auto; }
+
+  /* Sin vídeo ni foto: el texto a la izquierda y lo que hay que saber a la
+     derecha, a ras del pie.                                                */
+  .scab--sin-media { grid-template-areas: "titular titular" "texto texto"; grid-template-rows: auto auto; }
+  .scab--sin-media .scab__texto {
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    column-gap: var(--s8);
+    align-items: end;
+  }
+  .scab--sin-media .scab__datos { grid-column: 2; grid-row: 1 / span 2; }
+}
+
+/* --- CÓMO ES · los pasos, en negro ---------------------------------------- */
+/* El cartel en negativo: un panel negro con los pasos como filas de un
+   índice, el número grande y fino de peso a la izquierda. En el móvil va de
+   borde a borde; en escritorio, dentro de la columna.                       */
+
+.pasos-banda {
+  margin-inline: calc(var(--gutter) * -1);
+  padding: var(--s8) var(--gutter);
+}
+.pasos-banda[hidden] { display: none; }
+.pasos-banda .cab { margin-bottom: var(--s6); }
+
+.pasos { border-top: var(--hair) solid var(--noche-fn); }
+.pasos__paso {
+  display: grid;
+  grid-template-columns: 3rem minmax(0, 1fr);
+  grid-template-areas: "num titulo" "num texto";
+  gap: var(--s2) var(--s4);
+  padding-block: var(--s5);
+  border-bottom: var(--hair) solid var(--noche-filete);
+}
+.pasos__num {
+  grid-area: num;
+  font-size: var(--fs-d3);
+  font-weight: var(--w-fino);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--noche-3);
+}
+.pasos__titulo { grid-area: titulo; color: var(--claro); }
+.pasos__texto { grid-area: texto; color: var(--noche-2); max-width: 52ch; }
+
+@media (min-width: 60rem) {
+  .pasos-banda { margin-inline: 0; padding: var(--s9) var(--s8); }
+  .pasos-banda .cab { margin-bottom: var(--s7); }
+  .pasos__paso {
+    grid-template-columns: 7rem minmax(0, 4fr) minmax(0, 6fr);
+    grid-template-areas: "num titulo texto";
+    align-items: baseline;
+    column-gap: var(--s6);
+    padding-block: var(--s6);
+  }
+  .pasos__num { font-size: var(--fs-d2); }
+}
+
+/* La banda negra ya separa: la sección que la sigue no lleva filete. */
+.pasos-banda + .band { border-top: 0; }
+
+/* ============================================================================
+   TATUAJES · POR ESTILOS
+   ============================================================================ */
+
+/* --- LA BARRA DE ESTILOS ----------------------------------------------------- */
+/* Se queda pegada bajo la barra mientras bajas, y marca entre corchetes el
+   estilo que estás viendo, como la barra marca la página. En el móvil se
+   desliza de lado.                                                          */
+
+.estilos-nav {
+  position: sticky;
+  top: var(--alto-nav);
+  z-index: var(--z-sticky);
+  margin-inline: calc(var(--gutter) * -1);
+  border-block: var(--hair) solid var(--filete);
+}
+.estilos-nav::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: color-mix(in srgb, var(--suelo) 90%, transparent);
+  backdrop-filter: blur(16px) saturate(120%);
+  -webkit-backdrop-filter: blur(16px) saturate(120%);
+}
+@media (prefers-reduced-transparency: reduce) {
+  .estilos-nav::before { background: var(--suelo); backdrop-filter: none; -webkit-backdrop-filter: none; }
+}
+.estilos-nav__lista {
+  display: flex;
+  gap: var(--s1);
+  margin: 0;
+  padding-inline: calc(var(--gutter) - var(--s3));
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+}
+.estilos-nav__lista::-webkit-scrollbar { display: none; }
+.estilos-nav__link {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--touch);
+  padding: 0 var(--s3);
+  white-space: nowrap;
+  font-size: var(--fs-label);
+  font-weight: var(--w-label);
+  font-stretch: 125%;
+  letter-spacing: var(--tr-label);
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--tinta);
+}
+.estilos-nav__link:focus-visible { outline-offset: -3px; }
+.estilos-nav__link::before, .estilos-nav__link::after {
+  font-weight: var(--w-fino);
+  font-stretch: 100%;
+  color: transparent;
+  transition: color var(--t-fast) ease;
+}
+.estilos-nav__link::before { content: "["; content: "[" / ""; margin-right: 0.15em; }
+.estilos-nav__link::after  { content: "]"; content: "]" / ""; margin-left: 0.15em; }
+.estilos-nav__link[aria-current="true"]::before,
+.estilos-nav__link[aria-current="true"]::after { color: currentColor; }
+@media (hover: hover) and (pointer: fine) {
+  .estilos-nav__link:hover::before, .estilos-nav__link:hover::after { color: var(--tinta-3); }
+}
+.estilos-nav__n { margin-left: 0.4em; font-weight: var(--w-texto); color: var(--tinta-3); }
+
+@media (min-width: 60rem) {
+  .estilos-nav { margin-inline: 0; }
+  .estilos-nav__lista { padding-inline: 0; margin-left: calc(var(--s3) * -1); }
+}
+
+/* --- UN ESTILO ------------------------------------------------------------------ */
+/* En escritorio, el nombre y el botón a la izquierda, quietos mientras pasan
+   las fotos a la derecha. En el móvil, uno encima de otro.                  */
+
+.estilo {
+  display: grid;
+  gap: var(--s5);
+  padding-block: var(--s7);
+  border-bottom: var(--hair) solid var(--filete);
+  scroll-margin-top: calc(var(--alto-nav) + var(--alto-estilos));
+}
+.estilo__cab { display: grid; gap: var(--s3); align-content: start; }
+.estilo__nombre { overflow-wrap: anywhere; }
+.estilo__desc { color: var(--tinta-2); max-width: 40ch; }
+.estilo__accion { margin-top: var(--s2); }
+.estilo__obras { min-width: 0; }
+
+@media (min-width: 60rem) {
+  .estilo {
+    grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
+    column-gap: var(--s8);
+    padding-block: var(--s9);
+  }
+  .estilo__cab {
+    position: sticky;
+    top: calc(var(--alto-nav) + var(--alto-estilos) + var(--s6));
+    align-self: start;
+  }
+}
+
+/* Las anclas de la página (los botones de «ver») se paran bajo las barras. */
+#trabajos, #preguntas, #estilos { scroll-margin-top: var(--alto-nav); }

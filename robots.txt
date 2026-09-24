@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://hectormelgar22.github.io/locoblowtattoo/sitemap.xml

@@ -1,0 +1,190 @@
+/* =============================================================================
+   LOCO BLOW · FOTOS
+   La rejilla de cada página (4:5, como la de Instagram) y el visor a pantalla
+   completa, con teclado y gesto.
+   ========================================================================== */
+
+/* --- REJILLA ----------------------------------------------------------------- */
+/* Todas las miniaturas a 4:5: el ritmo de la rejilla de Instagram, que es
+   donde esta gente mira tatuajes, y ninguna foto empuja a otra. El recorte
+   se puede mover por foto (`foco` en content.js); en el visor se ven enteras.
+   Sin mampostería: la rejilla es CSS, se ve igual sin JavaScript y no se
+   mueve nada al llegar las fotos.                                            */
+
+.rejilla {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--s5) var(--s3);
+}
+@media (max-width: 21.249rem) { .rejilla { grid-template-columns: minmax(0, 1fr); } }
+@media (min-width: 48rem) { .rejilla { grid-template-columns: repeat(3, minmax(0, 1fr)); column-gap: var(--s4); } }
+
+.rejilla__item { min-width: 0; }
+.rejilla__item .video { --ratio: 4 / 5; }
+
+.rejilla__boton {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  text-align: left;
+  cursor: zoom-in;
+}
+.rejilla__boton:focus-visible { outline-offset: 3px; }
+.rejilla__lamina {
+  display: block;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  background: var(--suelo-hondo);
+}
+.rejilla__lamina img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--t-panel) var(--ease-out);
+}
+@media (hover: hover) and (pointer: fine) {
+  .rejilla__boton:hover .rejilla__lamina img { transform: scale(1.025); }
+}
+
+/* El pie: de quién es, y el título si lo tiene. */
+.rejilla__pie {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 2px var(--s3);
+  padding-top: var(--s2);
+}
+.rejilla__artista { color: var(--tinta); }
+/* El nombre como enlace a su Instagram, con caja propia para el pulgar. */
+a.rejilla__artista { display: inline-block; padding-block: 6px; margin-block: -6px; text-decoration-thickness: 1px; }
+.rejilla__titulo { font-size: var(--fs-xs); line-height: 1.4; color: var(--tinta-2); }
+
+/* --- VISOR ----------------------------------------------------------------- */
+/* <dialog> nativo: trae la trampa de foco, el cierre con Escape y el fondo
+   sin que haya que reimplementarlos mal. El visor es negro: la obra manda,
+   y el tatuaje sobre negro se lee mejor que sobre el gris a pantalla llena. */
+
+.visor {
+  width: 100%;
+  max-width: none;
+  height: 100%;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: var(--tinta);
+  color: var(--suelo);
+  overflow: hidden;
+}
+.visor::backdrop { background: color-mix(in srgb, var(--tinta) 94%, transparent); }
+
+.visor__caja {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  height: 100%;
+  padding: var(--s3) var(--gutter) var(--s4);
+  gap: var(--s3);
+}
+
+.visor__barra {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s4);
+}
+.visor__pos { color: var(--noche-3); }
+
+.visor__escena {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-height: 0;
+  touch-action: pan-y;
+}
+/* La caja y la imagen se dimensionan por `inset`, no por porcentajes: un
+   `height: 100%` dentro de una fila de rejilla automática se trata como
+   indefinido y la imagen se sale de la pantalla.                            */
+.visor__lamina {
+  position: absolute;
+  inset: 0;
+  will-change: transform;
+}
+.visor__lamina img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* Cada botón ocupa media escena: lo que la gente hace delante de una foto
+   ampliada es tocar la foto, no buscar una flecha en el borde.              */
+.visor__nav {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 50%;
+  display: grid;
+  align-items: center;
+  padding: 0 var(--s2);
+  background: none;
+  border: 0;
+  color: var(--suelo);
+  cursor: pointer;
+  z-index: 1;
+}
+.visor__nav[data-prev] { left: 0;  justify-items: start; }
+.visor__nav[data-next] { right: 0; justify-items: end; }
+.visor__nav:disabled { cursor: default; }
+
+/* La pastilla es lo único que se ve: el área que se pulsa es mucho mayor. */
+.visor__nav i {
+  width: var(--touch);
+  height: calc(var(--touch) * 1.5);
+  display: grid;
+  place-items: center;
+  background: var(--tinta);
+  border: var(--hair) solid var(--noche-fn);
+  transition: border-color var(--t-fast) ease, opacity var(--t-fast) ease,
+              transform var(--t-press) var(--ease-out);
+}
+.visor__nav:disabled i { opacity: .25; }
+.visor__nav:active:not(:disabled) i { transform: scale(0.94); }
+@media (hover: hover) and (pointer: fine) {
+  .visor__nav:not(:disabled):hover i { border-color: var(--suelo); }
+}
+/* Punta dibujada con dos trazos, no un glifo haciendo de icono. */
+.visor__nav i::before {
+  content: "";
+  width: 10px; height: 10px;
+  border-left: 1.5px solid currentColor;
+  border-bottom: 1.5px solid currentColor;
+}
+.visor__nav[data-prev] i::before { rotate: 45deg; translate: 2px 0; }
+.visor__nav[data-next] i::before { rotate: -135deg; translate: -2px 0; }
+.visor__nav:focus-visible i { outline: 2px solid var(--claro); outline-offset: 3px; }
+.visor__nav:focus-visible { outline: none; }
+
+/* La ficha: qué es, de quién, y el botón que manda esta misma foto por
+   WhatsApp. Es el único bloque macizo del visor.                            */
+.visor__ficha {
+  display: grid;
+  gap: var(--s3);
+  padding-top: var(--s3);
+  border-top: var(--hair) solid var(--noche-filete);
+}
+.visor__info { display: grid; gap: var(--s1); min-width: 0; }
+.visor__titulo { font-size: var(--fs-d4); font-weight: var(--w-titulo); line-height: 1.2; }
+.visor__titulo:empty { display: none; }
+.visor__datos { display: flex; flex-wrap: wrap; gap: var(--s2) var(--s5); color: var(--noche-2); }
+.visor__pista { font-size: var(--fs-xs); color: var(--noche-3); }
+/* En el móvil la pista sobra: el gesto se descubre solo y el alto es oro. */
+@media (max-width: 47.999rem) { .visor__pista { display: none; } }
+
+@media (min-width: 48rem) {
+  .visor__ficha { grid-template-columns: minmax(0, 1fr) auto; align-items: end; column-gap: var(--s6); }
+}

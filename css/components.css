@@ -1,0 +1,172 @@
+/* =============================================================================
+   LOCO BLOW · COMPONENTES
+   Lo pulsable tiene un solo color y es la tinta: un bloque negro macizo con
+   el texto en claro, como la palabra del cartel sobre el gris. No hay acento.
+   Radio cero, filetes de un píxel, ninguna sombra.
+   ========================================================================== */
+
+/* --- BOTONES --------------------------------------------------------------- */
+
+.btn {
+  --btn-bg: transparent;
+  --btn-fg: var(--tinta);
+  --btn-bd: var(--filete-fn);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--s3);
+  min-height: var(--touch);
+  padding: var(--s2) var(--s5);
+  background: var(--btn-bg);
+  color: var(--btn-fg);
+  border: var(--hair) solid var(--btn-bd);
+  border-radius: var(--r);
+  font-family: var(--ff);
+  font-size: var(--fs-label);
+  font-weight: var(--w-label);
+  font-stretch: 125%;
+  line-height: 1.1;
+  letter-spacing: var(--tr-label);
+  text-transform: uppercase;
+  text-decoration: none;
+  text-align: center;
+  cursor: pointer;
+  /* Propiedades nombradas una a una, nunca la palabra all. */
+  transition: transform var(--t-press) var(--ease-out),
+              background-color var(--t-fast) ease,
+              border-color var(--t-fast) ease,
+              color var(--t-fast) ease;
+}
+
+/* La respuesta va al pulsar, no al soltar: es donde el usuario está mirando. */
+.btn:active { transform: scale(0.97); }
+
+@media (hover: hover) and (pointer: fine) {
+  .btn:hover { --btn-bd: var(--tinta); }
+}
+
+/* Macizo: el bloque negro. Es el botón que pide cita, y hay uno a la vista.  */
+.btn--macizo {
+  --btn-bg: var(--tinta);
+  --btn-fg: var(--claro);
+  --btn-bd: var(--tinta);
+}
+@media (hover: hover) and (pointer: fine) {
+  .btn--macizo:hover { --btn-bg: var(--tinta-viva); --btn-bd: var(--tinta-viva); }
+}
+
+.btn--grande {
+  min-height: 3.5rem;
+  padding-inline: var(--s6);
+  font-size: var(--fs-xs);
+}
+
+.btn--quiet { --btn-bd: transparent; padding-inline: var(--s3); }
+@media (hover: hover) and (pointer: fine) {
+  .btn--quiet:hover { --btn-bd: var(--filete-fn); }
+}
+
+.btn--wide { width: 100%; }
+
+.btn[disabled], .btn[aria-disabled="true"] {
+  --btn-fg: var(--tinta-off);
+  --btn-bd: var(--filete);
+  --btn-bg: transparent;
+  cursor: not-allowed;
+}
+.btn[disabled]:active, .btn[aria-disabled="true"]:active { transform: none; }
+
+/* Sobre la banda negra, el macizo se invierte: bloque claro, texto negro. */
+.en-negro .btn { --btn-fg: var(--suelo); --btn-bd: var(--noche-fn); }
+.en-negro .btn--macizo { --btn-bg: var(--suelo); --btn-fg: var(--tinta); --btn-bd: var(--suelo); }
+@media (hover: hover) and (pointer: fine) {
+  .en-negro .btn:hover { --btn-bd: var(--suelo); }
+  .en-negro .btn--macizo:hover { --btn-bg: var(--claro); --btn-bd: var(--claro); }
+}
+
+/* Flecha trazada con dos filetes, no un glifo haciendo de icono. */
+.flecha {
+  flex: none;
+  width: 0.5em; height: 0.5em;
+  border-top: 1.5px solid currentColor;
+  border-right: 1.5px solid currentColor;
+  rotate: 45deg;
+  translate: -0.1em 0;
+  transition: translate var(--t-fast) var(--ease-out);
+}
+@media (hover: hover) and (pointer: fine) {
+  .btn:hover .flecha { translate: 0.15em 0; }
+}
+
+/* La marca de WhatsApp es de la casa: un bocadillo de esquina recta, como
+   todo aquí, con el auricular dentro. No es el logotipo de Meta ni un icono
+   de librería; lo que lo identifica es la palabra que va al lado.            */
+.marca-wasap { width: 1.35em; height: 1.35em; flex: none; }
+
+/* --- CHIP ------------------------------------------------------------------ */
+/* Un dato pulsable pequeño: los estilos en el índice del inicio.            */
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s2);
+  min-height: var(--touch);
+  padding: var(--s2) var(--s4);
+  background: transparent;
+  color: var(--tinta);
+  border: var(--hair) solid var(--filete-fn);
+  border-radius: var(--r);
+  font-size: var(--fs-label);
+  font-weight: var(--w-label);
+  font-stretch: 125%;
+  letter-spacing: var(--tr-label);
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: transform var(--t-press) var(--ease-out),
+              color var(--t-fast) ease,
+              border-color var(--t-fast) ease,
+              background-color var(--t-fast) ease;
+}
+.chip:active { transform: scale(0.97); }
+@media (hover: hover) and (pointer: fine) {
+  .chip:hover { border-color: var(--tinta); }
+}
+
+/* --- HUECO DE FOTO -------------------------------------------------------------
+   Mientras no lleguen las fotos originales, cada foto es un hueco diseñado,
+   no una imagen rota ni un gris muerto. Va enmarcado entre corchetes, que es
+   el tic del propio estudio: [ la foto va aquí ]. Tiene la proporción exacta
+   de la foto que ocupará, así que cuando llegue no se mueve nada.            */
+
+.hueco {
+  position: relative;
+  display: grid;
+  place-items: center;
+  aspect-ratio: var(--ratio, 4 / 5);
+  padding: var(--s5);
+  background: var(--suelo-hondo);
+  color: var(--tinta-3);
+  text-align: center;
+  overflow: hidden;
+}
+.hueco::before,
+.hueco::after {
+  content: "";
+  position: absolute;
+  top: var(--s3);
+  bottom: var(--s3);
+  width: clamp(0.5rem, 6%, 1.1rem);
+  border: var(--hair) solid var(--filete-fn);
+  pointer-events: none;
+}
+.hueco::before { left: var(--s3); border-right: 0; }
+.hueco::after  { right: var(--s3); border-left: 0; }
+
+.hueco__texto { display: grid; gap: var(--s1); max-width: 22ch; }
+.hueco__que   { color: var(--tinta-2); }
+
+/* Un solo hueco bajo y ancho donde irá una rejilla entera: dice lo que va a
+   haber sin llenar la página de marcos vacíos.                               */
+.hueco--ancho { --ratio: 5 / 2; }
+.hueco--ancho .hueco__texto { max-width: 40ch; }
+@media (min-width: 48rem) { .hueco--ancho { --ratio: 4 / 1; } }

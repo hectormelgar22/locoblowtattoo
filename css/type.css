@@ -1,0 +1,94 @@
+/* =============================================================================
+   LOCO BLOW · TIPOGRAFÍA
+   Mona Sans en tres voces, las tres del cartel del rebranding:
+     · titular: 800, apretado, puntos redondos (ss01) como el de «Blow.»
+     · etiqueta: mayúscula ancha (anchura 125) como «ESTD · TATTOO · 2015»
+     · texto: 400, para leer
+   Tracking e interlineado son de cada escalón, no globales.
+   ========================================================================== */
+
+.d1, .d2, .d3, .d4 {
+  font-family: var(--ff);
+  font-stretch: 100%;
+  font-feature-settings: "ss01" 1;   /* puntos, comas e íes redondos        */
+  text-wrap: balance;
+}
+
+.d1 { font-size: var(--fs-d1); line-height: var(--lh-d1); letter-spacing: var(--tr-d1); font-weight: var(--w-display); }
+.d2 { font-size: var(--fs-d2); line-height: var(--lh-d2); letter-spacing: var(--tr-d2); font-weight: var(--w-display); }
+.d3 { font-size: var(--fs-d3); line-height: var(--lh-d3); letter-spacing: var(--tr-d3); font-weight: var(--w-titulo); }
+.d4 { font-size: var(--fs-d4); line-height: var(--lh-d4); letter-spacing: var(--tr-d4); font-weight: var(--w-titulo); }
+
+.lead {
+  font-size: var(--fs-lead);
+  font-weight: var(--w-lead);
+  line-height: var(--lh-lead);
+  letter-spacing: var(--tr-lead);
+  color: var(--tinta-2);
+  max-width: var(--measure-tight);
+}
+
+.body  { max-width: var(--measure); }
+.body + .body { margin-top: var(--s4); }
+
+.sm  { font-size: var(--fs-sm);  line-height: var(--lh-sm); letter-spacing: var(--tr-sm); }
+.xs  { font-size: var(--fs-xs);  line-height: 1.5; letter-spacing: 0.01em; }
+
+.t2 { color: var(--tinta-2); }
+.t3 { color: var(--tinta-3); }
+
+/* --- ETIQUETA ---------------------------------------------------------------
+   La línea de apoyo del cartel: mayúscula, ancha y apretada. Es la voz de
+   los datos (servicio, estilo, año, lugar), nunca un antetítulo decorativo.
+   `case` sube corchetes y paréntesis a la altura de la mayúscula.            */
+.etiqueta {
+  font-family: var(--ff);
+  font-size: var(--fs-label);
+  font-weight: var(--w-label);
+  font-stretch: 125%;
+  line-height: var(--lh-label);
+  letter-spacing: var(--tr-label);
+  text-transform: uppercase;
+  font-feature-settings: "case" 1;
+}
+.etiqueta--suave { color: var(--tinta-3); }
+
+/* --- CORCHETES ----------------------------------------------------------------
+   El tic tipográfico del estudio: [A CORUÑA]. En el cartel los corchetes van
+   mucho más finos que la palabra, y eso es lo que los hace suyos; un
+   corchete del mismo peso que el texto es un corchete cualquiera. Se dibujan
+   con la propia fuente a 300, no con un borde: así escalan con el texto y el
+   lector de pantalla no los lee.                                             */
+.corchetes::before,
+.corchetes::after {
+  font-weight: var(--w-fino);
+  font-stretch: 100%;
+  font-feature-settings: "case" 1;
+}
+/* La segunda declaración quita el corchete del texto accesible; donde no se
+   entiende, se queda la primera y el corchete se ve igual.                    */
+.corchetes::before { content: "["; content: "[" / ""; margin-right: 0.12em; }
+.corchetes::after  { content: "]"; content: "]" / ""; margin-left: 0.12em; }
+
+/* Cifras. Sin cifras tabulares a propósito: en Mona Sans el cero tabular va
+   tachado, con aire de código, y el «2015» del cartel lleva un cero limpio.
+   Lo que tiene que cuadrar en columna se alinea con la rejilla, no con la
+   anchura de la cifra.                                                       */
+.num {
+  font-variant-numeric: lining-nums proportional-nums;
+}
+
+/* Filete. Un píxel, y separa; no señala.                                     */
+.rule {
+  border: 0;
+  border-top: var(--hair) solid var(--filete);
+  margin: 0;
+}
+
+/* --- BANDA NEGRA -------------------------------------------------------------
+   El cartel en negativo. Misma escalera, medida sobre negro.                */
+.en-negro { background: var(--tinta); color: var(--suelo); }
+.en-negro .t2, .en-negro .lead { color: var(--noche-2); }
+.en-negro .t3, .en-negro .etiqueta--suave { color: var(--noche-3); }
+.en-negro .rule { border-top-color: var(--noche-filete); }
+.en-negro ::selection { background: var(--claro); color: var(--tinta); }
