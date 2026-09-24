@@ -127,10 +127,11 @@
 
 /* --- LO QUE HACEMOS · los cuatro oficios, en carteles --------------------- */
 /* Cada oficio es un cartel que se pulsa entero. Con foto o vídeo, la imagen
-   llena la tarjeta y cada texto va en su bloque negro, como el rótulo de un
-   vídeo: se lee siempre sin oscurecer la foto. Sin imagen todavía, la
-   tarjeta es negra y la palabra, sola, entre dos corchetes grandes que se
-   separan al pasar por encima (el mismo gesto que abre cada foto).
+   llena la tarjeta y se funde a negro por abajo, donde va el texto, que se
+   apoya directamente en ese negro: nada de bloques sueltos por línea. Sin
+   imagen todavía, la tarjeta es negra y la palabra, sola, entre dos
+   corchetes grandes que se separan al pasar por encima (el mismo gesto que
+   abre cada foto).
    En escritorio: tatuajes grande a la izquierda, dos a la derecha y el
    último a todo el ancho. Nada de cuatro cajas iguales.                    */
 
@@ -169,8 +170,12 @@
 .oficio__cuerpo { display: grid; justify-items: start; gap: var(--s2); min-width: 0; }
 
 .oficio__dato { display: flex; flex-wrap: wrap; }
-.oficio__dato > * { padding: var(--s1) var(--s2); background: var(--tinta); }
-.oficio__cuenta { color: var(--noche-2); border-left: var(--hair) solid var(--noche-filete); }
+.oficio__cuenta {
+  padding-left: var(--s2);
+  margin-left: var(--s2);
+  color: var(--noche-2);
+  border-left: var(--hair) solid var(--noche-filete);
+}
 
 /* El nombre, lo más grande que quepa en su tarjeta (--letras: su palabra
    más larga) y nunca más que un titular de cartel.                         */
@@ -183,25 +188,25 @@
   letter-spacing: var(--tr-d1);
 }
 .oficio__enlace { color: inherit; text-decoration: none; }
-/* Los bloques negros solo hacen falta sobre una foto. El titular lleva uno
-   solo, del tamaño de su caja: el fondo de cada línea ocuparía más que la
-   línea (ascendentes y descendentes) y, con un interlineado de cartel,
-   taparía la etiqueta de arriba. El resumen, que es pequeño, va por líneas. */
-.oficio--con-media .oficio__nombre { padding: 0.08em 0.12em 0.04em; background: var(--tinta); }
-.oficio--con-media .oficio__resumen span {
-  background: var(--tinta);
-  -webkit-box-decoration-break: clone;
-  box-decoration-break: clone;
+/* Sobre la foto, un fundido a la tinta de la tarjeta: casi opaco donde va
+   el texto y apenas un velo arriba, para que la flecha y la imagen respiren.
+   El contraste se mide en el punto más claro de la foto bajo cada texto
+   con los píxeles reales de la captura, no a ojo.                         */
+.oficio--con-media .oficio__media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top,
+    rgb(11 11 10 / 0.96) 0%,
+    rgb(11 11 10 / 0.9) 32%,
+    rgb(11 11 10 / 0.62) 58%,
+    rgb(11 11 10 / 0.18) 100%);
 }
 .oficio__enlace::after { content: ""; position: absolute; inset: 0; z-index: 1; }
 .oficio__enlace:focus-visible { outline: none; }
 .oficio__enlace:focus-visible::after { outline: 2px solid var(--claro); outline-offset: -6px; }
 
-.oficio__resumen { max-width: 36ch; font-size: var(--fs-sm); line-height: 1.8; color: var(--noche-2); }
-.oficio--con-media .oficio__resumen span { padding: 0.2em var(--s2); }
-.oficio--sin-media .oficio__resumen { line-height: 1.5; }
-.oficio--sin-media .oficio__dato > * { padding-inline: 0; background: none; }
-.oficio--sin-media .oficio__cuenta { padding-left: var(--s2); margin-left: var(--s2); }
+.oficio__resumen { max-width: 38ch; font-size: var(--fs-sm); line-height: 1.5; color: var(--noche-2); text-wrap: pretty; }
 
 /* Los estilos, por encima del enlace estirado: cada uno a su sección. */
 .oficio__estilos {

@@ -284,26 +284,44 @@
       "</li>";
     }).join("") + "</ul>");
 
+  /* Los reels de los oficios. Con ratón suenan al pasar por encima; en el
+     móvil, donde no hay «encima», suenan solos mientras la tarjeta está a la
+     vista y se paran al salir. Nunca con movimiento reducido ni con ahorro
+     de datos: entonces se queda el primer fotograma.                      */
   (function reelsDeLosOficios() {
     var fino = window.matchMedia("(hover: hover) and (pointer: fine)");
-    $$(".oficio").forEach(function (o) {
+    var ahorro = navigator.connection && navigator.connection.saveData;
+    function cargar(v) {
+      if (v.getAttribute("data-cargado")) return;
+      $$("source[data-src]", v).forEach(function (x) { x.src = x.getAttribute("data-src"); });
+      v.load();
+      v.setAttribute("data-cargado", "1");
+    }
+    function sonar(o, v) {
+      if (N.quieto() || ahorro) return;
+      cargar(v);
+      v.play().then(function () { o.setAttribute("data-sonando", ""); }).catch(function () {});
+    }
+    function parar(o, v) { v.pause(); o.removeAttribute("data-sonando"); }
+
+    var tarjetas = $$(".oficio").filter(function (o) { return $("video", o); });
+    tarjetas.forEach(function (o) {
       var v = $("video", o);
-      if (!v) return;
-      function mover() {
-        if (!fino.matches || N.quieto()) return;
-        if (!v.getAttribute("data-cargado")) {
-          $$("source[data-src]", v).forEach(function (x) { x.src = x.getAttribute("data-src"); });
-          v.load();
-          v.setAttribute("data-cargado", "1");
-        }
-        v.play().then(function () { o.setAttribute("data-sonando", ""); }).catch(function () {});
-      }
-      function parar() { v.pause(); o.removeAttribute("data-sonando"); }
-      o.addEventListener("pointerenter", mover);
-      o.addEventListener("pointerleave", parar);
-      o.addEventListener("focusin", mover);
-      o.addEventListener("focusout", parar);
+      o.addEventListener("pointerenter", function () { if (fino.matches) sonar(o, v); });
+      o.addEventListener("pointerleave", function () { if (fino.matches) parar(o, v); });
+      o.addEventListener("focusin", function () { sonar(o, v); });
+      o.addEventListener("focusout", function () { if (!o.contains(document.activeElement)) parar(o, v); });
     });
+
+    if (!("IntersectionObserver" in window) || !tarjetas.length) return;
+    var vista = new IntersectionObserver(function (entradas) {
+      if (fino.matches) return;
+      entradas.forEach(function (e) {
+        var v = $("video", e.target);
+        if (e.isIntersecting) sonar(e.target, v); else parar(e.target, v);
+      });
+    }, { threshold: 0.55 });
+    tarjetas.forEach(function (o) { vista.observe(o); });
   })();
 
   /* Opiniones: reseñas de Google con la foto que subió quien la escribió.
