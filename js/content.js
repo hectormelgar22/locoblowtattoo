@@ -32,6 +32,7 @@
      7. estudio     las fotos del local
      8. videos      los reels
      9. preguntas   las preguntas generales (las de cada servicio van con él)
+    9b. opiniones   reseñas de Google, en el inicio
     10. pie         enlaces legales y créditos
 
    NADA DE PRECIOS. El estudio no quiere precios en la web (24/09/2026).
@@ -162,6 +163,17 @@ window.STUDIO = {
         entradilla: "Entra en cada uno: qué es, cómo se hace y fotos de trabajos hechos aquí.",
         // Lo que dice la tarjeta de tatuajes debajo del corchete.
         cuentaTatuajes: "{estilos} estilos · {trabajos} trabajos"
+      },
+
+      // Las opiniones de Google, antes de las preguntas.
+      opiniones: {
+        etiqueta: "Opiniones",
+        titular: "Lo que cuentan.",
+        entradilla: "{nota} de media en {n} reseñas de Google. Estas son cuatro, con la foto que subieron.",
+        leer: "Leer la reseña en Google",
+        tatuadoPor: "Tatuaje de {artista}",
+        todas: "Leer las {n} reseñas",
+        estrellas: "{n} de 5 estrellas"
       },
 
       preguntas: {
@@ -606,6 +618,36 @@ window.STUDIO = {
       publicar: true
     }
   },
+
+  /* --- 9b. OPINIONES ------------------------------------------------------- */
+  // Reseñas de su ficha de Google, con la foto que subió quien la escribió.
+  // FUENTE: Google Maps, 24/09/2026 (el enlace de cada una la abre).
+  // Reglas al añadir una:
+  //   · un trozo corto, entre comillas, sin cambiar lo que dice (solo
+  //     erratas y signos);
+  //   · NADA de precios: algunas reseñas los llevan en Google y aquí no;
+  //   · nombre y la inicial del apellido, no el nombre completo;
+  //   · ni caras de clientes ni fotos de menores;
+  //   · `fecha`, aproximada: Google dice «hace un mes».
+  // `img`: la foto pasada por tools/fetch-images.py (tools/originales/resenas/).
+  opiniones: [
+    { nombre: "Vanessa C.", fecha: "Septiembre de 2026", nota: 5, artista: "haroz",
+      texto: "Venía con miedo, porque un realismo es muy complicado… pero lo bordó.",
+      enlace: "https://maps.app.goo.gl/C7BUSqK3RbjFU2AU7",
+      img: "resena-1", ratio: 0.75, alt: "Retrato de una perrita sonriendo, en negro y grises, en el muslo." },
+    { nombre: "Thalía T.", fecha: "Agosto de 2026", nota: 5, artista: "haroz",
+      texto: "Me desplazo hasta A Coruña si quiero hacerme un tatuaje. Haroz es mi tatuador de confianza.",
+      enlace: "https://maps.app.goo.gl/76RUGTCFGFQLa9Br5",
+      img: "resena-2", ratio: 0.75, alt: "Una concha de vieira pequeña en línea fina, en el antebrazo." },
+    { nombre: "Ismael B.", fecha: "2025", nota: 5, artista: "haroz",
+      texto: "Me dio diferentes opciones, de relleno y diseño, receptivo a cualquier cosa que quisiera y de trato cercano.",
+      enlace: "https://maps.app.goo.gl/k1CRmcRderZcnCbx5",
+      img: "resena-3", ratio: 0.75, alt: "Una equis grande con una máscara de gas dentro, en negro y grises, sobre la rodilla." },
+    { nombre: "caosgubu", fecha: "Marzo de 2026", nota: 5, artista: "haroz",
+      texto: "Gente maja, agradable y profesional… lo que quería y aún mejor.",
+      enlace: "https://maps.app.goo.gl/EuA3Vb4G2Xg8pfEg8",
+      img: "resena-4", ratio: 0.6667, alt: "Retrato realista de un perro de hocico canoso, en negro y grises." }
+  ],
 
   /* --- 9. PREGUNTAS GENERALES ---------------------------------------------- */
   // Las del inicio. Cada servicio lleva además las suyas en su página.

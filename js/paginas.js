@@ -306,6 +306,121 @@
     });
   })();
 
+  /* Opiniones: reseñas de Google con la foto que subió quien la escribió.
+     Cada una alterna lado: la foto a un lado, la cita grande al otro. El
+     nombre va en su bloque negro montado sobre la foto, y no se mueve con
+     ella: al girar la foto, el nombre queda delante (el efecto, abajo).    */
+  (function opiniones() {
+    var host = $("[data-inicio-opiniones]");
+    if (!host) return;
+    var O = I.opiniones, G = S.studio.google;
+    var lista = S.opiniones || [];
+    var lead = $('[data-cab="inicio.opiniones"] .lead');
+    if (lead && G) lead.textContent = N.rellenar(O.entradilla, { nota: G.nota, n: G.resenas });
+    var seccion = host.closest("section");
+    if (seccion) seccion.hidden = !lista.length;
+    host.innerHTML = '<ol class="opiniones" role="list">' + lista.map(function (o, i) {
+      var a = o.artista ? N.artistaPor(o.artista) : null;
+      var estrellas = "";
+      for (var k = 0; k < 5; k++) estrellas += "<i" + (k < o.nota ? "" : ' class="apagada"') + "></i>";
+      return '<li class="opinion">' +
+        '<div class="opinion__foto">' +
+          '<div class="opinion__marco">' +
+            N.imgHTML({ base: o.img, tipo: "obra", alt: o.alt, ratio: o.ratio, clase: "opinion__img",
+                        sizes: "(min-width: 60rem) 28rem, 80vw" }) +
+          "</div>" +
+          '<p class="opinion__quien etiqueta" id="op-' + i + '">' + esc(o.nombre) + "</p>" +
+        "</div>" +
+        '<div class="opinion__texto">' +
+          '<p class="estrellas" role="img" aria-label="' + esc(N.rellenar(O.estrellas, { n: o.nota })) + '">' +
+            estrellas + "</p>" +
+          '<blockquote class="opinion__cita" cite="' + esc(o.enlace) + '" aria-describedby="op-' + i + '">' +
+            "<p>«" + esc(o.texto) + "»</p></blockquote>" +
+          '<p class="opinion__meta etiqueta etiqueta--suave">' +
+            (a ? esc(N.rellenar(O.tatuadoPor, { artista: a.nombre })) + " · " : "") + esc(o.fecha) + "</p>" +
+          '<a class="opinion__enlace" href="' + esc(o.enlace) + '" target="_blank" rel="noopener">' +
+            esc(O.leer) + '<i class="flecha" aria-hidden="true"></i>' +
+            '<span class="visually-hidden"> (se abre en Google Maps)</span></a>' +
+        "</div>" +
+      "</li>";
+    }).join("") + "</ol>" +
+    (G ? '<p class="opiniones__todas"><a class="btn btn--grande" href="' + esc(G.ficha) + '" target="_blank" rel="noopener">' +
+          esc(N.rellenar(O.todas, { n: G.resenas })) + '<i class="flecha" aria-hidden="true"></i>' +
+          '<span class="visually-hidden"> (se abre en Google Maps)</span></a></p>' : "");
+  })();
+
+  /* El giro de las opiniones, adaptado de «Smooth Scrolling Image Effects»
+     (Codrops, versión de DivineBlow en CodePen): cada foto entra inclinada
+     en 3D, se pone plana al pasar por el centro de la pantalla y sale
+     inclinada hacia el otro lado, mientras la imagen se desliza dentro de su
+     marco. Del original se queda el gesto; no el scroll suavizado de toda la
+     página, que secuestra la rueda, rompe la barra fija, las anclas y la
+     búsqueda del navegador. Aquí se mide con el scroll de siempre, solo
+     mientras la sección está en pantalla, con 30° en vez de 60° y sin
+     nada de azar: cada foto gira siempre igual. Con «reducir movimiento»,
+     quieto.                                                                */
+  (function giroOpiniones() {
+    var els = $$(".opinion");
+    if (!els.length || N.quieto() || !("IntersectionObserver" in window)) return;
+    var MAX = 30, SUAVE = 0.1;
+    var EJES = [[0.35, -0.2], [-0.3, 0.25], [0.25, 0.3], [-0.2, -0.3]];
+    var items = els.map(function (el, i) {
+      return { el: el, marco: $(".opinion__marco", el), img: $(".opinion__img", el),
+               ry: EJES[i % 4][0], rz: EJES[i % 4][1], giro: 0, desliz: 0, dentro: false };
+    });
+    var vivos = 0, pidiendo = false;
+
+    function objetivo(it) {
+      var r = it.el.getBoundingClientRect(), h = window.innerHeight;
+      var t = Math.min(1, Math.max(0, (h - r.top) / (h + r.height)));
+      var sobra = (it.img.offsetHeight - it.marco.offsetHeight) / 2;
+      return { giro: MAX * (1 - 2 * t), desliz: sobra * (2 * t - 1) };
+    }
+    function pintar(it) {
+      it.marco.style.transform = "rotate3d(1," + it.ry + "," + it.rz + "," + it.giro.toFixed(2) + "deg)";
+      it.img.style.transform = "translate3d(0," + it.desliz.toFixed(1) + "px,0)";
+    }
+    /* Primero se miden todas y luego se pintan todas: medir después de
+       pintar obligaría al navegador a recalcular la página cada vez.       */
+    function fotograma() {
+      pidiendo = false;
+      var dentro = items.filter(function (it) { return it.dentro; });
+      var metas = dentro.map(objetivo);
+      var queda = false;
+      dentro.forEach(function (it, i) {
+        it.giro += (metas[i].giro - it.giro) * SUAVE;
+        it.desliz += (metas[i].desliz - it.desliz) * SUAVE;
+        if (Math.abs(metas[i].giro - it.giro) > 0.05) queda = true;
+      });
+      dentro.forEach(pintar);
+      if (queda) pedir();
+    }
+    function pedir() { if (!pidiendo) { pidiendo = true; requestAnimationFrame(fotograma); } }
+
+    var obs = new IntersectionObserver(function (entradas) {
+      var nuevos = [];
+      entradas.forEach(function (e) {
+        var it = items[els.indexOf(e.target)];
+        if (e.isIntersecting && !it.dentro) nuevos.push(it);
+        it.dentro = e.isIntersecting;
+      });
+      /* Al entrar, sin arrastre: donde le toca estar ya. */
+      var metas = nuevos.map(objetivo);
+      nuevos.forEach(function (it, i) { it.giro = metas[i].giro; it.desliz = metas[i].desliz; });
+      nuevos.forEach(pintar);
+      vivos = items.filter(function (it) { return it.dentro; }).length;
+      if (vivos) pedir();
+    }, { rootMargin: "100px 0px" });
+    items.forEach(function (it) { obs.observe(it.el); });
+    window.addEventListener("scroll", function () { if (vivos) pedir(); }, { passive: true });
+    window.addEventListener("resize", function () { if (vivos) pedir(); });
+    N.mqQuieto.addEventListener("change", function () {
+      if (!N.quieto()) return;
+      obs.disconnect(); vivos = 0;
+      items.forEach(function (it) { it.marco.style.transform = ""; it.img.style.transform = ""; });
+    });
+  })();
+
   set("[data-faq-general]", faqHTML(S.preguntas));
 
   /* Dónde estamos: el mapa a la izquierda y, a la derecha, en orden de

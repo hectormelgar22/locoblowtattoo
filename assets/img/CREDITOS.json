@@ -182,6 +182,62 @@
     ]
   },
   {
+    "archivo": "resena-1",
+    "alt": "Retrato de una perrita sonriendo, en negro y grises, en el muslo.",
+    "autor": "Reseña de Google",
+    "fuente": "Google Maps",
+    "proporcion": 0.75,
+    "anchos": [
+      1200,
+      900,
+      720,
+      600,
+      380
+    ]
+  },
+  {
+    "archivo": "resena-2",
+    "alt": "Una concha de vieira pequeña en línea fina, en el antebrazo.",
+    "autor": "Reseña de Google",
+    "fuente": "Google Maps",
+    "proporcion": 0.75,
+    "anchos": [
+      1200,
+      900,
+      720,
+      600,
+      380
+    ]
+  },
+  {
+    "archivo": "resena-3",
+    "alt": "Una equis grande con una máscara de gas dentro, en negro y grises, sobre la rodilla.",
+    "autor": "Reseña de Google",
+    "fuente": "Google Maps",
+    "proporcion": 0.75,
+    "anchos": [
+      1200,
+      900,
+      720,
+      600,
+      380
+    ]
+  },
+  {
+    "archivo": "resena-4",
+    "alt": "Retrato realista de un perro de hocico canoso, en negro y grises.",
+    "autor": "Reseña de Google",
+    "fuente": "Google Maps",
+    "proporcion": 0.6667,
+    "anchos": [
+      1024,
+      900,
+      720,
+      600,
+      380
+    ]
+  },
+  {
     "archivo": "estudio-1",
     "alt": "Maou tatuando, con gafas, barba y guantes negros, bajo la lámpara del puesto.",
     "autor": "@maou_tattoo",

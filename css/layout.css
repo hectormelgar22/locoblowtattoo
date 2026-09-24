@@ -11,6 +11,10 @@
   max-width: var(--maxw);
   margin-inline: auto;
   padding-inline: var(--gutter);
+  /* Lo que gira en 3D (las fotos de las opiniones) no ensancha la página.
+     `clip` y no `hidden`: no crea un contenedor de scroll, así que lo
+     pegajoso (la barra de estilos) sigue pegándose.                       */
+  overflow-x: clip;
 }
 
 /* --- RITMO VERTICAL -------------------------------------------------------- */

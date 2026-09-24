@@ -302,6 +302,114 @@
   .oficio--micropigmentacion { grid-column: 1 / -1; grid-row: 3; min-height: 16rem; }
 }
 
+/* --- OPINIONES · reseñas de Google ---------------------------------------- */
+/* Una reseña por fila, alternando lado: la foto que subió el cliente a un
+   lado y la cita grande al otro. La foto gira en 3D al pasar (paginas.js) y
+   su nombre, en un bloque negro montado encima, se queda plano delante: de
+   ahí la profundidad. En el móvil, las fotos van descolgadas a un lado y a
+   otro, como fotos sueltas sobre la mesa.                                  */
+
+.opiniones { display: grid; gap: var(--s9); }
+
+.opinion { display: grid; gap: var(--s5); }
+
+.opinion__foto {
+  position: relative;
+  width: 82%;
+  perspective: 1000px;
+}
+.opinion:nth-child(even) .opinion__foto { margin-left: auto; }
+
+.opinion__marco {
+  --sobra: 2.5rem;
+  position: relative;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  background: var(--suelo-hondo);
+  transform-origin: 50% 100%;
+  will-change: transform;
+}
+/* La foto es más alta que su marco: se desliza dentro al girar. */
+.opinion__img {
+  position: absolute;
+  left: 0;
+  top: calc(var(--sobra) * -1);
+  width: 100%;
+  height: calc(100% + var(--sobra) * 2);
+  object-fit: cover;
+  will-change: transform;
+}
+
+.opinion__quien {
+  position: absolute;
+  left: calc(var(--s3) * -1);
+  bottom: var(--s5);
+  z-index: 1;
+  margin: 0;
+  padding: var(--s2) var(--s3);
+  background: var(--tinta);
+  color: var(--claro);
+}
+.opinion:nth-child(even) .opinion__quien { left: auto; right: calc(var(--s3) * -1); }
+
+.opinion__texto { display: grid; gap: var(--s4); align-content: center; justify-items: start; }
+
+/* Cinco estrellas dibujadas con clip-path, no un glifo. */
+.estrellas { display: flex; gap: 3px; }
+.estrellas i {
+  display: block;
+  width: 1.05rem;
+  height: 1.05rem;
+  background: var(--tinta);
+  clip-path: polygon(50% 0%, 61.8% 35.4%, 98% 35.4%, 68.9% 57.3%, 79.4% 91.2%, 50% 70.6%,
+                     20.6% 91.2%, 31.1% 57.3%, 2% 35.4%, 38.2% 35.4%);
+}
+.estrellas i.apagada { background: var(--filete); }
+
+.opinion__cita { margin: 0; }
+.opinion__cita p {
+  max-width: 24ch;
+  font-size: var(--fs-d3);
+  font-weight: var(--w-titulo);
+  font-feature-settings: "ss01" 1;
+  line-height: 1.12;
+  letter-spacing: var(--tr-d3);
+  text-wrap: balance;
+}
+
+.opinion__enlace {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45em;
+  min-height: var(--touch);
+  font-size: var(--fs-sm);
+  color: var(--tinta);
+}
+@media (hover: hover) and (pointer: fine) {
+  .opinion__enlace:hover .flecha { translate: 0.15em 0; }
+}
+
+.opiniones__todas { margin-top: var(--s8); }
+
+@media (min-width: 48rem) {
+  .opinion__foto { width: 60%; }
+}
+
+@media (min-width: 60rem) {
+  .opiniones { gap: var(--s10); }
+  .opinion {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    column-gap: var(--s9);
+    align-items: center;
+  }
+  .opinion:nth-child(even) { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); }
+  .opinion:nth-child(even) .opinion__foto { order: 2; }
+  .opinion:nth-child(even) .opinion__texto { justify-items: end; text-align: right; }
+  .opinion:nth-child(even) .opinion__cita p { margin-left: auto; }
+  .opinion__foto { width: min(100%, 26rem); }
+  .opinion__cita p { font-size: var(--fs-d2); line-height: 1.02; letter-spacing: var(--tr-d2); max-width: 20ch; }
+}
+
 /* --- DÓNDE ESTAMOS ------------------------------------------------------- */
 /* La dirección de titular, al tamaño grande: es el sitio al que hay que ir.
    Debajo, el mapa a la izquierda y todo lo demás a la derecha, en el orden
