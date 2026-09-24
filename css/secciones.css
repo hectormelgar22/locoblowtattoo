@@ -1,6 +1,6 @@
 /* =============================================================================
    LOCO BLOW · SECCIONES
-   Las piezas de cada página: la portada y el índice del inicio, la cabecera
+   Las piezas de cada página: la portada y los oficios del inicio, la cabecera
    de cada servicio con su titular en cartel, los pasos en negro y los
    estilos de la página de tatuajes. Lo que comparten todas (barra, vídeo,
    preguntas, pie) vive en site.css; las fotos, en galeria.css.
@@ -125,95 +125,188 @@
   .muestra__item { flex: none; }
 }
 
-/* --- LO QUE HACEMOS · el índice de las cuatro páginas --------------------- */
-/* Filas de un cartel: el corchete con el servicio, el nombre enorme y lo
-   que es. Toda la fila lleva a su página (el enlace se estira con ::after),
-   menos los estilos de tatuaje, que van cada uno a su sección.             */
+/* --- LO QUE HACEMOS · los cuatro oficios, en carteles --------------------- */
+/* Cada oficio es un cartel que se pulsa entero. Con foto o vídeo, la imagen
+   llena la tarjeta y cada texto va en su bloque negro, como el rótulo de un
+   vídeo: se lee siempre sin oscurecer la foto. Sin imagen todavía, la
+   tarjeta es negra y la palabra, sola, entre dos corchetes grandes que se
+   separan al pasar por encima (el mismo gesto que abre cada foto).
+   En escritorio: tatuajes grande a la izquierda, dos a la derecha y el
+   último a todo el ancho. Nada de cuatro cajas iguales.                    */
 
-.indice { border-top: var(--hair) solid var(--filete-fn); }
+.oficios { display: grid; gap: var(--s3); }
 
-.indice__fila {
+.oficio {
   position: relative;
+  isolation: isolate;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 5.5rem;
-  align-items: start;
-  gap: var(--s4);
-  padding-block: var(--s6);
-  border-bottom: var(--hair) solid var(--filete);
+  align-content: end;
+  min-height: 17rem;
+  padding: var(--s4);
+  overflow: hidden;
+  background: var(--tinta);
+  color: var(--claro);
+  container-type: inline-size;
+  transition: transform var(--t-press) var(--ease-out), background-color var(--t-ui) ease;
 }
-.indice__fila--sin-media { grid-template-columns: minmax(0, 1fr); }
+/* Al pulsar, toda la tarjeta cede un poco: en el móvil es la respuesta. */
+.oficio:has(.oficio__enlace:active) { transform: scale(0.985); }
 
-.indice__texto { display: grid; gap: var(--s2); min-width: 0; container-type: inline-size; }
-
-/* El nombre al tamaño grande, con tope por su palabra más larga
-   (--letras, lo pone paginas.js): «Micropigmentación» no puede partirse. */
-.indice__nombre {
-  margin: 0;
-  /* 0,56: lo que mide de media una letra de Mona Sans a 800, medido con
-     «Micropigmentación» (0,54) y un poco de margen.                      */
-  font-size: min(var(--fs-d2), calc(100cqi / (var(--letras, 8) * 0.56)));
-  font-weight: var(--w-display);
-  font-feature-settings: "ss01" 1;
-  line-height: var(--lh-d2);
-  letter-spacing: var(--tr-d2);
-}
-.indice__enlace {
-  display: inline;
-  color: var(--tinta);
-  text-decoration: none;
-}
-.indice__enlace::after { content: ""; position: absolute; inset: 0; }
-/* La flecha de la casa, a la escala del nombre. */
-.indice__enlace .flecha {
-  display: inline-block;
-  width: 0.26em; height: 0.26em;
-  margin-left: 0.14em;
-  border-top-width: 0.055em;
-  border-right-width: 0.055em;
-  vertical-align: 0.14em;
-  translate: 0 0;
-}
-.indice__enlace:focus-visible { outline: none; }
-.indice__enlace:focus-visible::after { outline: 2px solid var(--tinta); outline-offset: 4px; }
-@media (hover: hover) and (pointer: fine) {
-  .indice__fila:hover .indice__enlace .flecha { translate: 0.12em 0; }
-  .indice__fila:hover .indice__media img { transform: scale(1.03); }
-}
-
-.indice__resumen { color: var(--tinta-2); max-width: 44ch; }
-
-/* Los estilos, por encima del enlace estirado: cada uno lleva a su sección. */
-.indice__estilos {
-  position: relative;
-  z-index: 1;
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--s2);
-  margin-top: var(--s3);
-}
-.indice__estilos .chip { min-height: 2.25rem; padding-inline: var(--s3); text-decoration: none; }
-
-.indice__media { overflow: hidden; background: var(--suelo-hondo); aspect-ratio: 4 / 5; }
-.indice__media img {
-  display: block;
+.oficio__media { position: absolute; inset: 0; z-index: -1; }
+.oficio__media img, .oficio__media video {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform var(--t-panel) var(--ease-out);
+  object-position: 50% 35%;
+  transition: transform 700ms var(--ease-out), opacity var(--t-ui) ease;
+}
+/* El reel espera encima de su primer fotograma y aparece cuando suena. */
+.oficio__media video { opacity: 0; }
+.oficio[data-sonando] .oficio__media video { opacity: 1; }
+
+.oficio__cuerpo { display: grid; justify-items: start; gap: var(--s2); min-width: 0; }
+
+.oficio__dato { display: flex; flex-wrap: wrap; }
+.oficio__dato > * { padding: var(--s1) var(--s2); background: var(--tinta); }
+.oficio__cuenta { color: var(--noche-2); border-left: var(--hair) solid var(--noche-filete); }
+
+/* El nombre, lo más grande que quepa en su tarjeta (--letras: su palabra
+   más larga) y nunca más que un titular de cartel.                         */
+.oficio__nombre {
+  margin: 0;
+  font-size: min(var(--fs-d1), calc((100cqi - var(--s4) * 2) / (var(--letras, 8) * 0.56)));
+  font-weight: var(--w-display);
+  font-feature-settings: "ss01" 1;
+  line-height: 0.95;
+  letter-spacing: var(--tr-d1);
+}
+.oficio__enlace { color: inherit; text-decoration: none; }
+/* Los bloques negros solo hacen falta sobre una foto. El titular lleva uno
+   solo, del tamaño de su caja: el fondo de cada línea ocuparía más que la
+   línea (ascendentes y descendentes) y, con un interlineado de cartel,
+   taparía la etiqueta de arriba. El resumen, que es pequeño, va por líneas. */
+.oficio--con-media .oficio__nombre { padding: 0.08em 0.12em 0.04em; background: var(--tinta); }
+.oficio--con-media .oficio__resumen span {
+  background: var(--tinta);
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+.oficio__enlace::after { content: ""; position: absolute; inset: 0; z-index: 1; }
+.oficio__enlace:focus-visible { outline: none; }
+.oficio__enlace:focus-visible::after { outline: 2px solid var(--claro); outline-offset: -6px; }
+
+.oficio__resumen { max-width: 36ch; font-size: var(--fs-sm); line-height: 1.8; color: var(--noche-2); }
+.oficio--con-media .oficio__resumen span { padding: 0.2em var(--s2); }
+.oficio--sin-media .oficio__resumen { line-height: 1.5; }
+.oficio--sin-media .oficio__dato > * { padding-inline: 0; background: none; }
+.oficio--sin-media .oficio__cuenta { padding-left: var(--s2); margin-left: var(--s2); }
+
+/* Los estilos, por encima del enlace estirado: cada uno a su sección. */
+.oficio__estilos {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s2);
+  margin-top: var(--s2);
+}
+.oficio .chip {
+  min-height: 2.25rem;
+  padding-inline: var(--s3);
+  background: var(--tinta);
+  color: var(--claro);
+  border-color: var(--noche-fn);
+  text-decoration: none;
+}
+.oficio .chip:focus-visible { outline-color: var(--claro); }
+
+/* La flecha: un bloque en la esquina que se invierte al pasar por encima. */
+.oficio__ir {
+  position: absolute;
+  top: var(--s4);
+  right: var(--s4);
+  display: grid;
+  place-items: center;
+  width: 3.25rem;
+  height: 3.25rem;
+  font-size: 1.25rem;
+  background: var(--tinta);
+  color: var(--claro);
+  border: var(--hair) solid var(--noche-fn);
+  transition: background-color var(--t-fast) ease, color var(--t-fast) ease, border-color var(--t-fast) ease;
+}
+
+/* Sin imagen: dos corchetes grandes a los lados, como en [A CORUÑA]. */
+.oficio--sin-media::before, .oficio--sin-media::after {
+  content: "";
+  position: absolute;
+  top: var(--s3);
+  bottom: var(--s3);
+  width: 1.1rem;
+  border: var(--hair) solid var(--noche-fn);
+  pointer-events: none;
+  transition: translate var(--t-panel) var(--ease-out), border-color var(--t-ui) ease;
+}
+.oficio--sin-media::before { left: var(--s3); border-right: 0; }
+.oficio--sin-media::after  { right: var(--s3); border-left: 0; }
+.oficio--sin-media { padding-inline: var(--s6); }
+.oficio--sin-media .oficio__ir { right: var(--s6); }
+
+@media (hover: hover) and (pointer: fine) {
+  .oficio:hover .oficio__ir { background: var(--claro); color: var(--tinta); border-color: var(--claro); }
+  .oficio:hover .oficio__ir .flecha { translate: 0.15em 0; }
+  .oficio:hover .oficio__media img { transform: scale(1.04); }
+  .oficio--sin-media:hover { background: var(--tinta-viva); }
+  .oficio--sin-media:hover::before { translate: -0.35rem 0; border-color: var(--noche-2); }
+  .oficio--sin-media:hover::after  { translate: 0.35rem 0; border-color: var(--noche-2); }
+  .oficio .chip:hover { border-color: var(--claro); }
+}
+/* Con teclado, lo mismo que con el ratón: se sabe qué tarjeta se va a abrir. */
+.oficio:focus-within .oficio__ir { background: var(--claro); color: var(--tinta); border-color: var(--claro); }
+
+@media (prefers-reduced-motion: reduce) {
+  .oficio, .oficio__media img, .oficio--sin-media::before, .oficio--sin-media::after { transition: none; }
+  .oficio:has(.oficio__enlace:active) { transform: none; }
+}
+
+/* Móvil: tatuajes, alto; el láser, cuadrado; los que no tienen imagen, lo
+   justo para su texto.                                                     */
+.oficio--con-media { aspect-ratio: 1 / 1; }
+.oficio--tatuaje.oficio--con-media { aspect-ratio: 4 / 5; }
+
+@media (min-width: 48rem) {
+  .oficios { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s4); }
+  .oficio { min-height: 20rem; padding: var(--s5); }
+  .oficio--con-media { aspect-ratio: auto; }
+  .oficio--tatuaje, .oficio--micropigmentacion { grid-column: 1 / -1; }
+  .oficio--tatuaje.oficio--con-media { aspect-ratio: 16 / 10; }
+  .oficio__nombre { font-size: min(var(--fs-d1), calc((100cqi - var(--s5) * 2) / (var(--letras, 8) * 0.56))); }
 }
 
 @media (min-width: 60rem) {
-  .indice__fila {
-    grid-template-columns: minmax(0, 1fr) 11rem;
-    column-gap: var(--s8);
-    padding-block: var(--s7);
-    align-items: center;
+  .oficios {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    grid-auto-rows: minmax(19rem, auto);
   }
-  .indice__fila--sin-media { grid-template-columns: minmax(0, 1fr); }
+  .oficio { padding: var(--s6); }
+  .oficio__ir { top: var(--s5); right: var(--s5); width: 3.5rem; height: 3.5rem; }
+  .oficio--sin-media { padding-inline: var(--s7); }
+  .oficio--sin-media .oficio__ir { right: var(--s7); }
+  .oficio__nombre { font-size: min(var(--fs-d1), calc((100cqi - var(--s6) * 2) / (var(--letras, 8) * 0.56))); }
+  .oficio--tatuaje { grid-column: 1 / 8; grid-row: 1 / 3; }
+  .oficio--tatuaje.oficio--con-media { aspect-ratio: auto; }
+  .oficio--piercing { grid-column: 8 / 13; grid-row: 1; }
+  .oficio--laser { grid-column: 8 / 13; grid-row: 2; }
+  .oficio--micropigmentacion { grid-column: 1 / -1; grid-row: 3; min-height: 16rem; }
 }
 
 /* --- DÓNDE ESTAMOS ------------------------------------------------------- */
-/* La dirección de titular, al tamaño grande: es el sitio al que hay que ir. */
+/* La dirección de titular, al tamaño grande: es el sitio al que hay que ir.
+   Debajo, el mapa a la izquierda y todo lo demás a la derecha, en el orden
+   en que se lee: qué hay que hacer, la nota de Google, los datos y los dos
+   botones juntos.                                                         */
 
 .cab--cartel h2 {
   /* Tope por el ancho: «Voluntariado,» son unos 7,5 em, y a 128 px en su
@@ -223,11 +316,118 @@
   letter-spacing: var(--tr-d1);
   grid-column: 1 / -1;
 }
-@media (min-width: 60rem) {
-  .cab--cartel .lead { grid-column: 2; }
-}
 
 .contacto { display: grid; gap: var(--s6); }
+
+/* El mapa: una imagen en la paleta, con el estudio en el centro. */
+.mapa {
+  position: relative;
+  /* Cuadrado en el móvil: recorta los lados y el centro sale más grande,
+     con los nombres de las calles legibles.                               */
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  background: var(--suelo-hondo);
+  border: var(--hair) solid var(--filete);
+}
+.mapa__img, .mapa__iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  object-fit: cover;
+}
+/* El de Google, en grises como el resto: sigue siendo el mismo mapa. */
+.mapa__iframe { filter: grayscale(1) contrast(1.05); }
+.mapa[data-interactivo] .mapa__img,
+.mapa[data-interactivo] .mapa__marca,
+.mapa[data-interactivo] .mapa__credito { display: none; }
+
+/* La marca: un cuadrado negro con filete claro y el nombre encima, en su
+   bloque, como un rótulo.                                                  */
+.mapa__marca {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 1.125rem;
+  height: 1.125rem;
+  margin: -0.5625rem 0 0 -0.5625rem;
+  background: var(--tinta);
+  border: 3px solid var(--claro);
+  outline: var(--hair) solid var(--tinta);
+}
+.mapa__rotulo {
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 0.9rem);
+  translate: -50% 0;
+  padding: var(--s2) var(--s3);
+  white-space: nowrap;
+  background: var(--tinta);
+  color: var(--claro);
+}
+.mapa__rotulo::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 100%;
+  width: var(--hair);
+  height: 0.9rem;
+  background: var(--tinta);
+}
+
+.mapa__abrir {
+  position: absolute;
+  right: var(--s3);
+  bottom: var(--s3);
+  --btn-bg: var(--suelo);
+}
+.mapa__credito {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  padding: 0 var(--s2);
+  font-size: 0.6875rem;
+  color: var(--tinta-2);
+  background: color-mix(in srgb, var(--suelo) 88%, transparent);
+}
+/* Caja de 24 px para el dedo (WCAG 2.5.8), aunque el texto sea pequeño. */
+.mapa__credito a { display: inline-block; padding-block: 6px; color: inherit; }
+
+.contacto__info { display: grid; gap: var(--s5); align-content: start; }
+.contacto__texto { color: var(--tinta); }
+
+/* La nota de Google: la cifra grande, como un titular, y a qué lleva. */
+.nota {
+  display: flex;
+  align-items: center;
+  gap: var(--s4);
+  padding: var(--s4) var(--s5);
+  border: var(--hair) solid var(--filete-fn);
+  color: var(--tinta);
+  text-decoration: none;
+  transition: border-color var(--t-fast) ease, background-color var(--t-fast) ease;
+}
+.nota__cifra {
+  font-size: var(--fs-d2);
+  font-weight: var(--w-display);
+  line-height: 0.9;
+  letter-spacing: var(--tr-d2);
+}
+.nota__texto { display: grid; gap: var(--s1); }
+.nota__leer {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45em;
+  font-size: var(--fs-sm);
+  color: var(--tinta-2);
+}
+@media (hover: hover) and (pointer: fine) {
+  .nota:hover { border-color: var(--tinta); background: var(--suelo-hondo); }
+  .nota:hover .flecha { translate: 0.15em 0; }
+}
+.nota:active { transform: scale(0.99); }
+
 .contacto__lista { border-top: var(--hair) solid var(--filete-fn); }
 .contacto__lista > div {
   display: grid;
@@ -241,13 +441,21 @@
 /* Enlaces con caja propia: se pasa de los 24 px que pide WCAG 2.5.8. */
 .contacto__lista a { display: inline-block; padding-block: 3px; }
 
+.contacto__acciones { display: flex; flex-wrap: wrap; gap: var(--s3); }
+.contacto__acciones .btn { flex: 1 1 14rem; }
+@media (min-width: 36rem) {
+  .contacto__acciones .btn { flex: 0 0 auto; }
+  .mapa { aspect-ratio: 4 / 3; }
+}
+
 @media (min-width: 60rem) {
   .contacto {
     grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
-    column-gap: var(--s8);
-    align-items: end;
+    column-gap: var(--s7);
+    align-items: stretch;
   }
-  .contacto__accion { justify-self: end; }
+  /* El mapa llega hasta donde llega la columna de datos. */
+  .mapa { aspect-ratio: auto; min-height: 34rem; }
 }
 
 /* ============================================================================

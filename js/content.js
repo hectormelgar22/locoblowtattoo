@@ -52,15 +52,30 @@ window.STUDIO = {
     // PROVISIONAL: pendiente de confirmar (¿tienen dominio?)
     web: "https://hectormelgar22.github.io/locoblowtattoo",
 
+    // FUENTE: su ficha de Google Maps («Loco Blow Tattoo Coruña»,
+    // 24/09/2026). La ficha añade «bajo 27»: PROVISIONAL, pendiente de que el
+    // estudio diga si hace falta para encontrar la puerta.
     direccion: {
-      calle: "C. Voluntariado, 3",                   // FUENTE: brief · PROVISIONAL: nombre oficial de la calle
-      cp: "",                                        // PROVISIONAL: pendiente de confirmar
+      calle: "Rúa Voluntariado, 3",
+      cp: "15003",
       ciudad: "A Coruña",
       provincia: "A Coruña",
       pais: "ES",
-      lat: null, lng: null,                          // PROVISIONAL: pendiente de confirmar
+      lat: 43.3706446, lng: -8.4004003,
       // Lo que ayuda a encontrar la puerta. PROVISIONAL: pendiente de confirmar
       indicaciones: ""
+    },
+
+    // Su ficha de Google: la que abre «Cómo llegar» y «Leer las reseñas».
+    // FUENTE: Google Maps, 24/09/2026. La nota y el número de reseñas se
+    // copian a mano: conviene ponerlos al día de vez en cuando.
+    google: {
+      nombre: "Loco Blow Tattoo Coruña",
+      ficha: "https://maps.google.com/?cid=1856912985306354920",
+      // El mapa que se carga al pulsar sobre el nuestro (sin clave de API).
+      mapa: "https://www.google.com/maps/embed?origin=mfe&pb=!1m12!1m8!1m3!1d2900.3!2d-8.4004003!3d43.3706446!3m2!1i1024!2i768!4f13.1!2m1!1sLoco+Blow+Tattoo+Coru%C3%B1a!6i17!3m1!1ses!5m1!1ses",
+      nota: "5,0",
+      resenas: 566
     },
 
     // WhatsApp oficial: la entrada al estudio para todo.
@@ -144,7 +159,9 @@ window.STUDIO = {
       servicios: {
         etiqueta: "Lo que hacemos",
         titular: "Cuatro oficios, un estudio.",
-        entradilla: "Entra en cada uno: qué es, cómo se hace y fotos de trabajos hechos aquí."
+        entradilla: "Entra en cada uno: qué es, cómo se hace y fotos de trabajos hechos aquí.",
+        // Lo que dice la tarjeta de tatuajes debajo del corchete.
+        cuentaTatuajes: "{estilos} estilos · {trabajos} trabajos"
       },
 
       preguntas: {
@@ -158,9 +175,17 @@ window.STUDIO = {
         // El titular es la dirección: en cartel, como el resto.
         // PROVISIONAL: sigue a la dirección confirmada (¿«Rúa do Voluntariado»?)
         titular: "Voluntariado, 3.",
-        entradilla: "Aquí se entra con cita. Escríbenos por WhatsApp y un compañero te contesta y organiza tu cita.",
+        texto: "Aquí se entra con cita. Escríbenos por WhatsApp y un compañero te contesta y organiza tu cita.",
         comoLlegar: "Cómo llegar",
-        instagram: "Instagram"
+        instagram: "Instagram",
+        resenas: "{n} reseñas en Google",
+        leerResenas: "Leer las reseñas",
+        mapa: {
+          alt: "Mapa del centro de A Coruña, con el estudio marcado en el medio, en la Rúa Voluntariado, 3.",
+          abrir: "Mover el mapa",
+          nota: "Se carga el mapa de Google aquí mismo.",
+          titulo: "Mapa de Google con el estudio Loco Blow"
+        }
       }
     },
 
@@ -214,6 +239,8 @@ window.STUDIO = {
   servicios: [
     {
       id: "tatuaje", pagina: "tatuajes", menu: "Tatuajes",
+      // El reel de su tarjeta en el inicio (se mueve al pasar por encima).
+      portada: "payasa",
       etiqueta: "Tattoo", nombre: "Tatuajes",
       titular: "Tatuajes.",
       entradilla: "Por estilos. Entra en el tuyo: cada foto lleva el nombre de quien la hizo, y si una te gusta, nos la mandas tal cual por WhatsApp.",

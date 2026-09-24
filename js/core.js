@@ -228,10 +228,13 @@
   /* «15001 A Coruña», o solo «A Coruña» mientras no haya código postal. */
   function lineaCiudad(d) { return [d.cp, d.ciudad].filter(Boolean).join(" "); }
 
+  /* «Cómo llegar»: la ruta de Google Maps hasta su ficha, con el nombre
+     con el que está en Google y la dirección, para que no haya duda.       */
   function mapaURL() {
     var d = S.studio.direccion;
-    return "https://www.google.com/maps/search/?api=1&query=" +
-      encodeURIComponent([S.studio.nombreCompleto, d.calle, lineaCiudad(d)].join(", "));
+    var nombre = (S.studio.google && S.studio.google.nombre) || S.studio.nombreCompleto;
+    return "https://www.google.com/maps/dir/?api=1&destination=" +
+      encodeURIComponent([nombre, d.calle, lineaCiudad(d)].join(", "));
   }
 
   function montarPie() {
@@ -312,6 +315,7 @@
         addressCountry: d.pais
       },
       geo: d.lat ? { "@type": "GeoCoordinates", latitude: d.lat, longitude: d.lng } : undefined,
+      hasMap: S.studio.google ? S.studio.google.ficha : undefined,
       sameAs: S.studio.instagram ? ["https://www.instagram.com/" + S.studio.instagram + "/"] : []
     };
   }

@@ -226,68 +226,159 @@
     if (seccion) seccion.hidden = !elegidas.length;
   })();
 
-  /* El índice de los cuatro servicios: filas de un cartel, cada una lleva a
-     su página. La de tatuajes lleva además sus estilos, para entrar directo
-     al que buscas. La miniatura es la primera foto que haya del servicio (o
-     el póster de su vídeo); sin ninguna, la fila va sin miniatura.          */
-  function miniatura(s) {
-    var foto = s.pagina === "tatuajes" ? conFoto(S.obras)[0] : conFoto(s.fotos)[0];
-    if (foto) {
-      return N.imgHTML({ base: foto.img, tipo: "obra", alt: "", ratio: foto.ratio, foco: foto.foco,
-                         sizes: "(min-width: 60rem) 12rem, 6rem" });
-    }
-    var reel = s.pagina === "tatuajes" ? S.obras.filter(function (o) { return o.video && publicada(o); })[0] : null;
-    var clave = s.video || (reel && reel.video);
+  /* Los cuatro oficios, como carteles: la tarjeta de tatuajes, grande, con un
+     reel; la del láser, con el suyo; las que aún no tienen foto, en negro,
+     con la palabra. Toda la tarjeta lleva a su página (el enlace se estira
+     con ::after); los estilos de la de tatuajes van cada uno a su sección.
+     El reel está quieto (su primer fotograma) y se mueve al pasar por
+     encima con el ratón: en el móvil no gasta datos ni se mueve solo.       */
+  function mediaOficio(s) {
+    var clave = s.portada || s.video;
     var v = clave && S.videos[clave];
-    if (!v || !v.publicar) return "";
-    return '<img src="assets/vid/' + esc(v.base) + '-poster.webp" alt="" width="600" height="' +
-      Math.round(600 / v.ratio) + '" loading="lazy" decoding="async">';
+    if (v && v.publicar) return { video: v };
+    var foto = s.pagina === "tatuajes" ? conFoto(S.obras)[0] : conFoto(s.fotos)[0];
+    return foto ? { foto: foto } : null;
+  }
+
+  function mediaHTML(m) {
+    if (m.video) {
+      var base = "assets/vid/" + m.video.base;
+      return '<div class="oficio__media" aria-hidden="true">' +
+        '<img src="' + base + '-poster.webp" alt="" width="600" height="' + Math.round(600 / m.video.ratio) +
+          '" loading="lazy" decoding="async">' +
+        '<video muted loop playsinline preload="none" tabindex="-1">' +
+          '<source data-src="' + base + '.webm" type="video/webm">' +
+          '<source data-src="' + base + '.mp4" type="video/mp4">' +
+        "</video></div>";
+    }
+    return '<div class="oficio__media" aria-hidden="true">' +
+      N.imgHTML({ base: m.foto.img, tipo: "obra", alt: "", ratio: m.foto.ratio, foco: m.foto.foco,
+                  sizes: "(min-width: 60rem) 55vw, 92vw" }) + "</div>";
   }
 
   set("[data-inicio-servicios]",
-    '<ul class="indice" role="list">' + S.servicios.map(function (s) {
-      var mini = miniatura(s);
-      var estilos = s.pagina === "tatuajes"
-        ? '<ul class="indice__estilos" role="list">' + ESTILOS.map(function (e) {
+    '<ul class="oficios" role="list">' + S.servicios.map(function (s) {
+      var m = mediaOficio(s);
+      var tatuajes = s.pagina === "tatuajes";
+      var trabajos = S.obras.filter(publicada).length;
+      var dato = tatuajes && trabajos
+        ? N.rellenar(I.servicios.cuentaTatuajes, { estilos: ESTILOS.length, trabajos: trabajos })
+        : "";
+      var estilos = tatuajes
+        ? '<ul class="oficio__estilos" role="list">' + ESTILOS.map(function (e) {
             return '<li><a class="chip" href="' + esc(N.hrefPagina(s.pagina)) + "#" + esc(e.id) + '">' +
               esc(e.nombre) + "</a></li>";
           }).join("") + "</ul>"
         : "";
-      return '<li class="indice__fila' + (mini ? "" : " indice__fila--sin-media") + '">' +
-        '<div class="indice__texto">' +
-          '<p class="etiqueta"><span class="corchetes">' + esc(s.etiqueta) + "</span></p>" +
-          '<h3 class="indice__nombre" style="--letras:' + palabraMasLarga(s.titular) + '">' +
-            '<a class="indice__enlace" href="' + esc(N.hrefPagina(s.pagina)) + '">' + esc(s.titular) +
-              '<i class="flecha" aria-hidden="true"></i></a></h3>' +
-          '<p class="indice__resumen">' + esc(s.resumen) + "</p>" +
+      return '<li class="oficio oficio--' + esc(s.id) + (m ? " oficio--con-media" : " oficio--sin-media") + '">' +
+        (m ? mediaHTML(m) : "") +
+        '<div class="oficio__cuerpo">' +
+          '<p class="oficio__dato etiqueta"><span class="corchetes">' + esc(s.etiqueta) + "</span>" +
+            (dato ? '<span class="oficio__cuenta">' + esc(dato) + "</span>" : "") + "</p>" +
+          '<h3 class="oficio__nombre" style="--letras:' + palabraMasLarga(s.titular) + '">' +
+            '<a class="oficio__enlace" href="' + esc(N.hrefPagina(s.pagina)) + '"><span>' + esc(s.titular) + "</span></a></h3>" +
+          '<p class="oficio__resumen"><span>' + esc(s.resumen) + "</span></p>" +
           estilos +
         "</div>" +
-        (mini ? '<div class="indice__media" aria-hidden="true">' + mini + "</div>" : "") +
+        '<span class="oficio__ir" aria-hidden="true"><i class="flecha"></i></span>' +
       "</li>";
     }).join("") + "</ul>");
 
+  (function reelsDeLosOficios() {
+    var fino = window.matchMedia("(hover: hover) and (pointer: fine)");
+    $$(".oficio").forEach(function (o) {
+      var v = $("video", o);
+      if (!v) return;
+      function mover() {
+        if (!fino.matches || N.quieto()) return;
+        if (!v.getAttribute("data-cargado")) {
+          $$("source[data-src]", v).forEach(function (x) { x.src = x.getAttribute("data-src"); });
+          v.load();
+          v.setAttribute("data-cargado", "1");
+        }
+        v.play().then(function () { o.setAttribute("data-sonando", ""); }).catch(function () {});
+      }
+      function parar() { v.pause(); o.removeAttribute("data-sonando"); }
+      o.addEventListener("pointerenter", mover);
+      o.addEventListener("pointerleave", parar);
+      o.addEventListener("focusin", mover);
+      o.addEventListener("focusout", parar);
+    });
+  })();
+
   set("[data-faq-general]", faqHTML(S.preguntas));
 
-  var d = S.studio.direccion, C = I.contacto;
+  /* Dónde estamos: el mapa a la izquierda y, a la derecha, en orden de
+     lectura, lo que hay que saber, la nota de Google, los datos y los dos
+     botones. El mapa es una imagen en la paleta de la web (tools/make-mapa.py):
+     sale al momento y no avisa a nadie. «Mover el mapa» carga el de Google
+     aquí mismo; sin JavaScript, abre su ficha.                             */
+  var d = S.studio.direccion, C = I.contacto, G = S.studio.google;
+  var GOOGLE = '<span class="visually-hidden"> (se abre en Google Maps)</span>';
   set("[data-inicio-contacto]",
-    '<dl class="contacto__lista">' +
-      '<div><dt class="etiqueta etiqueta--suave">Dirección</dt>' +
-        "<dd>" + esc(d.calle) + "<br>" + esc(N.lineaCiudad(d)) +
-          (d.indicaciones ? '<br><span class="t2">' + esc(d.indicaciones) + "</span>" : "") +
-          '<br><a href="' + esc(N.mapaURL()) + '" rel="noopener">' + esc(C.comoLlegar) + "</a></dd></div>" +
-      '<div><dt class="etiqueta etiqueta--suave">Cita</dt>' +
-        "<dd>" + esc(S.studio.cita) + "</dd></div>" +
-      '<div><dt class="etiqueta etiqueta--suave">WhatsApp</dt>' +
-        '<dd><a class="num" href="' + esc(N.wasapURL(S.studio.botonWhatsapp.mensaje)) +
-          '" target="_blank" rel="noopener">' + esc(S.studio.whatsappVisible) + NUEVA + "</a></dd></div>" +
-      (S.studio.instagram
-        ? '<div><dt class="etiqueta etiqueta--suave">' + esc(C.instagram) + "</dt>" +
-            '<dd><a href="https://www.instagram.com/' + esc(S.studio.instagram) + '/" rel="noopener">@' +
-              esc(S.studio.instagram) + "</a></dd></div>"
+    '<div class="mapa" data-mapa>' +
+      '<img class="mapa__img" src="assets/img/mapa-900.webp" srcset="assets/img/mapa-900.webp 900w, ' +
+        'assets/img/mapa-1400.webp 1400w" sizes="(min-width: 60rem) 55vw, 100vw" width="1400" height="1000" ' +
+        'alt="' + esc(C.mapa.alt) + '" loading="lazy" decoding="async">' +
+      '<span class="mapa__marca" aria-hidden="true"><span class="mapa__rotulo etiqueta">' +
+        esc(S.studio.nombre) + "</span></span>" +
+      (G
+        ? '<a class="btn mapa__abrir" href="' + esc(G.ficha) + '" target="_blank" rel="noopener" data-mapa-abrir>' +
+            esc(C.mapa.abrir) +
+            '<span class="visually-hidden">. ' + esc(C.mapa.nota) + "</span></a>"
         : "") +
-    "</dl>" +
-    '<p class="contacto__accion" data-cta>' +
-      botonWasap(I.cita, S.studio.botonWhatsapp.mensaje, "btn--macizo btn--grande") + "</p>");
+      '<p class="mapa__credito">© <a href="https://www.openstreetmap.org/copyright" rel="noopener">OpenStreetMap</a></p>' +
+    "</div>" +
+    '<div class="contacto__info">' +
+      '<p class="lead contacto__texto">' + esc(C.texto) + "</p>" +
+      (G
+        ? '<a class="nota" href="' + esc(G.ficha) + '" target="_blank" rel="noopener">' +
+            '<span class="nota__cifra num">' + esc(G.nota) + "</span>" +
+            '<span class="nota__texto">' +
+              '<span class="etiqueta">' + esc(N.rellenar(C.resenas, { n: G.resenas })) + "</span>" +
+              '<span class="nota__leer">' + esc(C.leerResenas) + '<i class="flecha" aria-hidden="true"></i></span>' +
+            "</span>" + GOOGLE + "</a>"
+        : "") +
+      '<dl class="contacto__lista">' +
+        '<div><dt class="etiqueta etiqueta--suave">Dirección</dt>' +
+          "<dd>" + esc(d.calle) + "<br>" + esc(N.lineaCiudad(d)) +
+            (d.indicaciones ? '<br><span class="t2">' + esc(d.indicaciones) + "</span>" : "") + "</dd></div>" +
+        '<div><dt class="etiqueta etiqueta--suave">Cita</dt>' +
+          "<dd>" + esc(S.studio.cita) + "</dd></div>" +
+        '<div><dt class="etiqueta etiqueta--suave">WhatsApp</dt>' +
+          '<dd><a class="num" href="' + esc(N.wasapURL(S.studio.botonWhatsapp.mensaje)) +
+            '" target="_blank" rel="noopener">' + esc(S.studio.whatsappVisible) + NUEVA + "</a></dd></div>" +
+        (S.studio.instagram
+          ? '<div><dt class="etiqueta etiqueta--suave">' + esc(C.instagram) + "</dt>" +
+              '<dd><a href="https://www.instagram.com/' + esc(S.studio.instagram) + '/" rel="noopener">@' +
+                esc(S.studio.instagram) + "</a></dd></div>"
+          : "") +
+      "</dl>" +
+      '<p class="contacto__acciones" data-cta>' +
+        botonWasap(I.cita, S.studio.botonWhatsapp.mensaje, "btn--macizo btn--grande") +
+        '<a class="btn btn--grande" href="' + esc(N.mapaURL()) + '" target="_blank" rel="noopener">' +
+          esc(C.comoLlegar) + '<i class="flecha" aria-hidden="true"></i>' + GOOGLE + "</a>" +
+      "</p>" +
+    "</div>");
+
+  (function mapaInteractivo() {
+    var mapa = $("[data-mapa]");
+    var boton = mapa && $("[data-mapa-abrir]", mapa);
+    if (!boton || !G || !G.mapa) return;
+    boton.addEventListener("click", function (e) {
+      e.preventDefault();
+      var f = document.createElement("iframe");
+      f.className = "mapa__iframe";
+      f.src = G.mapa;
+      f.title = C.mapa.titulo;
+      f.referrerPolicy = "no-referrer-when-downgrade";
+      f.setAttribute("allowfullscreen", "");
+      mapa.appendChild(f);
+      mapa.setAttribute("data-interactivo", "");
+      boton.remove();
+      f.focus();
+    });
+  })();
 
   /* ============================================================================
      PÁGINA DE UN SERVICIO (y la de tatuajes, que es un servicio más)
