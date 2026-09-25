@@ -777,7 +777,7 @@
   gap: var(--s5);
   padding-block: var(--s7);
   border-bottom: var(--hair) solid var(--filete);
-  scroll-margin-top: calc(var(--alto-nav) + var(--alto-estilos));
+  scroll-margin-top: var(--alto-estilos);   /* la barra fija ya la reserva <html> */
 }
 .estilo__cab { display: grid; gap: var(--s3); align-content: start; }
 .estilo__nombre { overflow-wrap: anywhere; }
@@ -798,5 +798,208 @@
   }
 }
 
-/* Las anclas de la página (los botones de «ver») se paran bajo las barras. */
-#trabajos, #preguntas, #estilos { scroll-margin-top: var(--alto-nav); }
+
+/* El camino a la guía, bajo las tarjetas de los oficios. */
+.oficios__cuidados {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  column-gap: var(--s2);
+  margin-top: var(--s5);
+  font-size: var(--fs-sm);
+}
+
+/* El nombre del artista dentro de «Tatuaje de Haroz», con caja para el dedo. */
+.opinion__artista { display: inline-block; padding-block: 6px; margin-block: -6px; color: inherit; }
+
+/* La guía, al final de las preguntas de cada servicio. */
+.guia-enlace { margin-top: var(--s7); }
+
+/* ============================================================================
+   INSTAGRAM · al final de todas las páginas
+   ============================================================================ */
+/* La cuenta del estudio es el titular, al tamaño de cartel que quepa en su
+   columna: es lo que hay que recordar. Debajo, el botón y el equipo, una
+   fila por artista. A la derecha (debajo en el móvil), seis trabajos en
+   cuadrícula, pegados como en el perfil.                                   */
+
+.insta { display: grid; gap: var(--s7); }
+.insta[hidden] { display: none; }
+
+.insta__texto { display: grid; gap: var(--s4); align-content: start; min-width: 0; container-type: inline-size; }
+.insta__texto > * { justify-self: start; }
+
+.insta__cuenta {
+  margin: 0;
+  /* «@locoblowtattoo» son 15 letras: el tamaño sale del ancho de la columna. */
+  font-size: min(var(--fs-d1), calc(100cqi / 8.4));
+  font-weight: var(--w-display);
+  font-feature-settings: "ss01" 1;
+  line-height: 0.95;
+  letter-spacing: var(--tr-d1);
+}
+.insta__cuenta a {
+  color: inherit;
+  text-decoration-line: underline;
+  text-decoration-thickness: 0.06em;
+  text-underline-offset: 0.1em;
+  text-decoration-color: transparent;
+}
+@media (hover: hover) and (pointer: fine) {
+  .insta__cuenta a:hover { text-decoration-color: currentColor; }
+}
+.insta__entradilla { color: var(--tinta-2); max-width: 36ch; }
+.insta__accion { margin-top: var(--s2); }
+
+.insta__equipo { justify-self: stretch; margin-top: var(--s5); }
+.insta__equipo .etiqueta { margin-bottom: var(--s3); }
+.insta__artistas { border-top: var(--hair) solid var(--filete-fn); }
+.insta__artista {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: var(--s4);
+  min-height: calc(var(--touch) + var(--s2));
+  border-bottom: var(--hair) solid var(--filete);
+  color: var(--tinta);
+  text-decoration: none;
+}
+.insta__nombre { font-size: var(--fs-d4); font-weight: var(--w-titulo); letter-spacing: var(--tr-d4); }
+.insta__usuario { font-size: var(--fs-xs); color: var(--tinta-3); overflow-wrap: anywhere; text-align: right; }
+@media (hover: hover) and (pointer: fine) {
+  .insta__artista:hover .insta__nombre { text-decoration: underline 1px; text-underline-offset: 0.15em; }
+  .insta__artista:hover .flecha { translate: 0.15em 0; }
+}
+
+.insta__rejilla {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 3px;
+  align-self: start;
+}
+.insta__foto { aspect-ratio: 4 / 5; overflow: hidden; background: var(--suelo-hondo); }
+.insta__foto img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 700ms var(--ease-out);
+}
+@media (hover: hover) and (pointer: fine) {
+  .insta__rejilla:hover .insta__foto img { transform: scale(1.04); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .insta__foto img { transition: none; }
+}
+
+@media (min-width: 60rem) {
+  .insta {
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    column-gap: var(--s8);
+    align-items: start;
+  }
+}
+
+/* ============================================================================
+   CUIDADOS · la guía de curación
+   ============================================================================ */
+/* Una guía por servicio, con la misma composición que los estilos: el
+   nombre y los botones a la izquierda, quietos, y lo que hay que hacer a la
+   derecha, por momentos, como los pasos. Debajo, lo que es normal (con
+   filete) y cuándo escribir o ir al médico (en negro: es lo que no se
+   puede pasar por alto).                                                   */
+
+.guias__nota { max-width: 44ch; }
+
+.guia {
+  display: grid;
+  gap: var(--s6);
+  padding-block: var(--s7);
+  border-bottom: var(--hair) solid var(--filete);
+  scroll-margin-top: var(--alto-estilos);   /* la barra fija ya la reserva <html> */
+}
+.guia__cab { display: grid; gap: var(--s3); align-content: start; min-width: 0; container-type: inline-size; }
+.guia__cab > * { justify-self: start; }
+.guia__nombre {
+  margin: 0;
+  /* «Micropigmentación» no cabe a tamaño d2 en su columna: tope por la
+     palabra más larga, como los titulares de cada servicio.               */
+  font-size: min(var(--fs-d2), calc(100cqi / (var(--letras, 9) * 0.58)));
+}
+.guia__datos { justify-self: stretch; margin-top: var(--s2); }
+.guia__acciones { display: flex; flex-wrap: wrap; gap: var(--s2); margin-top: var(--s2); }
+
+.guia__sub { margin-bottom: var(--s4); }
+
+.fases { border-top: var(--hair) solid var(--filete-fn); }
+.fase {
+  display: grid;
+  grid-template-columns: 2.75rem minmax(0, 1fr);
+  grid-template-areas: "num cuando" "num que";
+  gap: var(--s3) var(--s4);
+  padding-block: var(--s5);
+  border-bottom: var(--hair) solid var(--filete);
+}
+.fase__num {
+  grid-area: num;
+  font-size: var(--fs-d3);
+  font-weight: var(--w-fino);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+  color: var(--tinta-3);
+}
+.fase__cuando { grid-area: cuando; margin: 0; }
+.fase__que { grid-area: que; }
+
+/* Listas con un guion de filete, no con un punto de tipografía. */
+.fase__que, .guia__lista { display: grid; gap: var(--s2); }
+.fase__que li, .guia__lista li { position: relative; max-width: 60ch; padding-left: 1.4em; }
+.fase__que li::before, .guia__lista li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.8em;
+  width: 0.75em;
+  border-top: var(--hair) solid currentColor;
+}
+
+.guia__dos { display: grid; gap: var(--s3); margin-top: var(--s6); }
+.guia__normal, .guia__avisar { padding: var(--s5); }
+.guia__normal { border: var(--hair) solid var(--filete-fn); }
+.guia__normal .etiqueta, .guia__avisar .etiqueta { margin-bottom: var(--s4); }
+.guia__avisar li { color: var(--claro); }
+
+@media (min-width: 48rem) {
+  .guia__dos { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (min-width: 60rem) {
+  .guia {
+    grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
+    column-gap: var(--s8);
+    padding-block: var(--s9);
+  }
+  .guia__cab {
+    position: sticky;
+    top: calc(var(--alto-nav) + var(--alto-estilos) + var(--s6));
+    align-self: start;
+  }
+  .fase {
+    grid-template-columns: 6rem minmax(0, 3fr) minmax(0, 7fr);
+    grid-template-areas: "num cuando que";
+    align-items: baseline;
+    column-gap: var(--s5);
+  }
+  .fase__num { font-size: var(--fs-d2); }
+}
+
+/* Impresa, la guía es una hoja: sin barras, botones ni bandas negras que
+   gasten tinta. Cada guía empieza en su página.                            */
+@media print {
+  .nav, .skip, .wasap, .edad, .estilos-nav, footer, .insta,
+  .scab__acciones, .guia__acciones { display: none !important; }
+  .guia { break-before: page; padding-block: 0 1.5rem; }
+  .guia__cab { position: static; }
+  .guia__avisar { background: none; color: var(--tinta); border: 2px solid var(--tinta); }
+  .guia__avisar li, .guia__avisar .etiqueta { color: var(--tinta); }
+}

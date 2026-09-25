@@ -1,12 +1,13 @@
 /* =============================================================================
    LOCO BLOW · NÚCLEO
-   Lo que comparten las cinco páginas: imágenes responsive y huecos de foto,
+   Lo que comparten las seis páginas: imágenes responsive y huecos de foto,
    barra, pie, cabecera y datos estructurados de cada página, verificación de
    edad, botón de WhatsApp, vídeos y revelado.
    Se carga con `defer`, así que el DOM ya existe cuando corre.
 
-   Cada página dice cuál es en <body data-pagina="…">: «inicio» o el
-   `pagina` de su servicio en content.js («tatuajes», «laser»…).
+   Cada página dice cuál es en <body data-pagina="…">: «inicio»,
+   «cuidados» o el `pagina` de su servicio en content.js («tatuajes»,
+   «laser»…).
    ========================================================================== */
 
 (function () {
@@ -18,6 +19,8 @@
   var PAGINA = document.body.getAttribute("data-pagina") || "inicio";
   /* El servicio de esta página, o null en el inicio. */
   var SERVICIO = S.servicios.filter(function (s) { return s.pagina === PAGINA; })[0] || null;
+  /* La guía de cuidados: una página que no es de ningún servicio. */
+  var CUIDADOS = S.cuidados && S.cuidados.pagina === PAGINA ? S.cuidados : null;
   /* El dominio sale de content.js, no de location.origin: si saliera de ahí,
      tools/sync-contenido.py congelaría en el código fuente la dirección del
      servidor local con el que se volcó la página.                          */
@@ -109,6 +112,8 @@
 
   /* Enlace de WhatsApp con el mensaje ya escrito. Cuanto más concreto el
      mensaje, menos «hola» sueltos que contestar.                             */
+  function instaURL(usuario) { return "https://www.instagram.com/" + usuario + "/"; }
+
   function wasapURL(mensaje) {
     return "https://wa.me/" + S.studio.whatsapp +
       (mensaje ? "?text=" + encodeURIComponent(mensaje) : "");
@@ -133,6 +138,16 @@
         '-1.1-2L9 8.2Z" fill="currentColor"/>' +
     "</svg>";
 
+  /* La cámara de Instagram, dibujada como el bocadillo: esquinas rectas y
+     el mismo trazo. El logotipo de Instagram es redondo y de color; aquí
+     basta con que se reconozca.                                             */
+  var CAMARA =
+    '<svg class="marca-insta" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">' +
+      '<rect x="3.5" y="3.5" width="17" height="17" stroke="currentColor" stroke-width="1.6"/>' +
+      '<circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.6"/>' +
+      '<rect x="15.9" y="6" width="2.1" height="2.1" fill="currentColor"/>' +
+    "</svg>";
+
   /* --- barra ---------------------------------------------------------------- */
   /* Un enlace por servicio, en el orden de content.js. La página en la que
      estás va entre corchetes (aria-current="page"): es el tic del estudio y
@@ -150,9 +165,10 @@
     /* «Inicio» solo en el cajón del móvil: en escritorio lo es el logotipo,
        y en el cajón no todo el mundo sabe que el logotipo lleva al inicio. */
     var enlaces = enlace("inicio", "Inicio", "nav__solo-cajon") +
-      S.servicios.map(function (s) { return enlace(s.pagina, s.menu); }).join("");
+      S.servicios.map(function (s) { return enlace(s.pagina, s.menu); }).join("") +
+      (S.cuidados ? enlace(S.cuidados.pagina, S.cuidados.menu) : "");
 
-    var wasap = SERVICIO ? SERVICIO.mensaje : S.studio.botonWhatsapp.mensaje;
+    var wasap = mensajePagina();
 
     host.innerHTML =
       '<a class="nav__marca" href="./">' + marcaHTML("", S.studio.nombreCompleto + ", inicio") + "</a>" +
@@ -223,6 +239,12 @@
     }).observe(centinela);
   }
 
+  /* El mensaje con el que se abre WhatsApp en esta página: el de su
+     servicio, el de la guía de cuidados o el general.                      */
+  function mensajePagina() {
+    return SERVICIO ? SERVICIO.mensaje : CUIDADOS ? CUIDADOS.mensaje : S.studio.botonWhatsapp.mensaje;
+  }
+
   /* --- pie ------------------------------------------------------------------ */
 
   /* «15001 A Coruña», o solo «A Coruña» mientras no haya código postal. */
@@ -248,7 +270,9 @@
     }).join("");
     var paginas = S.servicios.map(function (s) {
       return '<a href="' + esc(hrefPagina(s.pagina)) + '">' + esc(s.nombre) + "</a>";
-    }).join("<br>");
+    }).join("<br>") +
+      (S.cuidados ? '<br><a href="' + esc(hrefPagina(S.cuidados.pagina)) + '">' +
+        esc(S.cuidados.enlace) + "</a>" : "");
 
     host.innerHTML =
       '<div class="pie__marca">' + marcaHTML("", S.studio.nombreCompleto) + "</div>" +
@@ -275,7 +299,7 @@
           '<p class="etiqueta etiqueta--suave">Redes</p>' +
           '<p class="pie__dir sm">' +
             (S.studio.instagram
-              ? '<a href="https://www.instagram.com/' + esc(S.studio.instagram) + '/" rel="noopener">' +
+              ? '<a href="' + esc(instaURL(S.studio.instagram)) + '" rel="noopener">' +
                 "Instagram @" + esc(S.studio.instagram) + "</a>"
               : "") +
           "</p>" +
@@ -316,7 +340,7 @@
       },
       geo: d.lat ? { "@type": "GeoCoordinates", latitude: d.lat, longitude: d.lng } : undefined,
       hasMap: S.studio.google ? S.studio.google.ficha : undefined,
-      sameAs: S.studio.instagram ? ["https://www.instagram.com/" + S.studio.instagram + "/"] : []
+      sameAs: S.studio.instagram ? [instaURL(S.studio.instagram)] : []
     };
   }
 
@@ -331,6 +355,16 @@
         url: urlPagina(SERVICIO.pagina),
         areaServed: S.studio.direccion.ciudad,
         provider: datosEstudio()
+      };
+    } else if (CUIDADOS) {
+      datos = {
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        name: CUIDADOS.meta.titulo,
+        description: CUIDADOS.meta.descripcion,
+        url: urlPagina(CUIDADOS.pagina),
+        inLanguage: "es-ES",
+        publisher: datosEstudio()
       };
     } else {
       datos = datosEstudio();
@@ -458,7 +492,7 @@
 
     /* En la página de un servicio, el chat se abre con el mensaje de ese
        servicio: al estudio le llega ya dicho de qué se trata.               */
-    var mensaje = SERVICIO ? SERVICIO.mensaje : cfg.mensaje;
+    var mensaje = mensajePagina();
     var a = $("[data-wasap]");
     if (a) a.href = wasapURL(mensaje);
     if (!a) {
@@ -652,7 +686,7 @@
      Google y la vista previa de WhatsApp.                                    */
 
   function montarCabecera() {
-    var t = SERVICIO ? SERVICIO.meta : S.textos.meta;
+    var t = SERVICIO ? SERVICIO.meta : CUIDADOS ? CUIDADOS.meta : S.textos.meta;
     var url = urlPagina(PAGINA);
     document.title = t.titulo;
     function meta(atributo, nombre, valor) {
@@ -685,10 +719,11 @@
   window.LB = {
     $: $, $$: $$, esc: esc, quieto: quieto, mqQuieto: mqQuieto,
     imgHTML: imgHTML, huecoHTML: huecoHTML, fotoHTML: fotoHTML,
-    PAGINA: PAGINA, SERVICIO: SERVICIO,
+    PAGINA: PAGINA, SERVICIO: SERVICIO, CUIDADOS: CUIDADOS,
     artistaPor: artistaPor, estiloPor: estiloPor, rellenar: rellenar,
     hrefPagina: hrefPagina, urlPagina: urlPagina,
-    wasapURL: wasapURL, marcaHTML: marcaHTML, mapaURL: mapaURL, BOCADILLO: BOCADILLO,
+    wasapURL: wasapURL, instaURL: instaURL, marcaHTML: marcaHTML, mapaURL: mapaURL,
+    BOCADILLO: BOCADILLO, CAMARA: CAMARA,
     videoHTML: videoHTML, lineaCiudad: lineaCiudad,
     /* Los módulos los llaman después de inyectar piezas nuevas. */
     revelar: montarRevelado,

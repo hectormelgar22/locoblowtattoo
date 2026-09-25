@@ -64,14 +64,19 @@
      ven enteras. Bajo cada una, quién la hizo: la web no se ordena por
      artistas, pero cada foto dice de quién es.                              */
 
+  /* El nombre de un artista: enlace a su Instagram si lo tiene. El lector
+     de pantalla oye adónde lleva; el nombre visible va primero, para quien
+     navega por voz.                                                        */
+  function artistaHTML(a, clase) {
+    return a.instagram
+      ? '<a class="' + clase + '" href="' + esc(N.instaURL(a.instagram)) + '" rel="noopener">' + esc(a.nombre) +
+          '<span class="visually-hidden"> (Instagram)</span></a>'
+      : '<span class="' + clase + '">' + esc(a.nombre) + "</span>";
+  }
+
   function pieFoto(p) {
     var a = p.artista ? N.artistaPor(p.artista) : null;
-    var quien = a
-      ? (a.instagram
-          ? '<a class="etiqueta rejilla__artista" href="https://www.instagram.com/' + esc(a.instagram) +
-              '/" rel="noopener">' + esc(a.nombre) + "</a>"
-          : '<span class="etiqueta rejilla__artista">' + esc(a.nombre) + "</span>")
-      : "";
+    var quien = a ? artistaHTML(a, "etiqueta rejilla__artista") : "";
     if (!quien && !p.titulo) return "";
     return '<p class="rejilla__pie">' + quien +
       (p.titulo ? '<span class="rejilla__titulo">' + esc(p.titulo) + "</span>" : "") + "</p>";
@@ -216,7 +221,7 @@
                             sizes: "(min-width: 60rem) 22vw, 62vw" }) +
               "</span></button>" +
             '<p class="rejilla__pie">' +
-              (a ? '<span class="etiqueta rejilla__artista">' + esc(a.nombre) + "</span>" : "") +
+              (a ? artistaHTML(a, "etiqueta rejilla__artista") : "") +
               (e ? '<span class="rejilla__titulo">' + esc(e.nombre) + "</span>" : "") +
             "</p></li>";
         }).join("") + "</ul>" +
@@ -282,7 +287,12 @@
         "</div>" +
         '<span class="oficio__ir" aria-hidden="true"><i class="flecha"></i></span>' +
       "</li>";
-    }).join("") + "</ul>");
+    }).join("") + "</ul>" +
+    (S.cuidados
+      ? '<p class="oficios__cuidados"><span class="t2">' + esc(I.servicios.cuidados) + "</span> " +
+          '<a class="enlace-flecha" href="' + esc(N.hrefPagina(S.cuidados.pagina)) + '">' + esc(S.cuidados.enlace) +
+          '<i class="flecha" aria-hidden="true"></i></a></p>'
+      : ""));
 
   /* Los reels de los oficios. Con ratón suenan al pasar por encima; en el
      móvil, donde no hay «encima», suenan solos mientras la tarjeta está a la
@@ -355,7 +365,8 @@
           '<blockquote class="opinion__cita" cite="' + esc(o.enlace) + '" aria-describedby="op-' + i + '">' +
             "<p>«" + esc(o.texto) + "»</p></blockquote>" +
           '<p class="opinion__meta etiqueta etiqueta--suave">' +
-            (a ? esc(N.rellenar(O.tatuadoPor, { artista: a.nombre })) + " · " : "") + esc(o.fecha) + "</p>" +
+            (a ? O.tatuadoPor.split("{artista}").map(esc).join(artistaHTML(a, "opinion__artista")) + " · " : "") +
+            esc(o.fecha) + "</p>" +
           '<a class="opinion__enlace" href="' + esc(o.enlace) + '" target="_blank" rel="noopener">' +
             esc(O.leer) + '<i class="flecha" aria-hidden="true"></i>' +
             '<span class="visually-hidden"> (se abre en Google Maps)</span></a>' +
@@ -585,8 +596,17 @@
     set("[data-servicio-preguntas]", SV.preguntas && SV.preguntas.length
       ? '<header class="cab"><p class="etiqueta corchetes">' + esc(T.servicio.preguntas.etiqueta) + "</p>" +
           '<h2 class="d2" id="t-preguntas">' + esc(T.servicio.preguntas.titular) + "</h2></header>" +
-        faqHTML(SV.preguntas)
+        faqHTML(SV.preguntas) + guiaEnlace(SV)
       : "");
+  }
+
+  /* El enlace de un servicio a su guía de cuidados, si la tiene. */
+  function guiaEnlace(sv) {
+    var CU = S.cuidados;
+    var g = CU && CU.guias.filter(function (x) { return x.servicio === sv.id; })[0];
+    if (!g) return "";
+    return '<p class="guia-enlace">' +
+      flecha(CU.textos.enServicio, N.hrefPagina(CU.pagina) + "#" + g.servicio, "btn--grande") + "</p>";
   }
 
   /* ============================================================================
@@ -623,12 +643,13 @@
     "</section>";
   }).join(""));
 
-  /* La barra de estilos marca con corchetes el que estás viendo: el último
-     cuya cabeza ha pasado ya la mitad de la pantalla. Por encima del
-     primero, ninguno. Se mide al hacer scroll, una vez por fotograma.     */
-  (function espia() {
+  /* La barra de estilos (y la de las guías de cuidados) marca con
+     corchetes el que estás viendo: el último cuya cabeza ha pasado ya la
+     mitad de la pantalla. Por encima del primero, ninguno. Se mide al
+     hacer scroll, una vez por fotograma.                                   */
+  function espia() {
     var links = $$(".estilos-nav__link");
-    var secciones = $$(".estilo");
+    var secciones = $$(".estilo, .guia");
     var barra = $(".estilos-nav__lista");
     if (!links.length || !secciones.length) return;
     var actual = null, pendiente = false;
@@ -654,7 +675,134 @@
       if (!pendiente) { pendiente = true; requestAnimationFrame(medir); }
     }, { passive: true });
     medir();
+  }
+
+  /* ============================================================================
+     INSTAGRAM · al final de todas las páginas
+     El perfil del estudio en grande, que es lo que hay que recordar, y el
+     de cada artista debajo. La cuadrícula de trabajos es un guiño a la del
+     perfil: lleva al mismo sitio que el titular, así que para el teclado y
+     el lector de pantalla no existe (no repite el enlace).
+     ============================================================================ */
+
+  (function instagram() {
+    var host = $("[data-instagram]");
+    if (!host) return;
+    var IG = T.instagram, cuenta = S.studio.instagram;
+    host.hidden = !cuenta;
+    if (!cuenta) return;
+    var url = N.instaURL(cuenta);
+    var fotos = (IG.fotos || []).map(function (id) {
+      return S.obras.filter(function (o) { return o.id === id && o.img; })[0];
+    }).filter(Boolean);
+    var equipo = S.artistas.filter(function (a) { return a.instagram; });
+    host.innerHTML =
+      '<div class="insta__texto">' +
+        '<p class="etiqueta corchetes">' + esc(IG.etiqueta) + "</p>" +
+        '<h2 class="insta__cuenta" id="t-insta">' +
+          '<a href="' + esc(url) + '" rel="noopener">@' + esc(cuenta) +
+            '<span class="visually-hidden"> (Instagram del estudio)</span></a></h2>' +
+        '<p class="lead insta__entradilla">' + esc(IG.texto) + "</p>" +
+        '<p class="insta__accion"><a class="btn btn--grande" href="' + esc(url) + '" rel="noopener">' +
+          N.CAMARA + "<span>" + esc(IG.boton) + "</span></a></p>" +
+        (equipo.length
+          ? '<div class="insta__equipo">' +
+              '<h3 class="etiqueta etiqueta--suave">' + esc(IG.equipo) + "</h3>" +
+              '<ul class="insta__artistas" role="list">' + equipo.map(function (a) {
+                return '<li><a class="insta__artista" href="' + esc(N.instaURL(a.instagram)) + '" rel="noopener">' +
+                  '<span class="insta__nombre">' + esc(a.nombre) + "</span>" +
+                  '<span class="insta__usuario">@' + esc(a.instagram) + "</span>" +
+                  '<i class="flecha" aria-hidden="true"></i></a></li>';
+              }).join("") + "</ul>" +
+            "</div>"
+          : "") +
+      "</div>" +
+      (fotos.length
+        ? '<a class="insta__rejilla" href="' + esc(url) + '" rel="noopener" tabindex="-1" aria-hidden="true">' +
+            fotos.map(function (f) {
+              return '<span class="insta__foto">' +
+                N.imgHTML({ base: f.img, tipo: "obra", alt: "", ratio: f.ratio, foco: f.foco,
+                            sizes: "(min-width: 60rem) 14vw, 31vw" }) + "</span>";
+            }).join("") + "</a>"
+        : "");
   })();
+
+  /* ============================================================================
+     CUIDADOS · la guía de curación
+     Una guía por servicio, con su barra para saltar de una a otra (la misma
+     que la de los estilos) y su dirección: cuidados#piercing se manda por
+     WhatsApp después de la cita y abre justo la que toca.
+     ============================================================================ */
+
+  var CU = N.CUIDADOS;
+  if (CU) {
+    var CT = CU.textos;
+    var servicioDe = function (g) { return S.servicios.filter(function (x) { return x.id === g.servicio; })[0]; };
+
+    set("[data-cuidados-cab]",
+      '<div class="scab__titular">' +
+        '<p class="etiqueta"><span class="corchetes">' + esc(CU.etiqueta) + "</span></p>" +
+        '<h1 class="scab__h1" id="t-cuidados" style="--letras:' + palabraMasLarga(CU.titular) + '">' +
+          esc(CU.titular) + "</h1>" +
+      "</div>" +
+      '<div class="scab__texto">' +
+        '<p class="lead scab__entradilla">' + esc(CU.entradilla) + "</p>" +
+        '<div class="scab__acciones" data-cta-principal data-cta>' +
+          botonWasap(CU.boton, CU.mensaje, "btn--macizo btn--grande") +
+        "</div>" +
+        datosHTML(CU.puntos, "scab__datos") +
+        '<p class="xs t2 guias__nota">' + esc(CU.nota) + "</p>" +
+      "</div>");
+
+    set("[data-cuidados-nav]",
+      '<ul class="estilos-nav__lista" role="list">' + CU.guias.map(function (g) {
+        return '<li><a class="estilos-nav__link" href="#' + esc(g.servicio) + '">' + esc(g.nombre) + "</a></li>";
+      }).join("") + "</ul>");
+
+    var lista = function (xs, clase) {
+      return '<ul class="' + clase + '" role="list">' + xs.map(function (x) {
+        return "<li>" + esc(x) + "</li>";
+      }).join("") + "</ul>";
+    };
+
+    set("[data-cuidados]", CU.guias.map(function (g) {
+      var sv = servicioDe(g);
+      var id = esc(g.servicio);
+      return '<section class="guia" id="' + id + '" aria-labelledby="t-g-' + id + '">' +
+        '<header class="guia__cab">' +
+          (sv ? '<p class="etiqueta"><span class="corchetes">' + esc(sv.etiqueta) + "</span></p>" : "") +
+          '<h2 class="d2 guia__nombre" id="t-g-' + id + '" style="--letras:' + palabraMasLarga(g.nombre + ".") + '">' +
+            esc(g.nombre) + ".</h2>" +
+          datosHTML([{ dato: CT.cura, valor: g.cura }], "guia__datos") +
+          '<p class="guia__acciones">' +
+            botonWasap(CT.duda, N.rellenar(CT.mensajeDuda, { articulo: g.articulo }), "", ": " + g.nombre) +
+            (sv ? flecha(N.rellenar(CT.servicio, { nombre: sv.menu.toLowerCase() }), N.hrefPagina(sv.pagina), "btn--quiet") : "") +
+          "</p>" +
+        "</header>" +
+        '<div class="guia__cuerpo">' +
+          '<h3 class="etiqueta guia__sub">' + esc(CT.fases) + "</h3>" +
+          '<ol class="fases" role="list">' + g.fases.map(function (f, i) {
+            return '<li class="fase">' +
+              '<span class="fase__num num" aria-hidden="true">' + String(i + 1).padStart(2, "0") + "</span>" +
+              '<h4 class="d4 fase__cuando">' + esc(f.cuando) + "</h4>" +
+              lista(f.que, "fase__que") +
+            "</li>";
+          }).join("") + "</ol>" +
+          '<div class="guia__dos">' +
+            '<div class="guia__normal">' +
+              '<h3 class="etiqueta">' + esc(CT.normal) + "</h3>" + lista(g.normal, "guia__lista") +
+            "</div>" +
+            '<div class="guia__avisar en-negro">' +
+              '<h3 class="etiqueta">' + esc(CT.avisar) + "</h3>" + lista(g.avisar, "guia__lista") +
+            "</div>" +
+          "</div>" +
+        "</div>" +
+      "</section>";
+    }).join(""));
+  }
+
+  /* La barra de estilos o de guías, cuando ya están pintadas las dos. */
+  espia();
 
   /* --- preguntas: abrir y cerrar con calma --------------------------------------- */
   /* La respuesta se despliega (320 ms) y se recoge (240 ms), y el texto entra

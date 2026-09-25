@@ -65,8 +65,10 @@ html {
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
   scrollbar-gutter: stable;
-  /* La barra es fija: sin esto, un salto de ancla deja el titular debajo. */
-  scroll-padding-top: calc(var(--nav-marca) + var(--s3) * 2 + var(--s4));
+  /* La barra es fija: sin esto, un salto de ancla deja el titular debajo.
+     Su alto (--alto-nav) está en secciones.css. Las secciones que además
+     quedan bajo la barra de estilos suman solo esa, con scroll-margin.     */
+  scroll-padding-top: var(--alto-nav);
   /* Sin scroll-behavior: smooth global. Un salto de ancla debe ser inmediato;
      el scroll suave secuestra el control del usuario.                        */
 }

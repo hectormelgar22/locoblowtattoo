@@ -101,7 +101,20 @@
 /* La marca de WhatsApp es de la casa: un bocadillo de esquina recta, como
    todo aquí, con el auricular dentro. No es el logotipo de Meta ni un icono
    de librería; lo que lo identifica es la palabra que va al lado.            */
-.marca-wasap { width: 1.35em; height: 1.35em; flex: none; }
+.marca-wasap, .marca-insta { width: 1.35em; height: 1.35em; flex: none; }
+
+/* Un enlace de texto con la flecha detrás: «Guía de cuidados →». Con su
+   caja de 44 px aunque la letra sea pequeña.                                */
+.enlace-flecha {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45em;
+  min-height: var(--touch);
+  color: var(--tinta);
+}
+@media (hover: hover) and (pointer: fine) {
+  .enlace-flecha:hover .flecha { translate: 0.15em 0; }
+}
 
 /* --- CHIP ------------------------------------------------------------------ */
 /* Un dato pulsable pequeño: los estilos en el índice del inicio.            */

@@ -19,7 +19,7 @@
    publicado o mandado (el post fijado del 10/09/2026, sus destacados, el
    logotipo o los mensajes del 24/09/2026).
 
-   La web tiene cinco páginas: el inicio y una por servicio.
+   La web tiene seis páginas: el inicio, una por servicio y la de cuidados.
 
    Índice:
      1. studio      nombre, dirección, WhatsApp, Instagram, cita, edad
@@ -34,6 +34,7 @@
      9. preguntas   las preguntas generales (las de cada servicio van con él)
     9b. opiniones   reseñas de Google, en el inicio
     10. pie         enlaces legales y créditos
+    11. cuidados    la guía de curación (su propia página: cuidados)
 
    NADA DE PRECIOS. El estudio no quiere precios en la web (24/09/2026).
    ========================================================================== */
@@ -162,7 +163,9 @@ window.STUDIO = {
         titular: "Cuatro oficios, un estudio.",
         entradilla: "Entra en cada uno: qué es, cómo se hace y fotos de trabajos hechos aquí.",
         // Lo que dice la tarjeta de tatuajes debajo del corchete.
-        cuentaTatuajes: "{estilos} estilos · {trabajos} trabajos"
+        cuentaTatuajes: "{estilos} estilos · {trabajos} trabajos",
+        // Debajo de las tarjetas, el camino a la guía de cuidados.
+        cuidados: "¿Ya te lo has hecho? Cómo cuidarlo mientras cura:"
       },
 
       // Las opiniones de Google, antes de las preguntas.
@@ -232,6 +235,19 @@ window.STUDIO = {
       // {enlace}, por la dirección de la foto.
       quiero: "Quiero algo así",
       mensaje: "Hola, os escribo desde la web. Me gusta este trabajo{de}: {enlace}"
+    },
+
+    // La banda de Instagram, al final de todas las páginas: el perfil del
+    // estudio en grande y, debajo, el de cada artista.
+    // PROVISIONAL: pendiente de que el estudio revise el texto.
+    instagram: {
+      etiqueta: "Instagram",
+      texto: "Lo último del estudio sale antes allí: trabajos recién terminados y reels del proceso.",
+      boton: "Seguir en Instagram",
+      equipo: "Y cada artista, en el suyo",
+      // Los trabajos de la cuadrícula (los `id` de la lista 5, solo fotos).
+      // Mejor distintos de los que salen en la muestra del inicio.
+      fotos: ["bg-3", "an-3", "an-5", "an-6", "an-4", "tr-1"]
     }
   },
 
@@ -673,6 +689,198 @@ window.STUDIO = {
       respuesta: "Para tatuarse o hacerse un piercing hace falta el consentimiento por escrito de la madre, el padre o el tutor legal, y que esa persona venga a la cita."
     }
   ],
+
+  /* --- 11. CUIDADOS · la guía de curación --------------------------------- */
+  // Su propia página (cuidados.html): una guía por servicio, con lo que hay
+  // que hacer en cada momento, lo que es normal y cuándo escribir. Cada guía
+  // tiene su dirección, para mandarla por WhatsApp después de la cita:
+  // <dominio>/cuidados#tatuaje, #piercing, #laser o #micropigmentacion.
+  //
+  // `servicio`  el `id` del servicio (lista 3): de ahí salen su dirección y
+  //             el enlace a su página.
+  // `articulo`  cómo se dice en una frase: «me hice {articulo}».
+  // `cura`      cuánto tarda, en una línea.
+  // `fases`     qué hacer, por momentos: `cuando` es la etiqueta y `que`,
+  //             la lista.
+  // `normal`    lo que asusta y no pasa nada: lo que más se pregunta.
+  // `avisar`    cuándo escribirnos y cuándo ir al médico.
+  //
+  // PROVISIONAL: pendiente de confirmar. Son pautas generales; cada guía
+  // tiene que revisarla quien hace ese servicio (Riki el láser, Haroz la
+  // micropigmentación) y cambiar lo que en el estudio se haga distinto:
+  // el film, la crema, los días.
+  cuidados: {
+    pagina: "cuidados", menu: "Cuidados",
+    // Cómo se nombra en el pie y desde la página de cada servicio.
+    enlace: "Guía de cuidados",
+    etiqueta: "Después de la sesión",
+    titular: "Cuidados.",
+    entradilla: "Cómo se cura un tatuaje, un piercing, el láser y la micropigmentación capilar: qué hacer cada día, qué es normal y cuándo escribirnos. Guárdala en el móvil.",
+    nota: "Es una guía general. Si en el estudio te dimos otra pauta para tu caso, sigue esa.",
+    puntos: [
+      { dato: "Dudas", valor: "Por WhatsApp, con una foto de la zona" },
+      { dato: "Al médico", valor: "Si hay fiebre, pus o una rojez que va a más" }
+    ],
+    boton: "Preguntar una duda",
+    mensaje: "Hola, os escribo desde la web. Tengo una duda sobre la curación: ",
+    // Lo que dice cada guía. {nombre} y {articulo} se cambian por los suyos.
+    textos: {
+      cura: "Cuánto tarda",
+      fases: "Qué hacer",
+      normal: "Es normal",
+      avisar: "Escríbenos o ve al médico",
+      duda: "Tengo una duda",
+      mensajeDuda: "Hola, os escribo desde la web. Me hice {articulo} con vosotros y tengo una duda con la curación. Os mando una foto: ",
+      servicio: "Ver {nombre}",
+      // El enlace que sale al final de las preguntas de cada servicio.
+      enServicio: "Cómo se cura: la guía de cuidados"
+    },
+    meta: {
+      titulo: "Cuidados después de un tatuaje, piercing, láser o micropigmentación · Loco Blow Tattoo",
+      descripcion: "Cómo curar un tatuaje, un piercing, una sesión de láser o la micropigmentación capilar: qué hacer cada día, qué es normal y cuándo escribir al estudio o ir al médico."
+    },
+    guias: [
+      {
+        servicio: "tatuaje", nombre: "Tatuaje", articulo: "un tatuaje",
+        cura: "De 2 a 4 semanas por fuera. Por dentro, la piel termina en unos 3 meses.",
+        fases: [
+          { cuando: "Al salir", que: [
+            "Deja el film o el apósito el tiempo que te digamos en el estudio: depende del que te pongamos.",
+            "Antes de tocar el tatuaje, lávate las manos. Siempre, hasta que cure."
+          ] },
+          { cuando: "Los primeros días", que: [
+            "Lávalo dos o tres veces al día con agua tibia y jabón neutro, con la mano, sin esponja.",
+            "Sécalo a toquecitos con papel de cocina limpio. La toalla del baño, no.",
+            "Una capa fina de crema: que brille un poco, no que quede blanco.",
+            "Ropa holgada encima. Nada que roce ni apriete."
+          ] },
+          { cuando: "Mientras se pela", que: [
+            "Pica y se pela como una quemadura de sol: no rasques ni arranques las pieles.",
+            "Sigue con la crema, dos o tres veces al día.",
+            "Nada de piscina, mar, sauna, bañera ni rayos UVA. Duchas cortas, sí.",
+            "Nada de sol: tápalo con ropa."
+          ] },
+          { cuando: "Ya curado", que: [
+            "Crema solar de protección 50 cada vez que le dé el sol: es lo que más alarga la vida del tatuaje.",
+            "Hidrátalo de vez en cuando. En la piel cuidada se ve mejor."
+          ] }
+        ],
+        normal: [
+          "Que suelte un poco de tinta y de líquido transparente los primeros días.",
+          "Que esté rojo e hinchado alrededor dos o tres días.",
+          "Que pique y se pele entre la primera y la tercera semana.",
+          "Que se vea apagado o lechoso al terminar de pelarse. En unas semanas recupera el contraste."
+        ],
+        avisar: [
+          "Escríbenos con una foto si tienes dudas o si ves una zona donde se ha ido la tinta: se repasa.",
+          "Ve al médico si tienes fiebre, si sale pus o huele mal, o si la rojez y el calor se extienden y van a más pasado el tercer día."
+        ]
+      },
+      {
+        servicio: "piercing", nombre: "Piercing", articulo: "un piercing",
+        cura: "El lóbulo, de 6 a 8 semanas. El cartílago, de 6 a 12 meses.",
+        fases: [
+          { cuando: "Cada día", que: [
+            "Lávate las manos antes de tocarlo. Mejor aún, no lo toques.",
+            "Límpialo dos veces al día con suero fisiológico: empapa una gasa, ablanda las costritas y retíralas sin arrastrar.",
+            "Sécalo a toquecitos con una gasa o papel limpio.",
+            "No gires ni muevas la joya: no ayuda a curar y mete suciedad dentro."
+          ] },
+          { cuando: "Las primeras semanas", que: [
+            "Nada de piscina, mar, sauna ni bañera.",
+            "Cuidado con el pelo, la ropa, los auriculares y el casco: los enganchones son lo que más retrasa la curación.",
+            "Si es en la oreja, duerme del otro lado.",
+            "Ni alcohol, ni agua oxigenada, ni pomadas: resecan e irritan."
+          ] },
+          // PROVISIONAL: pendiente de confirmar si hacéis piercings en la boca.
+          { cuando: "En la boca", que: [
+            "Enjuágate con agua fría o con un colutorio sin alcohol después de comer.",
+            "Los primeros días, comida blanda y fría. Evita el picante, el alcohol y el tabaco."
+          ] },
+          { cuando: "Hasta que cure", que: [
+            "No cambies la joya por tu cuenta.",
+            "Cuando baja la hinchazón, a veces hay que poner una barra más corta: eso, en el estudio."
+          ] }
+        ],
+        normal: [
+          "Algo de rojez, hinchazón y molestia los primeros días.",
+          "Un líquido blanquecino que forma costritas alrededor de la joya: es linfa, no pus.",
+          "Que se irrite con un golpe y se calme a los pocos días."
+        ],
+        avisar: [
+          "Escríbenos si sale un bulto junto al agujero, si la joya se queda corta o se hunde, o si tras un golpe no se calma.",
+          "Ve al médico si tienes fiebre, si sale pus espeso verde o gris, o si la rojez y el calor se extienden.",
+          "Si crees que está infectado, no te quites la joya tú: el agujero podría cerrarse con la infección dentro."
+        ]
+      },
+      {
+        servicio: "laser", nombre: "Láser", articulo: "una sesión de láser",
+        cura: "La piel, en 1 o 2 semanas. Entre una sesión y la siguiente, las semanas que te digamos.",
+        fases: [
+          { cuando: "Justo después", que: [
+            "La zona se pone blanca unos minutos y luego roja e hinchada, como una quemadura leve.",
+            "Frío para calmarla: una bolsa de frío envuelta en un paño, a ratos. Nunca el hielo directo sobre la piel."
+          ] },
+          { cuando: "Los primeros días", que: [
+            "Lava la zona con agua tibia y jabón neutro, y sécala a toquecitos.",
+            "Una capa fina de la crema que te digamos. Tápala con una gasa si roza con la ropa.",
+            "Si salen ampollas, no las revientes: protégelas y deja que se sequen solas.",
+            "Nada de piscina, mar, sauna ni deporte fuerte hasta que la piel esté cerrada."
+          ] },
+          { cuando: "Hasta la siguiente sesión", que: [
+            "No rasques ni arranques las costras.",
+            "Nada de sol en la zona: tápala con ropa y, con la piel ya curada, crema solar de protección 50.",
+            "El cuerpo va eliminando la tinta entre una sesión y otra: por eso hay que esperar."
+          ] }
+        ],
+        normal: [
+          "Rojez, hinchazón y calor uno o dos días.",
+          "Ampollas pequeñas o costras finas la primera semana.",
+          "Que al principio se vea igual y se vaya aclarando en las semanas siguientes.",
+          "Que la piel quede más clara o más oscura durante un tiempo."
+        ],
+        avisar: [
+          "Escríbenos si las ampollas son grandes o si la piel no se ha cerrado en dos semanas.",
+          "Ve al médico si tienes fiebre, si sale pus o si la rojez y el dolor van a más en vez de a menos."
+        ]
+      },
+      {
+        servicio: "micropigmentacion", nombre: "Micropigmentación capilar", articulo: "la micropigmentación",
+        cura: "La piel, en una semana. El color se asienta en un mes.",
+        fases: [
+          { cuando: "Los primeros 4 días", que: [
+            "No te mojes la cabeza ni la laves.",
+            "Nada de deporte ni de nada que te haga sudar.",
+            "No te rapes ni te afeites la zona.",
+            "Duerme boca arriba, con la funda de la almohada limpia."
+          ] },
+          { cuando: "Desde el quinto día", que: [
+            "Ya puedes lavarte la cabeza con agua tibia y un champú suave, sin frotar.",
+            "Puedes volver a raparte, con cuidado y con la máquina limpia.",
+            "Deporte suave. El que te haga sudar mucho, mejor a partir de la semana."
+          ] },
+          { cuando: "El primer mes", que: [
+            "Nada de sol directo en la cabeza: gorra o sombrero.",
+            "Nada de piscina, mar, sauna ni vapor.",
+            "Ningún producto en la zona que no te hayamos dicho."
+          ] },
+          { cuando: "Siempre", que: [
+            "Crema solar de protección 50 en la cabeza cuando le dé el sol: el sol es lo que más aclara el pigmento.",
+            "Hidrata el cuero cabelludo: la piel seca apaga el color."
+          ] }
+        ],
+        normal: [
+          "Una rojez leve el primer día o los dos primeros.",
+          "Que los puntos se vean más oscuros o más grandes al principio: en unos días se asientan.",
+          "Que se aclaren después de la primera sesión: por eso se hace en varias."
+        ],
+        avisar: [
+          "Escríbenos con una foto si tienes dudas con el tono o la línea: se ajusta en la siguiente sesión.",
+          "Ve al médico si tienes fiebre, si sale pus o si hay una rojez que se extiende."
+        ]
+      }
+    ]
+  },
 
   /* --- 10. PIE ------------------------------------------------------------- */
   pie: {
