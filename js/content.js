@@ -322,22 +322,39 @@ window.STUDIO = {
         { dato: "Curación", valor: "Semanas en el lóbulo, meses en el cartílago" }
       ],
       // PROVISIONAL: sacadas de Instagram (25/09/2026). Sin artista: el
-      // estudio no dice quién los hace. Solo las que no enseñan la cara; las
-      // de cara (tools/originales/piercing/con-cara/) esperan el permiso.
-      // La primera es la de la cabecera de la página.
+      // estudio no dice quién los hace. Las que enseñan la cara salen
+      // porque ya están en su Instagram; pendiente de que el estudio
+      // confirme que el permiso de cada persona cubre también la web.
+      // La primera es la de la cabecera de la página. Van alternando
+      // oreja, cara y cuerpo.
       fotos: [
         { id: "piercing-1", artista: "", titulo: "Industrial",
           alt: "Industrial en la oreja: una barra recta que atraviesa la parte de arriba del cartílago de lado a lado.",
           img: "piercing-1", ratio: 0.7524 },
+        { id: "piercing-6", artista: "", titulo: "Nostril doble",
+          alt: "Nostril doble: dos bolitas juntas en el lateral de la nariz y un aro fino, en blanco y negro.",
+          img: "piercing-6", ratio: 0.5635, foco: "50% 40%" },
         { id: "piercing-2", artista: "", titulo: "Labret vertical",
           alt: "Labret vertical: una barra que sale por el borde del labio de abajo y por debajo de él, en blanco y negro.",
           img: "piercing-2", ratio: 0.7682 },
+        { id: "piercing-8", artista: "", titulo: "Ceja vertical",
+          alt: "Ceja vertical: una barra con dos bolitas en la punta de la ceja, junto a un aro en la nariz.",
+          img: "piercing-8", ratio: 0.7495 },
         { id: "piercing-3", artista: "", titulo: "Hélix",
           alt: "Oreja de perfil con un aro fino en el hélix, arriba del todo del cartílago.",
           img: "piercing-3", ratio: 0.5741, foco: "50% 25%" },
+        { id: "piercing-7", artista: "", titulo: "Smiley",
+          alt: "Smiley: una barra en el frenillo del labio de arriba, que asoma con dos bolitas sobre los dientes al sonreír, en blanco y negro.",
+          img: "piercing-7", ratio: 0.7713 },
         { id: "piercing-4", artista: "", titulo: "Ombligo",
           alt: "Piercing de ombligo con una barra curva de bola, sobre unos vaqueros bajados.",
           img: "piercing-4", ratio: 0.7959 },
+        { id: "piercing-9", artista: "", titulo: "Ceja horizontal",
+          alt: "Ceja horizontal: dos bolitas a lo largo de la ceja, y un hélix y un aro en la oreja.",
+          img: "piercing-9", ratio: 0.7687 },
+        { id: "piercing-10", artista: "", titulo: "Dilatación y hélix",
+          alt: "Dilatación en el lóbulo con un túnel negro, dos bolitas en el hélix y un aro en la nariz.",
+          img: "piercing-10", ratio: 0.7592 },
         { id: "piercing-5", artista: "", titulo: "Pezón",
           alt: "Piercing de pezón con una barra recta, recién hecho, sobre un pecho tatuado en negro.",
           img: "piercing-5", ratio: 0.7607 }

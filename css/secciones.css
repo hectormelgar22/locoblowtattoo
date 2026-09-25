@@ -692,6 +692,47 @@
   .pasos__num { font-size: var(--fs-d2); }
 }
 
+/* Movimiento de entrada (paginas.js pone data-pasos-anim y marca cada fila
+   con data-visto). El filete de abajo pasa a ser una línea que se traza;
+   el número sube recortado desde su base; título y texto llegan detrás.  */
+.pasos[data-pasos-anim] .pasos__paso { position: relative; border-bottom-color: transparent; }
+.pasos[data-pasos-anim] .pasos__paso::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: calc(var(--hair) * -1);
+  border-bottom: var(--hair) solid var(--noche-filete);
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  transition: transform 900ms var(--ease-out) var(--retardo, 0ms);
+}
+.pasos[data-pasos-anim] .pasos__num {
+  clip-path: inset(0 0 100% 0);
+  transform: translateY(0.35em);
+  transition: clip-path 700ms var(--ease-out), transform 700ms var(--ease-out), color var(--t-ui) ease;
+  transition-delay: calc(var(--retardo, 0ms) + 120ms);
+}
+.pasos[data-pasos-anim] .pasos__titulo,
+.pasos[data-pasos-anim] .pasos__texto {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 500ms ease, transform 600ms var(--ease-out);
+}
+.pasos[data-pasos-anim] .pasos__titulo { transition-delay: calc(var(--retardo, 0ms) + 220ms); }
+.pasos[data-pasos-anim] .pasos__texto  { transition-delay: calc(var(--retardo, 0ms) + 320ms); }
+
+.pasos[data-pasos-anim] .pasos__paso[data-visto]::after { transform: none; }
+.pasos[data-pasos-anim] [data-visto] .pasos__num { clip-path: inset(0 0 -0.2em 0); transform: none; }
+.pasos[data-pasos-anim] [data-visto] .pasos__titulo,
+.pasos[data-pasos-anim] [data-visto] .pasos__texto { opacity: 1; transform: none; }
+
+/* Con ratón, la fila que señalas se enciende: el número pasa a claro. */
+@media (hover: hover) and (pointer: fine) {
+  .pasos__num { transition: color var(--t-ui) ease; }
+  .pasos__paso:hover .pasos__num { color: var(--claro); transition-delay: 0ms; }
+}
+
 /* La banda negra ya separa: la sección que la sigue no lleva filete. */
 .pasos-banda + .band { border-top: 0; }
 

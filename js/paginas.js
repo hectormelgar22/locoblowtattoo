@@ -590,6 +590,28 @@
     var bandaPasos = $("[data-servicio-pasos]");
     if (bandaPasos) bandaPasos.hidden = !(SV.pasos && SV.pasos.length);
 
+    /* Los pasos entran uno detrás de otro al llegar a ellos: el filete de
+       cada fila se traza de izquierda a derecha, el número sube desde su
+       línea base y el texto aparece detrás. Solo la primera vez. Sin
+       JavaScript o con «reducir movimiento», están quietos y visibles: el
+       estado de espera lo pone esto, no el CSS.                            */
+    (function pasosEnMovimiento() {
+      var lista = $(".pasos");
+      if (!lista || N.quieto() || !("IntersectionObserver" in window)) return;
+      lista.setAttribute("data-pasos-anim", "");
+      var obs = new IntersectionObserver(function (entradas) {
+        var orden = 0;
+        entradas.forEach(function (e) {
+          if (!e.isIntersecting) return;
+          /* Las que entran a la vez, escalonadas: 110 ms entre una y otra. */
+          e.target.style.setProperty("--retardo", (orden++ * 110) + "ms");
+          e.target.setAttribute("data-visto", "");
+          obs.unobserve(e.target);
+        });
+      }, { rootMargin: "0px 0px -10% 0px" });
+      $$(".pasos__paso", lista).forEach(function (f) { obs.observe(f); });
+    })();
+
     /* Fotos de la página (piercing, láser, micropigmentación). */
     /* Sin ninguna foto todavía, la sección no sale: el botón de «ver
        trabajos» de la cabecera tampoco.                                     */
