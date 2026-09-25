@@ -247,7 +247,7 @@ window.STUDIO = {
       equipo: "Y cada artista, en el suyo",
       // Los trabajos de la cuadrícula (los `id` de la lista 5, solo fotos).
       // Mejor distintos de los que salen en la muestra del inicio.
-      fotos: ["bg-3", "an-3", "an-5", "an-6", "an-4", "tr-1"]
+      fotos: ["bg-3", "an-3", "bg-4", "an-6", "an-7", "an-5"]
     }
   },
 
@@ -321,9 +321,26 @@ window.STUDIO = {
         { dato: "Quién", valor: null },             // PROVISIONAL: pendiente de confirmar
         { dato: "Curación", valor: "Semanas en el lóbulo, meses en el cartílago" }
       ],
+      // PROVISIONAL: sacadas de Instagram (25/09/2026). Sin artista: el
+      // estudio no dice quién los hace. Solo las que no enseñan la cara; las
+      // de cara (tools/originales/piercing/con-cara/) esperan el permiso.
+      // La primera es la de la cabecera de la página.
       fotos: [
-        // Cuando lleguen (tools/originales/piercing/):
-        // { id: "piercing-1", artista: "", titulo: "Helix", alt: "Lo que se ve de verdad en la foto", img: "piercing-1", ratio: 0.8 },
+        { id: "piercing-1", artista: "", titulo: "Industrial",
+          alt: "Industrial en la oreja: una barra recta que atraviesa la parte de arriba del cartílago de lado a lado.",
+          img: "piercing-1", ratio: 0.7524 },
+        { id: "piercing-2", artista: "", titulo: "Labret vertical",
+          alt: "Labret vertical: una barra que sale por el borde del labio de abajo y por debajo de él, en blanco y negro.",
+          img: "piercing-2", ratio: 0.7682 },
+        { id: "piercing-3", artista: "", titulo: "Hélix",
+          alt: "Oreja de perfil con un aro fino en el hélix, arriba del todo del cartílago.",
+          img: "piercing-3", ratio: 0.5741, foco: "50% 25%" },
+        { id: "piercing-4", artista: "", titulo: "Ombligo",
+          alt: "Piercing de ombligo con una barra curva de bola, sobre unos vaqueros bajados.",
+          img: "piercing-4", ratio: 0.7959 },
+        { id: "piercing-5", artista: "", titulo: "Pezón",
+          alt: "Piercing de pezón con una barra recta, recién hecho, sobre un pecho tatuado en negro.",
+          img: "piercing-5", ratio: 0.7607 }
       ],
       mensaje: "Hola, os escribo desde la web. Quiero hacerme un piercing en: ",
       boton: "Pedir cita para un piercing",
@@ -501,6 +518,9 @@ window.STUDIO = {
       alt: "Retrato realista de un gato esfinge en el antebrazo, en negro y grises, con los ojos en verde claro.",
       img: "bg-3", ratio: 0.7602 },
     { id: "v-tortuga", estilo: "black-and-grey", artista: "", video: "tortuga" },
+    { id: "bg-4", estilo: "black-and-grey", artista: "raul", titulo: "Samurái",
+      alt: "Samurái con armadura y katana en negro y grises en el antebrazo, con una pagoda y el sol detrás.",
+      img: "bg-4", ratio: 0.9907 },
     { id: "v-perro", estilo: "black-and-grey", artista: "", video: "perro" },
 
     // --- Anime
@@ -522,14 +542,26 @@ window.STUDIO = {
       alt: "Totoro y los dos pequeños de la película de Ghibli, en fila, en línea fina y punteado en el muslo.",
       img: "an-6", ratio: 0.7514 },
     { id: "v-perfilado", estilo: "anime", artista: "pepi", video: "perfilado" },
+    { id: "an-7", estilo: "anime", artista: "haroz", titulo: "Bulbasaur",
+      alt: "Bulbasaur, de Pokémon, en línea fina y punteado en negro, en el gemelo.",
+      img: "an-7", ratio: 0.7905 },
     { id: "an-4", estilo: "anime", artista: "pepi", titulo: "Garfield",
       alt: "Garfield a color con un ramo de margaritas, pequeño, en el antebrazo.",
       img: "an-4", ratio: 0.7894 },
+
+    // --- Fine line
+    { id: "fl-1", estilo: "fine-line", artista: "tbh", titulo: "Peonías",
+      alt: "Peonías y flores pequeñas con hojas en línea fina y sombra suave, a lo largo del muslo.",
+      img: "fl-1", ratio: 0.7876 },
+    { id: "fl-2", estilo: "fine-line", artista: "tbh", titulo: "Ciervo volante",
+      alt: "Escarabajo ciervo volante con las alas abiertas, en línea fina y punteado, en la pierna.",
+      img: "fl-2", ratio: 0.8489 },
 
     // --- Blackwork
     { id: "bw-1", estilo: "blackwork", artista: "maou", titulo: "Dragón japonés",
       alt: "Dragón japonés en negro macizo en el antebrazo, entre remolinos de viento y agua.",
       img: "bw-1", ratio: 0.7916 },
+    { id: "v-anubis", estilo: "blackwork", artista: "fer", video: "anubis" },
     { id: "bw-2", estilo: "blackwork", artista: "maou", titulo: "Parca",
       alt: "Parca en negro y grises en el brazo: una calavera encapuchada que sostiene un reloj de arena.",
       img: "bw-2", ratio: 0.7959 },
@@ -563,7 +595,10 @@ window.STUDIO = {
     { slug: "pepi",  nombre: "Pepi Marcos", instagram: "pepi_marcoss" },
     // FUENTE: su destacado dice «Láser en Loco Blow desde 2015» y enlaza
     // @origenlasertatuajes.
-    { slug: "riki",  nombre: "Riki",  instagram: "origenlasertatuajes" }
+    { slug: "riki",  nombre: "Riki",  instagram: "origenlasertatuajes" },
+    // FUENTE: sus fotos llegan con su Instagram y la marca del estudio
+    // (25/09/2026).  PROVISIONAL: pendiente de cómo se llama y quiere salir.
+    { slug: "tbh",   nombre: "TBH",   instagram: "tbhtattoo" }
   ],
 
   /* --- 7. EL ESTUDIO · fotos del local ------------------------------------- */
@@ -631,6 +666,11 @@ window.STUDIO = {
     perfilado: {
       base: "perfilado", ratio: 0.8, rotulo: "En proceso",
       alt: "Vídeo sin sonido: manos con guantes rosas perfilando una pieza de Attack on Titan sobre el calco en el brazo.",
+      publicar: true
+    },
+    anubis: {
+      base: "anubis", ratio: 0.8, rotulo: "Anubis",
+      alt: "Vídeo sin sonido: Anubis en línea negra y punteado en el antebrazo, mientras una mano con guante negro limpia la tinta.",
       publicar: true
     }
   },

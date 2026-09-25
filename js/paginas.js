@@ -549,6 +549,11 @@
       ? flecha(T.tatuajes.verEstilos, "#estilos", "btn--grande")
       : fotosSV.length ? flecha(T.servicio.verFotos, "#trabajos", "btn--grande") : "";
 
+    /* La foto de la cabecera ya viene en el HTML volcado, y el navegador la
+       está bajando: es la imagen grande de la primera pantalla. Al repintar
+       la cabecera se conserva ese mismo <img>; uno nuevo cancelaría la
+       descarga y la empezaría otra vez.                                     */
+    var mediaPrevia = $("[data-servicio-cab] .scab__media");
     var cab = set("[data-servicio-cab]",
       '<div class="scab__titular">' +
         '<p class="etiqueta"><span class="corchetes">' + esc(SV.etiqueta) + "</span></p>" +
@@ -565,6 +570,11 @@
       "</div>" +
       (media ? '<div class="scab__media">' + media + "</div>" : ""));
     if (cab) cab.classList.toggle("scab--sin-media", !media);
+    var mediaNueva = $("[data-servicio-cab] .scab__media");
+    var imgPrevia = mediaPrevia && $("img", mediaPrevia), imgNueva = mediaNueva && $("img", mediaNueva);
+    if (imgPrevia && imgNueva && imgPrevia.getAttribute("srcset") === imgNueva.getAttribute("srcset")) {
+      mediaNueva.replaceWith(mediaPrevia);
+    }
 
     set("[data-servicio-pasos]", SV.pasos && SV.pasos.length
       ? '<header class="cab"><p class="etiqueta corchetes">' + esc(T.servicio.pasos.etiqueta) + "</p>" +
