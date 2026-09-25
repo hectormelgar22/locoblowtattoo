@@ -237,6 +237,20 @@ window.STUDIO = {
       mensaje: "Hola, os escribo desde la web. Me gusta este trabajo{de}: {enlace}"
     },
 
+    // La página de error (404.html): la que sale en una dirección que no
+    // existe, por un enlace viejo o mal copiado. Lleva a las páginas de
+    // verdad en vez de dejar a nadie en un callejón.
+    noEncontrada: {
+      etiqueta: "Error 404",
+      titular: "404.",
+      entradilla: "Esta página no existe o ha cambiado de sitio. Lo que buscabas seguramente está en una de estas:",
+      volver: "Ir al inicio",
+      meta: {
+        titulo: "Página no encontrada · Loco Blow Tattoo",
+        descripcion: "Esta página no existe. Loco Blow Tattoo: tatuaje, láser, piercing y micropigmentación capilar en A Coruña."
+      }
+    },
+
     // La banda de Instagram, al final de todas las páginas: el perfil del
     // estudio en grande y, debajo, el de cada artista.
     // PROVISIONAL: pendiente de que el estudio revise el texto.
@@ -299,6 +313,25 @@ window.STUDIO = {
           // PROVISIONAL: pendiente de confirmar vuestra política con menores
           pregunta: "¿Tatuáis a menores de edad?",
           respuesta: "Solo con el consentimiento por escrito de su madre, su padre o su tutor legal, y con esa persona presente en la cita."
+        },
+        {
+          pregunta: "¿Duele?",
+          respuesta: "Algo, sí: depende sobre todo de la zona. Donde hay más carne (el brazo, el muslo, el gemelo) se lleva bien; cerca del hueso (costillas, pies, codo) se nota más. Si es tu primer tatuaje, dilo y lo tenemos en cuenta."
+        },
+        {
+          // PROVISIONAL: pendiente de confirmar cómo trabajáis los diseños
+          pregunta: "¿Tengo que traer el diseño hecho?",
+          respuesta: "No. Tráenos la idea y fotos de referencia de lo que te gusta: el artista la dibuja y la adapta a tu zona y a su estilo. Si ya tienes un diseño, también vale."
+        },
+        {
+          // PROVISIONAL: pendiente de confirmar
+          pregunta: "¿Tapáis tatuajes antiguos?",
+          respuesta: "Sí. Mándanos una foto del tatuaje y de lo que te gustaría encima y te decimos qué se puede hacer. Si el antiguo es muy oscuro, a veces conviene aclararlo antes con unas sesiones de láser, que también hacemos aquí."
+        },
+        {
+          // PROVISIONAL: pendiente de que el estudio lo revise
+          pregunta: "¿Cómo tengo que venir a la sesión?",
+          respuesta: "Habiendo comido y descansado, sin haber bebido alcohol el día antes y con ropa cómoda que deje la zona a mano. Si la piel de la zona está quemada por el sol o irritada, avísanos antes."
         }
       ]
     },
@@ -375,6 +408,28 @@ window.STUDIO = {
           // PROVISIONAL: pendiente de confirmar
           pregunta: "¿Cuánto tarda en curar?",
           respuesta: "Depende de la zona. Un lóbulo suele curar en unas semanas; un cartílago puede llevar varios meses. En la cita te decimos lo del tuyo."
+        },
+        {
+          pregunta: "¿Duele?",
+          respuesta: "Es un pinchazo de un segundo. Lo que más se nota son los días siguientes, sobre todo en el cartílago, que queda sensible mientras cura."
+        },
+        {
+          // PROVISIONAL: pendiente de confirmar la técnica
+          pregunta: "¿Lo hacéis con pistola?",
+          respuesta: "No: con aguja estéril de un solo uso. La aguja corta limpio y cura mejor; la pistola aprieta el tejido y no se puede esterilizar igual."
+        },
+        {
+          // PROVISIONAL: pendiente de confirmar el material de las joyas
+          pregunta: "¿Qué joya me ponéis?",
+          respuesta: "Una joya de inicio de material apto para un piercing recién hecho, algo más larga de lo normal para dejar sitio a la hinchazón. La eliges en la cita según la zona."
+        },
+        {
+          pregunta: "¿Cuándo puedo cambiar la joya?",
+          respuesta: "Cuando esté curado del todo, no antes. El primer cambio, mejor en el estudio: a veces hay que acortar la barra cuando baja la hinchazón."
+        },
+        {
+          pregunta: "¿Y si se me pone rojo o se inflama?",
+          respuesta: "Los primeros días es normal. Si va a más, escríbenos con una foto. Si tienes fiebre o sale pus, ve al médico y no te quites la joya por tu cuenta. En la guía de cuidados tienes lo que es normal y lo que no."
         }
       ]
     },
@@ -424,6 +479,25 @@ window.STUDIO = {
           // PROVISIONAL: pendiente de confirmar con el estudio
           pregunta: "¿Duele?",
           respuesta: "Molesta, más o menos según la zona. Se trabaja rápido y cada sesión dura poco."
+        },
+        {
+          // PROVISIONAL: pendiente de que Riki confirme el tiempo entre sesiones
+          pregunta: "¿Cada cuánto son las sesiones?",
+          respuesta: "Se deja pasar varias semanas entre una y otra, normalmente entre seis y ocho: la piel tiene que curar y el cuerpo necesita ese tiempo para eliminar la tinta que ha roto el láser."
+        },
+        {
+          // PROVISIONAL: pendiente de que Riki lo revise
+          pregunta: "¿Deja cicatriz?",
+          respuesta: "Bien hecho y bien cuidado, no suele dejarla. Lo que más ayuda es no arrancar las costras, no reventar las ampollas y no dar el sol a la zona mientras cura."
+        },
+        {
+          pregunta: "¿Puedo tatuarme encima después?",
+          respuesta: "Sí, es de lo más habitual: se aclara el tatuaje con unas sesiones y luego se tapa con otro. Aquí se hacen las dos cosas, así que lo planteamos juntos desde la primera visita."
+        },
+        {
+          // PROVISIONAL: pendiente de que Riki lo revise
+          pregunta: "¿Puedo hacerlo si estoy morena o en verano?",
+          respuesta: "Mejor con la piel sin broncear: sobre una piel morena reciente hay más riesgo de que queden manchas. Si es verano, se puede, pero la zona tiene que ir tapada del sol entre sesiones."
         }
       ]
     },
@@ -472,6 +546,24 @@ window.STUDIO = {
           // PROVISIONAL: pendiente de que Haroz lo revise
           pregunta: "¿Sirve si tengo el pelo largo?",
           respuesta: "Sí: da densidad en las zonas donde se transparenta el cuero cabelludo, aunque no lleves el pelo rapado."
+        },
+        {
+          // PROVISIONAL: pendiente de que Haroz lo revise
+          pregunta: "¿Cuántas sesiones hacen falta?",
+          respuesta: "Normalmente dos o tres, con unos días entre una y otra: la densidad se va construyendo poco a poco para que quede natural. En la valoración te decimos las que necesita tu caso."
+        },
+        {
+          pregunta: "¿Duele?",
+          respuesta: "Molesta poco: el pigmento va muy superficial, mucho menos profundo que un tatuaje. La mayoría lo describe como un picor o un rascado."
+        },
+        {
+          // PROVISIONAL: pendiente de que Haroz lo revise
+          pregunta: "¿Sirve también para mujeres?",
+          respuesta: "Sí. En mujeres se usa sobre todo para dar densidad donde el pelo clarea, en la raya o en la coronilla, sin raparse."
+        },
+        {
+          pregunta: "¿Y si no me gusta, se puede quitar?",
+          respuesta: "Se puede aclarar o quitar con láser, que también hacemos en el estudio. Por eso se empieza con una valoración y se va construyendo por sesiones: se ajusta antes de llegar al final."
         }
       ]
     }
@@ -770,6 +862,8 @@ window.STUDIO = {
     pagina: "cuidados", menu: "Cuidados",
     // Cómo se nombra en el pie y desde la página de cada servicio.
     enlace: "Guía de cuidados",
+    // En una línea, para las listas de páginas (la del error 404).
+    resumen: "Cómo se cura cada servicio: qué hacer, qué es normal y cuándo escribirnos.",
     etiqueta: "Después de la sesión",
     titular: "Cuidados.",
     entradilla: "Cómo se cura un tatuaje, un piercing, el láser y la micropigmentación capilar: qué hacer cada día, qué es normal y cuándo escribirnos. Guárdala en el móvil.",
@@ -792,6 +886,32 @@ window.STUDIO = {
       // El enlace que sale al final de las preguntas de cada servicio.
       enServicio: "Cómo se cura: la guía de cuidados"
     },
+    // Las preguntas del final de la página: lo que se pregunta por WhatsApp
+    // en los días de después.
+    // PROVISIONAL: pendiente de que el estudio las revise.
+    preguntas: [
+      {
+        pregunta: "¿Qué crema me pongo?",
+        respuesta: "La que te digamos en el estudio. Si no te dijimos ninguna, una específica para tatuajes o una hidratante sin perfume, siempre en capa fina. En el piercing, ninguna: solo suero fisiológico."
+      },
+      {
+        pregunta: "¿Cuándo puedo ir a la playa o a la piscina?",
+        respuesta: "Cuando esté curado del todo: en un tatuaje, a partir de unas tres o cuatro semanas; en un piercing, cuando pasen las primeras semanas y ya no esté sensible. Y después, con crema solar."
+      },
+      {
+        pregunta: "¿Puedo hacer deporte?",
+        respuesta: "Los primeros días, nada que te haga sudar mucho ni que roce o golpee la zona. Después, deporte suave y con la zona limpia. El gimnasio compartido, mejor cuando ya no haya herida."
+      },
+      {
+        pregunta: "Se me ha caído una costra antes de tiempo, ¿qué hago?",
+        respuesta: "No arranques más: lávala con cuidado, sécala a toquecitos y sigue con la crema. Si al curar se ve una zona más clara, escríbenos con una foto: se repasa."
+      },
+      {
+        // PROVISIONAL: pendiente de confirmar cuándo y cómo dais los repasos
+        pregunta: "¿Cuándo me puedo hacer el repaso?",
+        respuesta: "Cuando esté curado del todo, a partir de un mes más o menos. Escríbenos con una foto y te decimos si hace falta y cuándo."
+      }
+    ],
     meta: {
       titulo: "Cuidados después de un tatuaje, piercing, láser o micropigmentación · Loco Blow Tattoo",
       descripcion: "Cómo curar un tatuaje, un piercing, una sesión de láser o la micropigmentación capilar: qué hacer cada día, qué es normal y cuándo escribir al estudio o ir al médico."

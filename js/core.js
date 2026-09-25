@@ -6,8 +6,8 @@
    Se carga con `defer`, así que el DOM ya existe cuando corre.
 
    Cada página dice cuál es en <body data-pagina="…">: «inicio»,
-   «cuidados» o el `pagina` de su servicio en content.js («tatuajes»,
-   «laser»…).
+   «cuidados», «404» o el `pagina` de su servicio en content.js
+   («tatuajes», «laser»…).
    ========================================================================== */
 
 (function () {
@@ -21,6 +21,9 @@
   var SERVICIO = S.servicios.filter(function (s) { return s.pagina === PAGINA; })[0] || null;
   /* La guía de cuidados: una página que no es de ningún servicio. */
   var CUIDADOS = S.cuidados && S.cuidados.pagina === PAGINA ? S.cuidados : null;
+  /* La página de error: sin dirección propia (sale en cualquiera que no
+     exista), así que ni canónica ni datos para Google.                     */
+  var ERROR = PAGINA === "404";
   /* El dominio sale de content.js, no de location.origin: si saliera de ahí,
      tools/sync-contenido.py congelaría en el código fuente la dirección del
      servidor local con el que se volcó la página.                          */
@@ -345,6 +348,7 @@
   }
 
   function montarSchema() {
+    if (ERROR) return;
     var datos;
     if (SERVICIO) {
       datos = {
@@ -686,7 +690,8 @@
      Google y la vista previa de WhatsApp.                                    */
 
   function montarCabecera() {
-    var t = SERVICIO ? SERVICIO.meta : CUIDADOS ? CUIDADOS.meta : S.textos.meta;
+    var t = SERVICIO ? SERVICIO.meta : CUIDADOS ? CUIDADOS.meta :
+            ERROR ? S.textos.noEncontrada.meta : S.textos.meta;
     var url = urlPagina(PAGINA);
     document.title = t.titulo;
     function meta(atributo, nombre, valor) {
@@ -695,6 +700,7 @@
       n.setAttribute("content", valor);
     }
     meta("name", "description", t.descripcion);
+    if (ERROR) return;
     meta("property", "og:title", t.titulo);
     meta("property", "og:description", t.compartir || t.descripcion);
     meta("property", "og:url", url);

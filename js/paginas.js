@@ -833,8 +833,49 @@
     }).join(""));
   }
 
+  /* ============================================================================
+     404 · la página que no existe
+     El número en cartel, como el titular de un servicio, y debajo las
+     páginas de verdad, una por fila y enteras pulsables: quien llega por un
+     enlace roto sigue en un toque.
+     ============================================================================ */
+
+  (function noEncontrada() {
+    var host = $("[data-error]");
+    if (!host) return;
+    var E = T.noEncontrada;
+    var paginas = S.servicios.map(function (s) { return { href: s.pagina, nombre: s.nombre, resumen: s.resumen }; });
+    if (S.cuidados) paginas.push({ href: S.cuidados.pagina, nombre: S.cuidados.enlace, resumen: S.cuidados.resumen });
+    host.innerHTML =
+      '<div class="scab__titular">' +
+        '<p class="etiqueta"><span class="corchetes">' + esc(E.etiqueta) + "</span></p>" +
+        '<h1 class="scab__h1" id="t-error" style="--letras:' + palabraMasLarga(E.titular) + '">' + esc(E.titular) + "</h1>" +
+      "</div>" +
+      '<div class="scab__texto">' +
+        '<p class="lead scab__entradilla">' + esc(E.entradilla) + "</p>" +
+        '<div class="scab__acciones" data-cta-principal data-cta>' +
+          botonWasap(I.cita, S.studio.botonWhatsapp.mensaje, "btn--macizo btn--grande") +
+          flecha(E.volver, N.hrefPagina("inicio"), "btn--grande") +
+        "</div>" +
+      "</div>" +
+      '<ul class="error__paginas" role="list">' + paginas.map(function (p) {
+        return '<li><a class="error__pagina" href="' + esc(N.hrefPagina(p.href)) + '">' +
+          '<span class="error__nombre">' + esc(p.nombre) + "</span>" +
+          '<span class="error__resumen">' + esc(p.resumen) + "</span>" +
+          '<i class="flecha" aria-hidden="true"></i></a></li>';
+      }).join("") + "</ul>";
+  })();
+
   /* La barra de estilos o de guías, cuando ya están pintadas las dos. */
   espia();
+
+  /* Las preguntas de la guía de cuidados, al final: las de los días de
+     después. Mismo acordeón que las de cada servicio.                      */
+  if (CU) set("[data-cuidados-preguntas]", CU.preguntas && CU.preguntas.length
+    ? '<header class="cab"><p class="etiqueta corchetes">' + esc(T.servicio.preguntas.etiqueta) + "</p>" +
+        '<h2 class="d2" id="t-preguntas">' + esc(T.servicio.preguntas.titular) + "</h2></header>" +
+      faqHTML(CU.preguntas)
+    : "");
 
   /* --- preguntas: abrir y cerrar con calma --------------------------------------- */
   /* La respuesta se despliega (320 ms) y se recoge (240 ms), y el texto entra

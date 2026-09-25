@@ -1044,3 +1044,41 @@
   .guia__avisar { background: none; color: var(--tinta); border: 2px solid var(--tinta); }
   .guia__avisar li, .guia__avisar .etiqueta { color: var(--tinta); }
 }
+
+/* ============================================================================
+   404 · la página que no existe
+   ============================================================================ */
+/* La cabecera es la de un servicio (scab), con «404.» en cartel. Debajo,
+   las páginas de verdad: una fila cada una, con su resumen y la flecha,
+   entera pulsable.                                                         */
+
+.error__paginas { grid-column: 1 / -1; border-top: var(--hair) solid var(--filete-fn); }
+.error__pagina {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas: "nombre flecha" "resumen flecha";
+  align-items: center;
+  gap: var(--s1) var(--s4);
+  padding-block: var(--s4);
+  border-bottom: var(--hair) solid var(--filete);
+  color: var(--tinta);
+  text-decoration: none;
+}
+.error__nombre { grid-area: nombre; font-size: var(--fs-d4); font-weight: var(--w-titulo); letter-spacing: var(--tr-d4); }
+.error__resumen { grid-area: resumen; font-size: var(--fs-sm); color: var(--tinta-2); }
+.error__pagina .flecha { grid-area: flecha; font-size: 1.25rem; }
+@media (hover: hover) and (pointer: fine) {
+  .error__pagina:hover .error__nombre { text-decoration: underline 1px; text-underline-offset: 0.15em; }
+  .error__pagina:hover .flecha { translate: 0.15em 0; }
+}
+.error__pagina:active { background: var(--suelo-hondo); }
+
+@media (min-width: 60rem) {
+  .error__pagina {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 6fr) auto;
+    grid-template-areas: "nombre resumen flecha";
+    column-gap: var(--s6);
+    padding-block: var(--s5);
+  }
+  .error__nombre { font-size: var(--fs-d3); letter-spacing: var(--tr-d3); }
+}
