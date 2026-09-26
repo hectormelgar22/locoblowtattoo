@@ -194,9 +194,9 @@
     '<p class="body t2 mosaico__nota">' + esc(I.estudio.directo) + "</p>");
 
   /* La muestra: la primera foto de cada estilo, luego la segunda de cada
-     uno…, para que se vean todos los estilos antes de repetir. En el móvil
-     se desliza de lado, como las historias de Instagram; en escritorio es
-     una rejilla de cuatro. Se abren en el visor, aquí mismo.               */
+     uno…, para que se vean todos los estilos antes de repetir. Rejilla de
+     dos columnas en el móvil y de cuatro en escritorio. Cada foto se abre
+     encima de las demás, aquí mismo (abajo, galeriaQueSeAbre).             */
   (function muestra() {
     if (!$("[data-inicio-trabajos]")) return;
     var M = I.trabajos;
@@ -215,7 +215,7 @@
           var a = p.artista ? N.artistaPor(p.artista) : null;
           var e = N.estiloPor(p.estilo);
           return '<li class="muestra__item" id="obra-' + esc(p.id) + '">' +
-            '<button class="rejilla__boton" type="button" data-abrir="' + esc(p.id) + '" data-grupo="muestra">' +
+            '<button class="rejilla__boton" type="button" data-desplegar="' + esc(p.id) + '" aria-expanded="false">' +
               '<span class="rejilla__lamina" data-revelar data-revelar-orden="' + (i % 4) + '">' +
                 N.imgHTML({ base: p.img, tipo: "obra", alt: p.alt, ratio: p.ratio, foco: p.foco,
                             sizes: "(min-width: 60rem) 22vw, 62vw" }) +
@@ -229,6 +229,258 @@
       : "");
     var seccion = host && host.closest("section");
     if (seccion) seccion.hidden = !elegidas.length;
+  })();
+
+  /* La foto que se abre sobre la muestra. Adaptado de «Opening a
+     photograph» (Raul, en bencho.dev): al pulsar una foto, crece desde su
+     hueco hasta verse entera en el centro, con su pie en negro, y las demás
+     se quedan detrás, fundidas con el gris. Al cerrarla vuelve encogiendo a
+     su sitio. La foto grande no se estira: sale del recorte exacto de la
+     miniatura (su 4:5 y su foco) y se va abriendo hasta la proporción real
+     de la foto, con un solo transform y un clip-path.
+     Mientras está abierta, lo de detrás es inerte: Escape, «Cerrar», un clic
+     fuera o sobre la propia foto la devuelven. «Pantalla completa» abre el
+     visor de siempre. Con «reducir movimiento», aparece y se va sin viajar. */
+  (function galeriaQueSeAbre() {
+    var host = $("[data-inicio-trabajos]");
+    var lista = host && $(".muestra", host);
+    if (!lista) return;
+    var seccion = host.closest("section");
+    var fotos = N.grupos.muestra || [];
+    var V = T.visor, M = I.trabajos;
+    /* Abrir, con la curva de los cajones (arranca decidida y se posa
+       despacio); cerrar, con la de salida, más corta.                     */
+    var ABRIR = "cubic-bezier(0.32, 0.72, 0, 1)", CURVA = "cubic-bezier(0.23, 1, 0.32, 1)";
+    var panel = null, abierta = null, anim = null;
+    /* El cierre que está en viaje: si se abre otra antes de que acabe, se
+       termina en el acto (su miniatura vuelve) y se empieza la nueva.      */
+    var cierrePendiente = null, abiertaDesde = 0;
+
+    /* Ninguna animación se queda pegada al panel: la de cierre termina en
+       su sitio de partida (fill) y, si no se quitara, la siguiente foto
+       saldría con la posición y el recorte de la anterior.                */
+    function soltarAnimaciones() {
+      if (!panel) return;
+      panel.getAnimations({ subtree: true }).forEach(function (x) { x.cancel(); });
+      anim = null;
+    }
+
+    function porId(id) { return fotos.filter(function (f) { return f.id === id; })[0]; }
+    function altoBarra() { var n = $("[data-nav]"); return n ? n.getBoundingClientRect().height : 0; }
+
+    /* Se crea al abrir la primera: así no se cuela en el HTML volcado. */
+    function crearPanel() {
+      panel = document.createElement("figure");
+      panel.className = "muestra__abierta";
+      panel.id = "muestra-abierta";
+      panel.tabIndex = -1;
+      panel.hidden = true;
+      host.appendChild(panel);
+      panel.addEventListener("click", function (e) {
+        if (e.target.closest("[data-cerrar]")) cerrar(true);
+        /* Tocar la foto también la devuelve, pero no justo al abrirla: el
+           segundo toque de un doble clic caería encima y la cerraría.      */
+        else if (e.target.closest(".muestra__foto") && performance.now() - abiertaDesde > 400) cerrar(true);
+      });
+    }
+
+    function pieHTML(p) {
+      var a = p.artista ? N.artistaPor(p.artista) : null;
+      var e = p.estilo ? N.estiloPor(p.estilo) : null;
+      var de = (a ? " de " + a.nombre : "") + (e ? " (" + e.nombre + ")" : "");
+      var que = [e && e.nombre, p.titulo].filter(Boolean).join(" · ");
+      return '<figcaption class="muestra__pie en-negro">' +
+        '<div class="muestra__cabeza">' +
+          '<p class="muestra__ficha">' +
+            (a ? artistaHTML(a, "etiqueta muestra__artista") : "") +
+            (que ? '<span class="muestra__que">' + esc(que) + "</span>" : "") +
+          "</p>" +
+          '<button class="btn btn--quiet muestra__cerrar" type="button" data-cerrar>' + esc(V.cerrar) + "</button>" +
+        "</div>" +
+        '<p class="muestra__acciones">' +
+          botonWasap(V.quiero, N.rellenar(V.mensaje, { de: de, enlace: N.urlPagina("inicio") + "#obra-" + p.id }), "btn--macizo") +
+          '<button class="btn" type="button" data-abrir="' + esc(p.id) + '" data-grupo="muestra">' + esc(M.completa) + "</button>" +
+        "</p>" +
+      "</figcaption>";
+    }
+
+    /* Dónde y a qué tamaño va la foto abierta: centrada sobre la rejilla y
+       en la parte de pantalla que queda bajo la barra, con la foto entera y
+       su pie. En coordenadas de la pantalla.                               */
+    function destino(p) {
+      var rg = lista.getBoundingClientRect();
+      var arriba = altoBarra() + 16, abajo = window.innerHeight - 16;
+      var altoLibre = abajo - arriba;
+      var anchoMax = Math.min(rg.width, 44 * 16);
+      var foto = $(".muestra__foto", panel), pie = $(".muestra__pie", panel);
+      /* El pie mide distinto según el ancho que le toque (al estrecharse,
+         sus botones bajan a otra fila y crece): se ajusta hasta que foto y
+         pie caben juntos en el hueco. Tres o cuatro vueltas bastan.        */
+      var ancho = anchoMax, altoPie = 0;
+      for (var i = 0; i < 6; i++) {
+        panel.style.width = ancho + "px";
+        altoPie = pie.getBoundingClientRect().height;
+        var cabe = Math.min(anchoMax, (altoLibre - altoPie) * p.ratio);
+        if (Math.abs(cabe - ancho) < 1 && ancho / p.ratio + altoPie <= altoLibre + 0.5) break;
+        ancho = Math.max(120, cabe);
+      }
+      panel.style.width = ancho + "px";
+      altoPie = pie.getBoundingClientRect().height;
+      var altoFoto = ancho / p.ratio;
+      var alto = altoFoto + altoPie;
+      return {
+        izq: rg.left + (rg.width - ancho) / 2,
+        arr: arriba + Math.max(0, (altoLibre - alto) / 2),
+        ancho: ancho, altoFoto: altoFoto, altoPie: altoPie
+      };
+    }
+
+    /* El punto de partida: la miniatura. La foto grande, escalada por igual,
+       recortada a lo que enseña la miniatura (el mismo encuadre que su
+       object-fit: cover con su foco).                                       */
+    function desde(p, d, miniatura) {
+      var r = miniatura.getBoundingClientRect();
+      var foco = String(p.foco || "50% 50%").split(/\s+/).map(function (v) { return parseFloat(v) / 100; });
+      var fx = isNaN(foco[0]) ? 0.5 : foco[0], fy = isNaN(foco[1]) ? 0.5 : foco[1];
+      var s, t = 0, der = 0, b = d.altoPie, izq = 0;
+      if (d.ancho / d.altoFoto < r.width / r.height) {
+        s = r.width / d.ancho;
+        var sobraAlto = d.altoFoto - r.height / s;
+        t = sobraAlto * fy; b += sobraAlto * (1 - fy);
+      } else {
+        s = r.height / d.altoFoto;
+        var sobraAncho = d.ancho - r.width / s;
+        izq = sobraAncho * fx; der = sobraAncho * (1 - fx);
+      }
+      return {
+        transform: "translate(" + (r.left - d.izq - s * izq) + "px," + (r.top - d.arr - s * t) + "px) scale(" + s + ")",
+        clipPath: "inset(" + t + "px " + der + "px " + b + "px " + izq + "px)"
+      };
+    }
+
+    function colocar(d) {
+      var rh = host.getBoundingClientRect();
+      panel.style.left = (d.izq - rh.left) + "px";
+      panel.style.top = (d.arr - rh.top) + "px";
+    }
+
+    function abrir(id, boton) {
+      var p = porId(id);
+      if (!p || abierta) return;
+      if (!panel) crearPanel();
+      if (cierrePendiente) cierrePendiente();
+      soltarAnimaciones();
+      var miniatura = $(".rejilla__lamina", boton);
+      var previa = $("img", miniatura);
+      panel.innerHTML =
+        '<div class="muestra__foto" style="aspect-ratio:' + p.ratio + '">' +
+          '<img class="muestra__previa" src="' + esc(previa ? previa.currentSrc || previa.src : "") + '" alt="">' +
+          N.imgHTML({ base: p.img, tipo: "obra", alt: p.alt, ratio: p.ratio, eager: true, clase: "muestra__grande",
+                      sizes: "(min-width: 60rem) 44rem, 92vw" }) +
+        "</div>" + pieHTML(p);
+      var grande = $(".muestra__grande", panel);
+      grande.addEventListener("load", function () { grande.setAttribute("data-lista", ""); });
+      if (grande.complete && grande.naturalWidth) grande.setAttribute("data-lista", "");
+
+      panel.hidden = false;
+      panel.style.pointerEvents = "";
+      panel.style.visibility = "hidden";
+      var d = destino(p);
+      colocar(d);
+      panel.style.visibility = "";
+      abierta = { id: id, boton: boton, miniatura: miniatura, p: p };
+      abiertaDesde = performance.now();
+
+      host.setAttribute("data-abierta", "");
+      if (seccion) seccion.setAttribute("data-muestra-abierta", "");
+      boton.setAttribute("aria-expanded", "true");
+      miniatura.style.visibility = "hidden";
+      lista.inert = true;
+      var accion = $(".muestra__accion", host);
+      if (accion) accion.inert = true;
+
+      if (N.quieto()) {
+        anim = panel.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 160, easing: "ease" });
+      } else {
+        anim = panel.animate([desde(p, d, miniatura), { transform: "none", clipPath: "inset(0px 0px 0px 0px)" }],
+                             { duration: 600, easing: ABRIR });
+        $(".muestra__pie", panel).animate([{ opacity: 0 }, { opacity: 0, offset: 0.4 }, { opacity: 1 }],
+                                          { duration: 600, easing: "ease" });
+      }
+      panel.focus({ preventScroll: true });
+    }
+
+    function cerrar(conFoco) {
+      if (!abierta) return;
+      var a = abierta;
+      abierta = null;
+      host.removeAttribute("data-abierta");
+      if (seccion) seccion.removeAttribute("data-muestra-abierta");
+      a.boton.setAttribute("aria-expanded", "false");
+      lista.inert = false;
+      var accion = $(".muestra__accion", host);
+      if (accion) accion.inert = false;
+      function fin() {
+        cierrePendiente = null;
+        soltarAnimaciones();
+        panel.hidden = true;
+        panel.innerHTML = "";
+        a.miniatura.style.visibility = "";
+      }
+      cierrePendiente = fin;
+      /* Mientras vuelve no se puede tocar: el toque tiene que llegar a la
+         miniatura que haya debajo, por si se quiere abrir otra ya.         */
+      panel.style.pointerEvents = "none";
+      /* Si aún iba de camino, vuelve desde donde está: la misma animación,
+         al revés, sin saltar al final.                                     */
+      if (anim && anim.playState === "running" && !N.quieto()) {
+        panel.getAnimations({ subtree: true }).forEach(function (x) { x.reverse(); });
+        anim.onfinish = fin;
+        if (conFoco) a.boton.focus({ preventScroll: true });
+        return;
+      }
+      soltarAnimaciones();
+      if (N.quieto()) {
+        anim = panel.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 120, easing: "ease" });
+      } else {
+        var r = panel.getBoundingClientRect(), fp = $(".muestra__foto", panel).getBoundingClientRect();
+        var d = { izq: r.left, arr: r.top, ancho: r.width, altoFoto: fp.height, altoPie: r.height - fp.height };
+        anim = panel.animate([{ transform: "none", clipPath: "inset(0px 0px 0px 0px)" }, desde(a.p, d, a.miniatura)],
+                             { duration: 420, easing: CURVA, fill: "forwards" });
+      }
+      anim.onfinish = fin;
+      if (conFoco) a.boton.focus({ preventScroll: true });
+    }
+
+    lista.addEventListener("click", function (e) {
+      var b = e.target.closest("[data-desplegar]");
+      if (b) abrir(b.getAttribute("data-desplegar"), b);
+    });
+    document.addEventListener("click", function (e) {
+      if (abierta && panel && !panel.contains(e.target) && !e.target.closest("[data-desplegar]") &&
+          !e.target.closest("[data-visor]")) cerrar(false);
+    });
+    document.addEventListener("keydown", function (e) {
+      var visor = $("[data-visor]");
+      if (e.key === "Escape" && abierta && !(visor && visor.open)) cerrar(true);
+    });
+    /* Si cambia el ancho de la pantalla, la foto se cierra sin viaje: su
+       sitio y su tamaño ya no valdrían.                                     */
+    var anchoAntes = window.innerWidth;
+    window.addEventListener("resize", function () {
+      if (!abierta || window.innerWidth === anchoAntes) return;
+      anchoAntes = window.innerWidth;
+      soltarAnimaciones();
+      var a = abierta; abierta = null;
+      host.removeAttribute("data-abierta");
+      if (seccion) seccion.removeAttribute("data-muestra-abierta");
+      a.boton.setAttribute("aria-expanded", "false");
+      lista.inert = false;
+      var accion = $(".muestra__accion", host);
+      if (accion) accion.inert = false;
+      panel.hidden = true; panel.innerHTML = "";
+      a.miniatura.style.visibility = "";
+    });
   })();
 
   /* Los cuatro oficios, como carteles: la tarjeta de tatuajes, grande, con un

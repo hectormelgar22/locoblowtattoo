@@ -95,34 +95,82 @@
 }
 
 /* --- TRABAJOS · la muestra ------------------------------------------------- */
-/* En el móvil, una tira que se desliza de lado con la siguiente foto cortada
-   en el borde, para que se vea que sigue. En escritorio, cuatro columnas.   */
+/* Una rejilla: dos columnas en el móvil, cuatro en escritorio. Al pulsar
+   una foto se abre encima de las demás, en su proporción real y con su pie
+   en negro (paginas.js, galeriaQueSeAbre). Las de detrás no se oscurecen:
+   se funden con el gris del suelo y retroceden un poco, como en el cartel,
+   donde manda una sola cosa.                                               */
+
+[data-inicio-trabajos] { position: relative; }
 
 .muestra {
-  display: flex;
-  gap: var(--s3);
-  margin: 0 calc(var(--gutter) * -1);
-  padding: 0 var(--gutter);
-  scroll-padding-inline: var(--gutter);
-  overflow-x: auto;
-  overscroll-behavior-x: contain;
-  scroll-snap-type: x mandatory;
-  scrollbar-width: none;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--s4) var(--s3);
 }
-.muestra::-webkit-scrollbar { display: none; }
-.muestra__item { flex: 0 0 62%; min-width: 0; scroll-snap-align: start; }
+.muestra__item { min-width: 0; }
 .muestra__accion { margin-top: var(--s6); }
+
+.muestra__item,
+[data-muestra-abierta] .cab,
+.muestra__accion {
+  transition: opacity 400ms ease, transform 500ms var(--ease-out);
+}
+[data-abierta] .muestra__item { opacity: 0.14; transform: scale(0.97); }
+[data-muestra-abierta] .cab,
+[data-abierta] .muestra__accion { opacity: 0.14; }
+
+/* La foto abierta. Parte del hueco de su miniatura (transform y clip-path
+   desde paginas.js) y termina aquí: sin radio, sin sombra, con un filete. */
+.muestra__abierta {
+  position: absolute;
+  z-index: var(--z-sticky);
+  margin: 0;
+  transform-origin: 0 0;
+  outline: var(--hair) solid var(--tinta);
+}
+.muestra__abierta:focus { outline: var(--hair) solid var(--tinta); }
+.muestra__abierta[hidden] { display: none; }
+
+.muestra__foto {
+  position: relative;
+  overflow: hidden;
+  background: var(--suelo-hondo);
+  cursor: zoom-out;
+}
+.muestra__foto img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+/* La miniatura, ya bajada, sale al momento; la grande entra encima cuando
+   llega, sin saltos.                                                       */
+.muestra__grande { opacity: 0; transition: opacity var(--t-ui) ease; }
+.muestra__grande[data-lista] { opacity: 1; }
+
+.muestra__pie { display: grid; gap: var(--s3); padding: var(--s3) var(--s4) var(--s4); }
+.muestra__cabeza { display: flex; align-items: center; justify-content: space-between; gap: var(--s3); }
+.muestra__ficha { display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--s1) var(--s3); margin: 0; min-width: 0; }
+.muestra__cerrar { flex: none; }
+.muestra__artista { color: var(--claro); }
+a.muestra__artista { display: inline-block; padding-block: 6px; margin-block: -6px; text-decoration-thickness: 1px; }
+.muestra__que { font-size: var(--fs-sm); color: var(--noche-2); }
+.muestra__acciones { display: flex; flex-wrap: wrap; gap: var(--s2); margin: 0; }
+/* Lado a lado si caben enteros; si no, uno debajo de otro, sin partirse. */
+.muestra__acciones .btn { flex: 1 1 12rem; padding-inline: var(--s3); white-space: nowrap; }
+
+@media (prefers-reduced-motion: reduce) {
+  .muestra__item, [data-muestra-abierta] .cab, .muestra__accion, .muestra__grande { transition: none; }
+  [data-abierta] .muestra__item { transform: none; }
+}
 
 @media (min-width: 48rem) {
   .muestra {
-    display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: var(--s5) var(--s4);
-    margin: 0;
-    padding: 0;
-    overflow: visible;
   }
-  .muestra__item { flex: none; }
 }
 
 /* --- LO QUE HACEMOS · los cuatro oficios, en carteles --------------------- */

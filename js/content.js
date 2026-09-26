@@ -154,6 +154,9 @@ window.STUDIO = {
         titular: "Hecho aquí.",
         entradilla: "Una muestra de cada estilo. Toca una para verla entera y, si te gusta, nos la mandas tal cual.",
         verTodos: "Ver todos los tatuajes",
+        // La foto abierta sobre la muestra: su botón para verla a pantalla
+        // completa (el cerrar y el «quiero algo así» son los del visor).
+        completa: "Pantalla completa",
         cuantas: 8
       },
 
