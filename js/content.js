@@ -10,7 +10,7 @@
    Dos reglas al editar:
    · Las comas y las comillas importan. Si la web se queda en blanco, casi
      seguro falta una coma o sobra una. El navegador lo dice en la consola (F12).
-   · Los `id` y los `slug` son direcciones: cambiar «black-and-grey» por otra
+   · Los `id` y los `slug` son direcciones: cambiar «puntillismo» por otra
      cosa rompe los enlaces ya compartidos. El texto visible se cambia sin
      miedo.
 
@@ -223,7 +223,8 @@ window.STUDIO = {
       // cambia por su nombre.
       mensajeEstilo: "Hola, os escribo desde la web. Quiero un tatuaje de estilo {estilo}: te cuento la idea, la zona y el tamaño aproximado.",
       botonEstilo: "Quiero este estilo",
-      pendiente: "Las fotos de este estilo llegan con los originales del estudio"
+      // Lo que dice un estilo que aún no tiene fotos.
+      pendiente: "Pronto, trabajos de este estilo aquí. Si es lo que buscas, escríbenos y te enseñamos más."
     },
 
     // El visor a pantalla completa de las fotos.
@@ -234,7 +235,7 @@ window.STUDIO = {
       siguiente: "Trabajo siguiente",
       pista: "Desliza o toca a los lados de la foto para pasar. Con teclado, las flechas.",
       // El botón que manda esa misma foto por WhatsApp: así el estudio sabe
-      // qué pieza y de quién. {de} se cambia por « de Gaby (Black & grey)» y
+      // qué pieza y de quién. {de} se cambia por « de Haroz (Realismo)» y
       // {enlace}, por la dirección de la foto.
       quiero: "Quiero algo así",
       mensaje: "Hola, os escribo desde la web. Me gusta este trabajo{de}: {enlace}"
@@ -264,7 +265,7 @@ window.STUDIO = {
       equipo: "Y cada artista, en el suyo",
       // Los trabajos de la cuadrícula (los `id` de la lista 5, solo fotos).
       // Mejor distintos de los que salen en la muestra del inicio.
-      fotos: ["bg-3", "an-3", "bg-4", "an-6", "an-7", "an-5"]
+      fotos: ["bg-3", "an-3", "an-1", "an-6", "an-7", "an-5"]
     }
   },
 
@@ -299,7 +300,7 @@ window.STUDIO = {
       boton: "Pedir cita para tatuarme",
       meta: {
         titulo: "Tatuajes en A Coruña por estilos · Loco Blow Tattoo",
-        descripcion: "Black & grey, anime, blackwork, tradicional y más: los trabajos del estudio por estilos, con el artista de cada uno. Cita previa por WhatsApp."
+        descripcion: "Realismo, microrealismo, fine line, blackwork, tradicional, acuarela y puntillismo: los trabajos del estudio por estilos, con el artista de cada uno. Cita previa por WhatsApp."
       },
       preguntas: [
         {
@@ -574,34 +575,40 @@ window.STUDIO = {
 
   /* --- 4. ESTILOS ---------------------------------------------------------- */
   // La página de tatuajes va por estilos, no por tatuadores: una sección por
-  // estilo, en este orden, con sus 5 a 10 mejores fotos.
-  // FUENTE: el estudio lo pide así (24/09/2026): «black and grey», «anime»…
-  // hasta seis. PROVISIONAL: pendiente de la lista definitiva de los seis;
-  // los cuatro últimos salen de la biografía de Instagram.
+  // estilo, en este orden, con sus mejores fotos.
+  // FUENTE: la lista del estudio (27/09/2026): Realismo, Microrealismo, Fine
+  // line, Blackwork, Tradicional, Acuarela y Puntillismo.
   //
-  // `id` es la dirección de la sección: <dominio>/tatuajes#anime
+  // `id` es la dirección de la sección: <dominio>/tatuajes#puntillismo
+  // `antes` son direcciones viejas que llevan aquí (enlaces ya compartidos
+  // cuando los estilos eran otros): no se borran.
   //
-  // Un estilo sin ningún trabajo no sale (ni su sección, ni en la barra, ni
-  // en el inicio): aparece solo en cuanto tenga el primero.
+  // Un estilo sin ningún trabajo todavía sale igual, con su hueco y su
+  // botón de WhatsApp, pero al final de la página: en cuanto tenga su
+  // primera foto, ocupa su sitio en este orden.
   estilos: [
-    { id: "black-and-grey", nombre: "Black & grey",
-      descripcion: "Realismo en negro y grises: retratos, animales y figuras, con la sombra trabajada a mano." },
-    { id: "anime",          nombre: "Anime",
-      descripcion: "Personajes de anime, manga y dibujos animados, en negro o a color, fieles al trazo del original." },
-    { id: "fine-line",      nombre: "Fine line",
-      descripcion: "Línea fina y detalle pequeño: letras, flores y símbolos." },
-    { id: "blackwork",      nombre: "Blackwork",
-      descripcion: "Negro macizo y sombra: piezas grandes de inspiración japonesa, calaveras y ornamento." },
-    { id: "tradicional",    nombre: "Tradicional",
+    { id: "realismo",      nombre: "Realismo", antes: ["black-and-grey"],
+      descripcion: "Retratos, animales y figuras en negro y grises, con la sombra trabajada a mano hasta que parecen una foto." },
+    { id: "microrealismo", nombre: "Microrealismo",
+      descripcion: "Realismo en pequeño: retratos, animales y objetos con todo su detalle en pocos centímetros." },
+    { id: "fine-line",     nombre: "Fine line",
+      descripcion: "Línea fina y detalle pequeño: flores, personajes y símbolos, en negro o con un toque de color." },
+    { id: "blackwork",     nombre: "Blackwork", antes: ["anime"],
+      descripcion: "Negro macizo y sombra dura: piezas grandes de inspiración japonesa, anime, calaveras y ornamento." },
+    { id: "tradicional",   nombre: "Tradicional",
       descripcion: "Línea gruesa y color plano, de la escuela de siempre." },
-    { id: "acuarela",       nombre: "Acuarela",
-      descripcion: "Color que se funde como en el papel, con o sin línea." }
+    { id: "acuarela",      nombre: "Acuarela",
+      descripcion: "Color que se funde como en el papel, con o sin línea." },
+    { id: "puntillismo",   nombre: "Puntillismo",
+      descripcion: "La sombra, punto a punto: tonos suaves y un acabado que recuerda al grabado." }
   ],
 
   /* --- 5. OBRAS · los trabajos de tatuaje -------------------------------- */
-  // Entre 5 y 10 por estilo, en el orden en que se ven. Cada uno es una foto
-  // (`img`) o un reel (`video`, la clave de la lista 8), y lleva su estilo y
-  // quién lo hizo (`artista`, de la lista 6; vacío si no se sabe).
+  // En el orden en que se ven. Cada uno es una foto (`img`) o un reel
+  // (`video`, la clave de la lista 8), y lleva su estilo y quién lo hizo
+  // (`artista`, de la lista 6; vacío si no se sabe).
+  // En la rejilla van de tres en tres: se alternan fotos y reels, y las
+  // piezas que se parecen van juntas.
   //
   // Cuando llegue una foto (tools/originales/tatuajes/<estilo>/):
   //   1. tools/fetch-images.py la convierte y dice su proporción.
@@ -612,71 +619,63 @@ window.STUDIO = {
   //      "50% 20%" la sube. A pantalla completa la foto se ve entera.
   //   3. python tools/sync-contenido.py
   //
-  // Una foto se comparte con su dirección: <dominio>/tatuajes#obra-bg-1
+  // Una foto se comparte con su dirección: <dominio>/tatuajes#obra-bg-1.
+  // Por eso el `id` no cambia aunque la foto cambie de estilo (bg-* y an-*
+  // son de cuando había «Black & grey» y «Anime»).
   //
   // PROVISIONAL: las fotos y los reels los pasó el estudio sacados de
-  // Instagram (24/09/2026). Se cambian por los originales cuando lleguen.
+  // Instagram (24 y 25/09/2026). Se cambian por los originales cuando lleguen.
+  // PROVISIONAL: el estilo de cada pieza lo ha puesto la web por su técnica
+  // (27/09/2026); pendiente de que el estudio lo revise.
   obras: [
-    // --- Black & grey
-    { id: "bg-1", estilo: "black-and-grey", artista: "haroz", titulo: "Tengu",
+    // --- Realismo: figuras y retratos primero, animales después
+    { id: "bg-1", estilo: "realismo", artista: "haroz", titulo: "Tengu",
       alt: "Máscara de tengu en negro y grises en el antebrazo, de nariz larga y ceño fruncido, rodeada de plumas.",
       img: "bg-1", ratio: 0.8102 },
-    { id: "v-retrato", estilo: "black-and-grey", artista: "haroz", video: "retrato" },
-    { id: "bg-2", estilo: "black-and-grey", artista: "raul", titulo: "Torre de Hércules",
-      alt: "La Torre de Hércules en negro y grises, con los tentáculos de un pulpo enroscados alrededor de la torre.",
-      img: "bg-2", ratio: 0.7997 },
-    { id: "v-payasa", estilo: "black-and-grey", artista: "", video: "payasa" },
-    { id: "bg-3", estilo: "black-and-grey", artista: "haroz", titulo: "Gato esfinge",
-      alt: "Retrato realista de un gato esfinge en el antebrazo, en negro y grises, con los ojos en verde claro.",
-      img: "bg-3", ratio: 0.7602 },
-    { id: "v-tortuga", estilo: "black-and-grey", artista: "", video: "tortuga" },
-    { id: "bg-4", estilo: "black-and-grey", artista: "raul", titulo: "Samurái",
+    { id: "v-retrato", estilo: "realismo", artista: "haroz", video: "retrato" },
+    { id: "bg-4", estilo: "realismo", artista: "raul", titulo: "Samurái",
       alt: "Samurái con armadura y katana en negro y grises en el antebrazo, con una pagoda y el sol detrás.",
       img: "bg-4", ratio: 0.9907 },
-    { id: "v-perro", estilo: "black-and-grey", artista: "", video: "perro" },
+    { id: "v-payasa", estilo: "realismo", artista: "", video: "payasa" },
+    { id: "bg-2", estilo: "realismo", artista: "raul", titulo: "Torre de Hércules",
+      alt: "La Torre de Hércules en negro y grises, con los tentáculos de un pulpo enroscados alrededor de la torre.",
+      img: "bg-2", ratio: 0.7997 },
+    { id: "v-perro", estilo: "realismo", artista: "", video: "perro" },
+    { id: "bg-3", estilo: "realismo", artista: "haroz", titulo: "Gato esfinge",
+      alt: "Retrato realista de un gato esfinge en el antebrazo, en negro y grises, con los ojos en verde claro.",
+      img: "bg-3", ratio: 0.7602 },
+    { id: "v-tortuga", estilo: "realismo", artista: "", video: "tortuga" },
 
-    // --- Anime
-    { id: "an-1", estilo: "anime", artista: "maou", titulo: "Luffy",
-      alt: "Luffy, de One Piece, gritando con los puños apretados, en negro y rojo en el brazo, con el cartel de «Wanted» abajo.",
-      img: "an-1", ratio: 0.79 },
-    { id: "v-aot", estilo: "anime", artista: "pepi", video: "aot" },
-    { id: "an-2", estilo: "anime", artista: "", titulo: "Nicky, la aprendiz de bruja",
-      alt: "Nicky, la aprendiz de bruja, volando en su escoba con el gato Jiji, en línea fina y punteado en el brazo.",
-      img: "an-2", ratio: 0.751 },
-    { id: "an-3", estilo: "anime", artista: "maou", titulo: "",
-      alt: "Manga de anime en negro y grises en el antebrazo: un chico de pelo de punta que sonríe entre rayos y sombras.",
-      img: "an-3", ratio: 0.7986 },
-    { id: "v-garfield", estilo: "anime", artista: "pepi", video: "garfield" },
-    { id: "an-5", estilo: "anime", artista: "maou", titulo: "",
-      alt: "Personajes de anime en negro y grises en el antebrazo: una chica que asoma entre nubes y, debajo, otro personaje con gafas.",
-      img: "an-5", ratio: 0.7959 },
-    { id: "an-6", estilo: "anime", artista: "", titulo: "Totoro",
-      alt: "Totoro y los dos pequeños de la película de Ghibli, en fila, en línea fina y punteado en el muslo.",
-      img: "an-6", ratio: 0.7514 },
-    { id: "v-perfilado", estilo: "anime", artista: "pepi", video: "perfilado" },
-    { id: "an-7", estilo: "anime", artista: "haroz", titulo: "Bulbasaur",
-      alt: "Bulbasaur, de Pokémon, en línea fina y punteado en negro, en el gemelo.",
-      img: "an-7", ratio: 0.7905 },
-    { id: "an-4", estilo: "anime", artista: "pepi", titulo: "Garfield",
-      alt: "Garfield a color con un ramo de margaritas, pequeño, en el antebrazo.",
-      img: "an-4", ratio: 0.7894 },
-
-    // --- Fine line
+    // --- Fine line: línea fina, en negro y luego con color
     { id: "fl-1", estilo: "fine-line", artista: "tbh", titulo: "Peonías",
       alt: "Peonías y flores pequeñas con hojas en línea fina y sombra suave, a lo largo del muslo.",
       img: "fl-1", ratio: 0.7876 },
-    { id: "fl-2", estilo: "fine-line", artista: "tbh", titulo: "Ciervo volante",
-      alt: "Escarabajo ciervo volante con las alas abiertas, en línea fina y punteado, en la pierna.",
-      img: "fl-2", ratio: 0.8489 },
+    { id: "an-2", estilo: "fine-line", artista: "", titulo: "Nicky, la aprendiz de bruja",
+      alt: "Nicky, la aprendiz de bruja, volando en su escoba con el gato Jiji, en línea fina y punteado en el brazo.",
+      img: "an-2", ratio: 0.751 },
+    { id: "v-garfield", estilo: "fine-line", artista: "pepi", video: "garfield" },
+    { id: "an-4", estilo: "fine-line", artista: "pepi", titulo: "Garfield",
+      alt: "Garfield a color con un ramo de margaritas, pequeño, en el antebrazo.",
+      img: "an-4", ratio: 0.7894 },
 
-    // --- Blackwork
+    // --- Blackwork: lo japonés y oscuro, y después el anime en negro macizo
     { id: "bw-1", estilo: "blackwork", artista: "maou", titulo: "Dragón japonés",
       alt: "Dragón japonés en negro macizo en el antebrazo, entre remolinos de viento y agua.",
       img: "bw-1", ratio: 0.7916 },
-    { id: "v-anubis", estilo: "blackwork", artista: "fer", video: "anubis" },
+    { id: "v-aot", estilo: "blackwork", artista: "pepi", video: "aot" },
     { id: "bw-2", estilo: "blackwork", artista: "maou", titulo: "Parca",
       alt: "Parca en negro y grises en el brazo: una calavera encapuchada que sostiene un reloj de arena.",
       img: "bw-2", ratio: 0.7959 },
+    { id: "an-1", estilo: "blackwork", artista: "maou", titulo: "Luffy",
+      alt: "Luffy, de One Piece, gritando con los puños apretados, en negro y rojo en el brazo, con el cartel de «Wanted» abajo.",
+      img: "an-1", ratio: 0.79 },
+    { id: "v-perfilado", estilo: "blackwork", artista: "pepi", video: "perfilado" },
+    { id: "an-3", estilo: "blackwork", artista: "maou", titulo: "",
+      alt: "Manga de anime en negro y grises en el antebrazo: un chico de pelo de punta que sonríe entre rayos y sombras.",
+      img: "an-3", ratio: 0.7986 },
+    { id: "an-5", estilo: "blackwork", artista: "maou", titulo: "",
+      alt: "Personajes de anime en negro y grises en el antebrazo: una chica que asoma entre nubes y, debajo, otro personaje con gafas.",
+      img: "an-5", ratio: 0.7959 },
 
     // --- Tradicional
     { id: "tr-1", estilo: "tradicional", artista: "fer", titulo: "",
@@ -684,7 +683,19 @@ window.STUDIO = {
       img: "tr-1", ratio: 0.7519 },
     { id: "tr-2", estilo: "tradicional", artista: "fer", titulo: "",
       alt: "Mujer con velo y una flor en el pecho, en tradicional en negro, en el muslo.",
-      img: "tr-2", ratio: 0.7602 }
+      img: "tr-2", ratio: 0.7602 },
+
+    // --- Puntillismo: de la pieza más sombreada a la más ligera
+    { id: "fl-2", estilo: "puntillismo", artista: "tbh", titulo: "Ciervo volante",
+      alt: "Escarabajo ciervo volante con las alas abiertas, en línea fina y punteado, en la pierna.",
+      img: "fl-2", ratio: 0.8489 },
+    { id: "v-anubis", estilo: "puntillismo", artista: "fer", video: "anubis" },
+    { id: "an-7", estilo: "puntillismo", artista: "haroz", titulo: "Bulbasaur",
+      alt: "Bulbasaur, de Pokémon, en línea fina y punteado en negro, en el gemelo.",
+      img: "an-7", ratio: 0.7905 },
+    { id: "an-6", estilo: "puntillismo", artista: "", titulo: "Totoro",
+      alt: "Totoro y los dos pequeños de la película de Ghibli, en fila, en línea fina y punteado en el muslo.",
+      img: "an-6", ratio: 0.7514 }
   ],
 
   /* --- 6. ARTISTAS --------------------------------------------------------- */

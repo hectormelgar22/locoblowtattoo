@@ -120,15 +120,17 @@
 
   function conFoto(lista) { return (lista || []).filter(function (p) { return p.img; }); }
 
-  /* Los trabajos de un estilo que se pueden ver, y los estilos que salen:
-     los que tienen alguno. Un estilo vacío no enseña una sección hueca;
-     aparece solo con su primer trabajo. Mientras no haya ningún trabajo
-     en ningún estilo, salen todos con su hueco.                            */
+  /* Los trabajos de un estilo que se pueden ver, y el orden de los
+     estilos: el de content.js, con los que aún no tienen ninguno al final.
+     Salen todos (es la lista del estudio), pero una sección con su hueco
+     entre dos llenas cortaría la página; al final, espera su primera foto
+     sin estorbar. CON_OBRAS son los que tienen: la muestra, la tarjeta del
+     inicio y la cuenta salen de ahí.                                        */
   function obrasDe(e) {
     return S.obras.filter(function (o) { return o.estilo === e.id && publicada(o); });
   }
-  var ESTILOS = S.estilos.filter(function (e) { return obrasDe(e).length; });
-  if (!ESTILOS.length) ESTILOS = S.estilos;
+  var CON_OBRAS = S.estilos.filter(function (e) { return obrasDe(e).length; });
+  var ESTILOS = CON_OBRAS.concat(S.estilos.filter(function (e) { return !obrasDe(e).length; }));
 
   /* Para el visor: todas las fotos que se pueden abrir en esta página, por
      grupo. visor.js las lee de aquí.                                        */
@@ -915,7 +917,8 @@
     var n = obras.length;
     return '<section class="estilo" id="' + esc(e.id) + '" aria-labelledby="t-' + esc(e.id) + '">' +
       '<header class="estilo__cab">' +
-        '<h2 class="d2 estilo__nombre" id="t-' + esc(e.id) + '">' + esc(e.nombre) + "</h2>" +
+        '<h2 class="d2 estilo__nombre" id="t-' + esc(e.id) + '" style="--letras:' + palabraMasLarga(e.nombre) + '">' +
+          esc(e.nombre) + "</h2>" +
         (e.descripcion ? '<p class="estilo__desc">' + esc(e.descripcion) + "</p>" : "") +
         '<p class="estilo__accion">' +
           botonWasap(TT.botonEstilo, N.rellenar(TT.mensajeEstilo, { estilo: e.nombre.toLowerCase() }),
@@ -926,6 +929,23 @@
       "</div>" +
     "</section>";
   }).join(""));
+
+  /* Direcciones viejas de los estilos (tatuajes#black-and-grey, #anime):
+     enlaces que alguien ya compartió llevan a la sección que los recoge. */
+  (function direccionesViejas() {
+    if (!$("[data-estilos]")) return;
+    function ir() {
+      var viejo = decodeURIComponent(location.hash.slice(1));
+      if (!viejo || document.getElementById(viejo)) return;
+      var e = S.estilos.filter(function (x) { return (x.antes || []).indexOf(viejo) > -1; })[0];
+      var destino = e && document.getElementById(e.id);
+      if (!destino) return;
+      history.replaceState(null, "", location.pathname + location.search + "#" + e.id);
+      destino.scrollIntoView();
+    }
+    ir();
+    window.addEventListener("hashchange", ir);
+  })();
 
   /* La barra de estilos (y la de las guías de cuidados) marca con
      corchetes el que estás viendo: el último cuya cabeza ha pasado ya la

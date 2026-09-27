@@ -868,8 +868,12 @@ a.muestra__artista { display: inline-block; padding-block: 6px; margin-block: -6
   border-bottom: var(--hair) solid var(--filete);
   scroll-margin-top: var(--alto-estilos);   /* la barra fija ya la reserva <html> */
 }
-.estilo__cab { display: grid; gap: var(--s3); align-content: start; }
-.estilo__nombre { overflow-wrap: anywhere; }
+.estilo__cab { display: grid; gap: var(--s3); align-content: start; min-width: 0; container-type: inline-size; }
+.estilo__cab > * { justify-self: start; }
+/* El nombre, entero en su columna: «Microrealismo» no cabe a tamaño d2
+   junto a las fotos, y partido a media palabra no se lee. Tope por la
+   palabra más larga (--letras), como los titulares de cada servicio.   */
+.estilo__nombre { font-size: min(var(--fs-d2), calc(100cqi / (var(--letras, 9) * 0.6))); }
 .estilo__desc { color: var(--tinta-2); max-width: 40ch; }
 .estilo__accion { margin-top: var(--s2); }
 .estilo__obras { min-width: 0; }
