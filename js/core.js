@@ -519,21 +519,7 @@
     /* Por eso nace escondido (CSS) y solo se enseña con la marca
        data-cta-fuera: sin ella, en el primer pintado aparecería un instante
        encima de la cabecera antes de que esto llegara a ocultarlo.         */
-    var ctas = $$("[data-cta]");
-    if (ctas.length && "IntersectionObserver" in window) {
-      var aLaVista = [];
-      var obs = new IntersectionObserver(function (entradas) {
-        entradas.forEach(function (e) {
-          var i = aLaVista.indexOf(e.target);
-          if (e.isIntersecting && i === -1) aLaVista.push(e.target);
-          if (!e.isIntersecting && i !== -1) aLaVista.splice(i, 1);
-        });
-        document.documentElement.toggleAttribute("data-cta-fuera", !aLaVista.length);
-      });
-      ctas.forEach(function (c) { obs.observe(c); });
-    } else {
-      document.documentElement.setAttribute("data-cta-fuera", "");
-    }
+    vigilarCtas();
 
     /* Sobre el pie negro el botón se invierte: si no, sería negro sobre negro. */
     var pie = $("[data-pie]");
@@ -544,6 +530,32 @@
         document.documentElement.toggleAttribute("data-pie-visible", e[0].isIntersecting);
       }, { rootMargin: "0px 0px -76px 0px" }).observe(pie);
     }
+  }
+
+  /* Los botones de cita que hay en la página, vigilados. Se puede volver a
+     llamar: paginas.js repinta las secciones y con ellas sus botones, y un
+     observador que siguiera mirando los de antes (ya fuera del documento)
+     no vería nunca los nuevos. Cada llamada empieza de cero con los que
+     haya ahora.                                                           */
+  var obsCtas = null;
+  function vigilarCtas() {
+    if (!document.documentElement.hasAttribute("data-wasap-activo")) return;
+    var ctas = $$("[data-cta]");
+    if (!ctas.length || !("IntersectionObserver" in window)) {
+      document.documentElement.setAttribute("data-cta-fuera", "");
+      return;
+    }
+    if (obsCtas) obsCtas.disconnect();
+    var aLaVista = [];
+    obsCtas = new IntersectionObserver(function (entradas) {
+      entradas.forEach(function (e) {
+        var i = aLaVista.indexOf(e.target);
+        if (e.isIntersecting && i === -1) aLaVista.push(e.target);
+        if (!e.isIntersecting && i !== -1) aLaVista.splice(i, 1);
+      });
+      document.documentElement.toggleAttribute("data-cta-fuera", !aLaVista.length);
+    });
+    ctas.forEach(function (c) { obsCtas.observe(c); });
   }
 
   /* --- vídeos ---------------------------------------------------------------- */
@@ -733,6 +745,7 @@
     videoHTML: videoHTML, lineaCiudad: lineaCiudad,
     /* Los módulos los llaman después de inyectar piezas nuevas. */
     revelar: montarRevelado,
-    videos: montarVideos
+    videos: montarVideos,
+    ctas: vigilarCtas
   };
 })();

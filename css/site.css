@@ -425,9 +425,12 @@
 [data-pie-visible] .wasap:focus-visible { outline-color: var(--claro); }
 
 /* Se aparta en tres casos. Mientras se pregunta la edad (esa respuesta va
-   primero y la franja ocupa justo ese sitio) y mientras se ve un botón de
-   cita de la página (dos bloques negros pidiendo lo mismo se restan fuerza). */
+   primero y la franja ocupa justo ese sitio), mientras se ve un botón de
+   cita de la página (dos bloques negros pidiendo lo mismo se restan fuerza)
+   y mientras hay una foto abierta en la muestra del inicio: lleva su propio
+   «Quiero algo así» y, en el móvil, el flotante le taparía los botones.   */
 [data-edad] .wasap,
+[data-galeria-abierta] .wasap,
 :root:not([data-cta-fuera]) .wasap { opacity: 0; visibility: hidden; transform: translateY(6px);
   transition: opacity var(--t-ui) ease, transform var(--t-ui) ease, visibility 0s linear var(--t-ui); }
 /* Y en escritorio, siempre: la barra fija ya lleva el botón de WhatsApp. */

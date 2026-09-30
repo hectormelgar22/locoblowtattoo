@@ -193,7 +193,21 @@
           "</div>";
       }).join("") +
     "</div>" +
-    '<p class="body t2 mosaico__nota">' + esc(I.estudio.directo) + "</p>");
+    /* El texto del estudio, debajo de las fotos del local: sus párrafos a
+       la izquierda y, a la derecha, su frase final en grande con el botón
+       de cita. Es un botón de cita más: el flotante se aparta mientras se
+       ve (data-cta).                                                      */
+    '<div class="estudio__texto">' +
+      '<div class="estudio__parrafos">' + (I.estudio.texto || []).map(function (p) {
+        return '<p class="body">' + esc(p) + "</p>";
+      }).join("") + "</div>" +
+      '<div class="estudio__cierre">' +
+        (I.estudio.cierre ? '<p class="d3 estudio__frase">' + esc(I.estudio.cierre) + "</p>" : "") +
+        '<p class="estudio__accion" data-cta>' +
+          botonWasap(I.cita, S.studio.botonWhatsapp.mensaje, "btn--macizo btn--grande") + "</p>" +
+        '<p class="sm t2 estudio__directo">' + esc(I.estudio.directo) + "</p>" +
+      "</div>" +
+    "</div>");
 
   /* La muestra: la primera foto de cada estilo, luego la segunda de cada
      uno…, para que se vean todos los estilos antes de repetir. Rejilla de
@@ -394,6 +408,7 @@
       abiertaDesde = performance.now();
 
       host.setAttribute("data-abierta", "");
+      document.documentElement.setAttribute("data-galeria-abierta", "");
       if (seccion) seccion.setAttribute("data-muestra-abierta", "");
       boton.setAttribute("aria-expanded", "true");
       miniatura.style.visibility = "hidden";
@@ -417,6 +432,7 @@
       var a = abierta;
       abierta = null;
       host.removeAttribute("data-abierta");
+      document.documentElement.removeAttribute("data-galeria-abierta");
       if (seccion) seccion.removeAttribute("data-muestra-abierta");
       a.boton.setAttribute("aria-expanded", "false");
       lista.inert = false;
@@ -475,6 +491,7 @@
       soltarAnimaciones();
       var a = abierta; abierta = null;
       host.removeAttribute("data-abierta");
+      document.documentElement.removeAttribute("data-galeria-abierta");
       if (seccion) seccion.removeAttribute("data-muestra-abierta");
       a.boton.setAttribute("aria-expanded", "false");
       lista.inert = false;
@@ -1219,4 +1236,5 @@
   /* Lo recién inyectado necesita su propio pase de revelado y de vídeo. */
   N.revelar();
   N.videos();
+  N.ctas();
 })();

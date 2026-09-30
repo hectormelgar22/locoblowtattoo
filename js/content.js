@@ -10,7 +10,7 @@
    Dos reglas al editar:
    · Las comas y las comillas importan. Si la web se queda en blanco, casi
      seguro falta una coma o sobra una. El navegador lo dice en la consola (F12).
-   · Los `id` y los `slug` son direcciones: cambiar «puntillismo» por otra
+   · Los `id` y los `slug` son direcciones: cambiar «dotwork» por otra
      cosa rompe los enlaces ya compartidos. El texto visible se cambia sin
      miedo.
 
@@ -123,8 +123,10 @@ window.STUDIO = {
     // Lo que sale en la pestaña, en Google y al compartir el enlace del
     // inicio. Cada servicio lleva el suyo en su `meta`.
     meta: {
-      titulo: "Loco Blow Tattoo · Tatuaje, láser, piercing y micropigmentación en A Coruña",
-      descripcion: "Estudio de tatuaje en A Coruña desde 2015, con los trabajos por estilos. También eliminación de tatuajes con láser, piercing y micropigmentación capilar. Solo con cita previa por WhatsApp.",
+      // Google enseña unos 60 caracteres de título y 155 de descripción: lo
+      // que pase de ahí sale cortado con «…».
+      titulo: "Loco Blow Tattoo · Tatuaje, láser y piercing en A Coruña",
+      descripcion: "Estudio de tatuaje en A Coruña desde 2015, con trabajos por estilos. También láser, piercing y micropigmentación capilar. Cita previa por WhatsApp.",
       compartir: "Tatuaje, láser, piercing y micropigmentación capilar en A Coruña desde 2015. Cita previa por WhatsApp."
     },
 
@@ -132,18 +134,27 @@ window.STUDIO = {
       // El titular principal de la página. No se ve (en su sitio está el
       // cartel), pero es lo que leen Google y los lectores de pantalla.
       titulo: "Loco Blow Tattoo: tatuaje, eliminación de tatuajes con láser, piercing y micropigmentación capilar en A Coruña",
-      entradilla: "Estudio privado de tatuaje, láser, piercing y micropigmentación capilar en A Coruña. Trabajamos solo con cita previa.",
+      // FUENTE: el texto de inicio del estudio (30/09/2026).
+      entradilla: "Tatuaje, piercing, láser y micropigmentación capilar en A Coruña. Trabajamos solo con cita previa.",
       cita: "Pedir cita por WhatsApp",
       verTatuajes: "Ver tatuajes",
       nota: "Escríbenos y te contesta un compañero del estudio.",
 
       // Quiénes somos, con las fotos y el vídeo del local.
-      // PROVISIONAL: texto de presentación pendiente de que el estudio lo
-      // revise o mande el suyo.
+      // FUENTE: el texto de inicio que mandó el estudio (30/09/2026). La
+      // entradilla es su primer párrafo; `texto`, el resto, uno por párrafo;
+      // `cierre`, su última frase, que va en grande junto al botón de cita.
       estudio: {
         etiqueta: "El estudio",
         titular: "Desde 2015 en A Coruña.",
-        entradilla: "Loco Blow abrió en 2015. Hoy somos un estudio privado de tatuaje, láser, piercing y micropigmentación capilar: sin recepción abierta al público y con todo el trabajo por cita previa.",
+        entradilla: "Somos un estudio en el centro de A Coruña con más de diez años de trayectoria. En este tiempo hemos crecido sin perder lo que nos define: un espacio profesional y cercano, donde cada trabajo se hace con calma y con cuidado. Varios primeros premios en convenciones de tatuaje avalan la experiencia de nuestro equipo.",
+        texto: [
+          "Trabajamos todos los estilos, desde realismo black & grey y fineline hasta color, dotwork, anime y otros estilos, adaptando cada diseño a tu idea y a ti.",
+          "En el mismo espacio encontrarás también piercing, eliminación de tatuajes con láser y micropigmentación capilar.",
+          "Cuidamos la calidad, la higiene y el trato: queremos que, desde el primer mensaje hasta que sales por la puerta, sepas qué vamos a hacer y te sientas a gusto durante todo el proceso.",
+          "Todas las consultas, presupuestos y citas se gestionan directamente a través de WhatsApp, para centralizar la atención y poder llevar un mejor seguimiento de cada cliente."
+        ],
+        cierre: "Tu idea empieza aquí. Nosotros nos encargamos de darle forma.",
         directo: "Si ya has venido y sabes con qué artista quieres trabajar, puedes escribirle directamente. Si no tienes su número, pídenoslo."
       },
 
@@ -235,7 +246,7 @@ window.STUDIO = {
       siguiente: "Trabajo siguiente",
       pista: "Desliza o toca a los lados de la foto para pasar. Con teclado, las flechas.",
       // El botón que manda esa misma foto por WhatsApp: así el estudio sabe
-      // qué pieza y de quién. {de} se cambia por « de Haroz (Realismo)» y
+      // qué pieza y de quién. {de} se cambia por « de Haroz (Realismo black & grey)» y
       // {enlace}, por la dirección de la foto.
       quiero: "Quiero algo así",
       mensaje: "Hola, os escribo desde la web. Me gusta este trabajo{de}: {enlace}"
@@ -265,7 +276,7 @@ window.STUDIO = {
       equipo: "Y cada artista, en el suyo",
       // Los trabajos de la cuadrícula (los `id` de la lista 5, solo fotos).
       // Mejor distintos de los que salen en la muestra del inicio.
-      fotos: ["bg-3", "an-3", "an-1", "an-6", "an-7", "an-5"]
+      fotos: ["bg-3", "an-3", "bw-2", "an-6", "an-7", "an-5"]
     }
   },
 
@@ -300,7 +311,7 @@ window.STUDIO = {
       boton: "Pedir cita para tatuarme",
       meta: {
         titulo: "Tatuajes en A Coruña por estilos · Loco Blow Tattoo",
-        descripcion: "Realismo, microrealismo, fine line, blackwork, tradicional, acuarela y puntillismo: los trabajos del estudio por estilos, con el artista de cada uno. Cita previa por WhatsApp."
+        descripcion: "Realismo black & grey, fine line, color, dotwork, anime y más: los trabajos del estudio por estilos, con su artista. Cita previa por WhatsApp."
       },
       preguntas: [
         {
@@ -466,7 +477,7 @@ window.STUDIO = {
       boton: "Preguntar por el láser",
       meta: {
         titulo: "Eliminación de tatuajes con láser en A Coruña · Loco Blow Tattoo",
-        descripcion: "Quitar un tatuaje con láser en A Coruña, entero o aclarado para taparlo con otro. Valoración de la tinta y la piel antes de empezar. Pide información por WhatsApp."
+        descripcion: "Quitar un tatuaje con láser en A Coruña, entero o aclarado para taparlo con otro. Primero valoramos la tinta y la piel. Infórmate por WhatsApp."
       },
       preguntas: [
         {
@@ -576,31 +587,30 @@ window.STUDIO = {
   /* --- 4. ESTILOS ---------------------------------------------------------- */
   // La página de tatuajes va por estilos, no por tatuadores: una sección por
   // estilo, en este orden, con sus mejores fotos.
-  // FUENTE: la lista del estudio (27/09/2026): Realismo, Microrealismo, Fine
-  // line, Blackwork, Tradicional, Acuarela y Puntillismo.
+  // FUENTE: el texto de inicio del estudio (30/09/2026): «realismo black &
+  // grey y fineline hasta color, dotwork, anime y otros estilos». Lo que no
+  // es de ninguno de los cinco va en «Otros estilos».
   //
-  // `id` es la dirección de la sección: <dominio>/tatuajes#puntillismo
-  // `antes` son direcciones viejas que llevan aquí (enlaces ya compartidos
-  // cuando los estilos eran otros): no se borran.
+  // `id` es la dirección de la sección: <dominio>/tatuajes#dotwork
+  // `antes` son direcciones de listas anteriores (la de la biografía de
+  // Instagram) que llevan aquí: enlaces ya compartidos no se rompen.
   //
   // Un estilo sin ningún trabajo todavía sale igual, con su hueco y su
   // botón de WhatsApp, pero al final de la página: en cuanto tenga su
   // primera foto, ocupa su sitio en este orden.
   estilos: [
-    { id: "realismo",      nombre: "Realismo", antes: ["black-and-grey"],
+    { id: "black-and-grey", nombre: "Realismo black & grey", antes: ["realismo", "microrealismo"],
       descripcion: "Retratos, animales y figuras en negro y grises, con la sombra trabajada a mano hasta que parecen una foto." },
-    { id: "microrealismo", nombre: "Microrealismo",
-      descripcion: "Realismo en pequeño: retratos, animales y objetos con todo su detalle en pocos centímetros." },
-    { id: "fine-line",     nombre: "Fine line",
-      descripcion: "Línea fina y detalle pequeño: flores, personajes y símbolos, en negro o con un toque de color." },
-    { id: "blackwork",     nombre: "Blackwork", antes: ["anime"],
-      descripcion: "Negro macizo y sombra dura: piezas grandes de inspiración japonesa, anime, calaveras y ornamento." },
-    { id: "tradicional",   nombre: "Tradicional",
-      descripcion: "Línea gruesa y color plano, de la escuela de siempre." },
-    { id: "acuarela",      nombre: "Acuarela",
-      descripcion: "Color que se funde como en el papel, con o sin línea." },
-    { id: "puntillismo",   nombre: "Puntillismo",
-      descripcion: "La sombra, punto a punto: tonos suaves y un acabado que recuerda al grabado." }
+    { id: "fine-line",      nombre: "Fine line",
+      descripcion: "Línea fina y detalle pequeño: flores, personajes y símbolos, con trazo limpio y delicado." },
+    { id: "color",          nombre: "Color", antes: ["acuarela", "tradicional"],
+      descripcion: "Tatuajes a color: personajes, tradicional y piezas con toda su paleta." },
+    { id: "dotwork",        nombre: "Dotwork", antes: ["puntillismo"],
+      descripcion: "La sombra, punto a punto: tonos suaves y un acabado que recuerda al grabado." },
+    { id: "anime",          nombre: "Anime",
+      descripcion: "Personajes de anime y manga, fieles al trazo del original, en negro o con toques de color." },
+    { id: "otros-estilos",  nombre: "Otros estilos", antes: ["blackwork"],
+      descripcion: "Blackwork, tradicional en negro y todo lo que no cabe en una etiqueta. Cuéntanos tu idea." }
   ],
 
   /* --- 5. OBRAS · los trabajos de tatuaje -------------------------------- */
@@ -620,82 +630,83 @@ window.STUDIO = {
   //   3. python tools/sync-contenido.py
   //
   // Una foto se comparte con su dirección: <dominio>/tatuajes#obra-bg-1.
-  // Por eso el `id` no cambia aunque la foto cambie de estilo (bg-* y an-*
-  // son de cuando había «Black & grey» y «Anime»).
+  // Por eso el `id` no cambia aunque la foto cambie de estilo.
   //
   // PROVISIONAL: las fotos y los reels los pasó el estudio sacados de
   // Instagram (24 y 25/09/2026). Se cambian por los originales cuando lleguen.
   // PROVISIONAL: el estilo de cada pieza lo ha puesto la web por su técnica
-  // (27/09/2026); pendiente de que el estudio lo revise.
+  // (30/09/2026); pendiente de que el estudio lo revise.
   obras: [
-    // --- Realismo: figuras y retratos primero, animales después
-    { id: "bg-1", estilo: "realismo", artista: "haroz", titulo: "Tengu",
+    // --- Realismo black & grey: figuras y retratos primero, animales después
+    { id: "bg-1", estilo: "black-and-grey", artista: "haroz", titulo: "Tengu",
       alt: "Máscara de tengu en negro y grises en el antebrazo, de nariz larga y ceño fruncido, rodeada de plumas.",
       img: "bg-1", ratio: 0.8102 },
-    { id: "v-retrato", estilo: "realismo", artista: "haroz", video: "retrato" },
-    { id: "bg-4", estilo: "realismo", artista: "raul", titulo: "Samurái",
+    { id: "v-retrato", estilo: "black-and-grey", artista: "haroz", video: "retrato" },
+    { id: "bg-4", estilo: "black-and-grey", artista: "raul", titulo: "Samurái",
       alt: "Samurái con armadura y katana en negro y grises en el antebrazo, con una pagoda y el sol detrás.",
       img: "bg-4", ratio: 0.9907 },
-    { id: "v-payasa", estilo: "realismo", artista: "", video: "payasa" },
-    { id: "bg-2", estilo: "realismo", artista: "raul", titulo: "Torre de Hércules",
+    { id: "v-payasa", estilo: "black-and-grey", artista: "", video: "payasa" },
+    { id: "bg-2", estilo: "black-and-grey", artista: "raul", titulo: "Torre de Hércules",
       alt: "La Torre de Hércules en negro y grises, con los tentáculos de un pulpo enroscados alrededor de la torre.",
       img: "bg-2", ratio: 0.7997 },
-    { id: "v-perro", estilo: "realismo", artista: "", video: "perro" },
-    { id: "bg-3", estilo: "realismo", artista: "haroz", titulo: "Gato esfinge",
+    { id: "v-perro", estilo: "black-and-grey", artista: "", video: "perro" },
+    { id: "bg-3", estilo: "black-and-grey", artista: "haroz", titulo: "Gato esfinge",
       alt: "Retrato realista de un gato esfinge en el antebrazo, en negro y grises, con los ojos en verde claro.",
       img: "bg-3", ratio: 0.7602 },
-    { id: "v-tortuga", estilo: "realismo", artista: "", video: "tortuga" },
+    { id: "v-tortuga", estilo: "black-and-grey", artista: "", video: "tortuga" },
 
-    // --- Fine line: línea fina, en negro y luego con color
+    // --- Fine line
     { id: "fl-1", estilo: "fine-line", artista: "tbh", titulo: "Peonías",
       alt: "Peonías y flores pequeñas con hojas en línea fina y sombra suave, a lo largo del muslo.",
       img: "fl-1", ratio: 0.7876 },
     { id: "an-2", estilo: "fine-line", artista: "", titulo: "Nicky, la aprendiz de bruja",
       alt: "Nicky, la aprendiz de bruja, volando en su escoba con el gato Jiji, en línea fina y punteado en el brazo.",
       img: "an-2", ratio: 0.751 },
-    { id: "v-garfield", estilo: "fine-line", artista: "pepi", video: "garfield" },
-    { id: "an-4", estilo: "fine-line", artista: "pepi", titulo: "Garfield",
+
+    // --- Color: tradicional a color y personajes
+    { id: "tr-1", estilo: "color", artista: "fer", titulo: "",
+      alt: "Cara sonriente con un gorro de estrellas y lunas, en tradicional a color: línea negra gruesa, rojo, naranja y turquesa.",
+      img: "tr-1", ratio: 0.7519 },
+    { id: "v-garfield", estilo: "color", artista: "pepi", video: "garfield" },
+    { id: "an-4", estilo: "color", artista: "pepi", titulo: "Garfield",
       alt: "Garfield a color con un ramo de margaritas, pequeño, en el antebrazo.",
       img: "an-4", ratio: 0.7894 },
 
-    // --- Blackwork: lo japonés y oscuro, y después el anime en negro macizo
-    { id: "bw-1", estilo: "blackwork", artista: "maou", titulo: "Dragón japonés",
-      alt: "Dragón japonés en negro macizo en el antebrazo, entre remolinos de viento y agua.",
-      img: "bw-1", ratio: 0.7916 },
-    { id: "v-aot", estilo: "blackwork", artista: "pepi", video: "aot" },
-    { id: "bw-2", estilo: "blackwork", artista: "maou", titulo: "Parca",
-      alt: "Parca en negro y grises en el brazo: una calavera encapuchada que sostiene un reloj de arena.",
-      img: "bw-2", ratio: 0.7959 },
-    { id: "an-1", estilo: "blackwork", artista: "maou", titulo: "Luffy",
-      alt: "Luffy, de One Piece, gritando con los puños apretados, en negro y rojo en el brazo, con el cartel de «Wanted» abajo.",
-      img: "an-1", ratio: 0.79 },
-    { id: "v-perfilado", estilo: "blackwork", artista: "pepi", video: "perfilado" },
-    { id: "an-3", estilo: "blackwork", artista: "maou", titulo: "",
-      alt: "Manga de anime en negro y grises en el antebrazo: un chico de pelo de punta que sonríe entre rayos y sombras.",
-      img: "an-3", ratio: 0.7986 },
-    { id: "an-5", estilo: "blackwork", artista: "maou", titulo: "",
-      alt: "Personajes de anime en negro y grises en el antebrazo: una chica que asoma entre nubes y, debajo, otro personaje con gafas.",
-      img: "an-5", ratio: 0.7959 },
-
-    // --- Tradicional
-    { id: "tr-1", estilo: "tradicional", artista: "fer", titulo: "",
-      alt: "Cara sonriente con un gorro de estrellas y lunas, en tradicional a color: línea negra gruesa, rojo, naranja y turquesa.",
-      img: "tr-1", ratio: 0.7519 },
-    { id: "tr-2", estilo: "tradicional", artista: "fer", titulo: "",
-      alt: "Mujer con velo y una flor en el pecho, en tradicional en negro, en el muslo.",
-      img: "tr-2", ratio: 0.7602 },
-
-    // --- Puntillismo: de la pieza más sombreada a la más ligera
-    { id: "fl-2", estilo: "puntillismo", artista: "tbh", titulo: "Ciervo volante",
+    // --- Dotwork: de la pieza más sombreada a la más ligera
+    { id: "fl-2", estilo: "dotwork", artista: "tbh", titulo: "Ciervo volante",
       alt: "Escarabajo ciervo volante con las alas abiertas, en línea fina y punteado, en la pierna.",
       img: "fl-2", ratio: 0.8489 },
-    { id: "v-anubis", estilo: "puntillismo", artista: "fer", video: "anubis" },
-    { id: "an-7", estilo: "puntillismo", artista: "haroz", titulo: "Bulbasaur",
+    { id: "v-anubis", estilo: "dotwork", artista: "fer", video: "anubis" },
+    { id: "an-7", estilo: "dotwork", artista: "haroz", titulo: "Bulbasaur",
       alt: "Bulbasaur, de Pokémon, en línea fina y punteado en negro, en el gemelo.",
       img: "an-7", ratio: 0.7905 },
-    { id: "an-6", estilo: "puntillismo", artista: "", titulo: "Totoro",
+    { id: "an-6", estilo: "dotwork", artista: "", titulo: "Totoro",
       alt: "Totoro y los dos pequeños de la película de Ghibli, en fila, en línea fina y punteado en el muslo.",
-      img: "an-6", ratio: 0.7514 }
+      img: "an-6", ratio: 0.7514 },
+
+    // --- Anime: el terminado y su proceso juntos
+    { id: "an-1", estilo: "anime", artista: "maou", titulo: "Luffy",
+      alt: "Luffy, de One Piece, gritando con los puños apretados, en negro y rojo en el brazo, con el cartel de «Wanted» abajo.",
+      img: "an-1", ratio: 0.79 },
+    { id: "v-aot", estilo: "anime", artista: "pepi", video: "aot" },
+    { id: "an-3", estilo: "anime", artista: "maou", titulo: "",
+      alt: "Manga de anime en negro y grises en el antebrazo: un chico de pelo de punta que sonríe entre rayos y sombras.",
+      img: "an-3", ratio: 0.7986 },
+    { id: "an-5", estilo: "anime", artista: "maou", titulo: "",
+      alt: "Personajes de anime en negro y grises en el antebrazo: una chica que asoma entre nubes y, debajo, otro personaje con gafas.",
+      img: "an-5", ratio: 0.7959 },
+    { id: "v-perfilado", estilo: "anime", artista: "pepi", video: "perfilado" },
+
+    // --- Otros estilos: blackwork y tradicional en negro
+    { id: "bw-1", estilo: "otros-estilos", artista: "maou", titulo: "Dragón japonés",
+      alt: "Dragón japonés en negro macizo en el antebrazo, entre remolinos de viento y agua.",
+      img: "bw-1", ratio: 0.7916 },
+    { id: "tr-2", estilo: "otros-estilos", artista: "fer", titulo: "",
+      alt: "Mujer con velo y una flor en el pecho, en tradicional en negro, en el muslo.",
+      img: "tr-2", ratio: 0.7602 },
+    { id: "bw-2", estilo: "otros-estilos", artista: "maou", titulo: "Parca",
+      alt: "Parca en negro y grises en el brazo: una calavera encapuchada que sostiene un reloj de arena.",
+      img: "bw-2", ratio: 0.7959 }
   ],
 
   /* --- 6. ARTISTAS --------------------------------------------------------- */
@@ -927,8 +938,8 @@ window.STUDIO = {
       }
     ],
     meta: {
-      titulo: "Cuidados después de un tatuaje, piercing, láser o micropigmentación · Loco Blow Tattoo",
-      descripcion: "Cómo curar un tatuaje, un piercing, una sesión de láser o la micropigmentación capilar: qué hacer cada día, qué es normal y cuándo escribir al estudio o ir al médico."
+      titulo: "Cómo curar un tatuaje, piercing o láser · Loco Blow Tattoo",
+      descripcion: "Cómo curar un tatuaje, un piercing, el láser o la micropigmentación capilar: qué hacer cada día, qué es normal y cuándo ir al médico."
     },
     guias: [
       {

@@ -78,7 +78,21 @@
 .mosaico__video { grid-column: 1 / -1; }
 .mosaico__foto .rejilla__lamina { aspect-ratio: auto; }
 .mosaico__foto img { height: auto; }
-.mosaico__nota { margin-top: var(--s6); max-width: 52ch; }
+/* El texto del estudio, debajo de las fotos: sus párrafos y, aparte, la
+   frase con la que cierra, en grande y bajo un filete, con el botón. */
+.estudio__texto { display: grid; gap: var(--s7); margin-top: var(--s8); }
+.estudio__parrafos { display: grid; gap: var(--s4); max-width: 60ch; }
+.estudio__parrafos p { color: var(--tinta-2); }
+.estudio__cierre {
+  display: grid;
+  gap: var(--s5);
+  align-content: start;
+  padding-top: var(--s5);
+  border-top: var(--hair) solid var(--tinta);
+}
+.estudio__frase { margin: 0; max-width: 18ch; text-wrap: balance; }
+.estudio__accion .btn { width: 100%; }
+.estudio__directo { max-width: 44ch; }
 
 @media (min-width: 48rem) {
   .mosaico {
@@ -89,7 +103,15 @@
   .mosaico__foto--1 { align-self: end; }
   .mosaico__foto--2 { align-self: start; margin-top: var(--s9); }
 }
+@media (min-width: 48rem) {
+  .estudio__accion .btn { width: auto; }
+}
 @media (min-width: 60rem) {
+  .estudio__texto {
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    column-gap: var(--s8);
+    margin-top: var(--s9);
+  }
   .mosaico { column-gap: var(--s5); }
   .mosaico__video .video { max-width: none; }
 }
