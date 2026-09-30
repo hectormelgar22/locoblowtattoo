@@ -168,18 +168,154 @@
     flecha(I.verTatuajes, N.hrefPagina("tatuajes"), "btn--grande") +
     '<p class="xs t2 portada__nota">' + esc(I.nota) + "</p>");
 
-  /* El estudio por dentro: el vídeo y las fotos del local, en un mosaico
-     desigual. Una foto que falta es un hueco con su proporción.             */
+  /* ============================================================================
+     EL ESTUDIO · quiénes somos
+     Su texto, en cuatro piezas que se leen de un tirón: el manifiesto en
+     grande, las cifras, el local por dentro, sus puntos numerados y, al
+     final, su frase en una banda negra con el botón de cita.
+     ============================================================================ */
+
+  var E = I.estudio;
+
+  /* El manifiesto, palabra a palabra: cada una lleva su sitio en el texto
+     (--i, de 0 a 1) para entintarse al leerla (manifiestoQueSeEntinta). Lo
+     que va entre asteriscos en content.js es un <mark>: el bloque negro. */
+  function manifiestoHTML(texto) {
+    var trozos = String(texto).split("*");
+    var total = String(texto).replace(/\*/g, "").split(/\s+/).filter(Boolean).length;
+    var n = 0;
+    function palabras(t) {
+      return t.split(/(\s+)/).map(function (w) {
+        if (!w) return "";
+        if (/^\s+$/.test(w)) return " ";
+        return '<span class="w" style="--i:' + (n++ / total).toFixed(3) + '">' + esc(w) + "</span>";
+      }).join("");
+    }
+    return '<p class="manifiesto">' + trozos.map(function (t, k) {
+      if (k % 2 === 0) return palabras(t);
+      var dentro = palabras(t);
+      return '<mark style="--fin:' + ((n - 1) / total).toFixed(3) + '">' + dentro + "</mark>";
+    }).join("") + "</p>";
+  }
+
+  function cifrasHTML(lista) {
+    var G = S.studio.google || {};
+    var datos = { nota: G.nota, resenas: G.resenas };
+    return '<ul class="cifras" role="list">' + lista.map(function (c) {
+      return '<li class="cifra">' +
+        '<p class="cifra__num"><span class="cifra__final">' + esc(N.rellenar(c.cifra, datos)) + "</span></p>" +
+        '<p class="cifra__txt">' + esc(N.rellenar(c.texto, datos)) + "</p>" +
+      "</li>";
+    }).join("") + "</ul>";
+  }
+
+  /* Debajo de un punto, los estilos o los servicios de los que habla. */
+  function enlacesPunto(cual) {
+    var lista = cual === "estilos"
+      ? ESTILOS.map(function (e) { return { href: N.hrefPagina("tatuajes") + "#" + e.id, texto: e.nombre }; })
+      : cual === "servicios"
+        ? S.servicios.filter(function (sv) { return sv.pagina !== "tatuajes"; })
+            .map(function (sv) { return { href: N.hrefPagina(sv.pagina), texto: sv.menu }; })
+        : [];
+    if (!lista.length) return "";
+    return '<ul class="punto__enlaces" role="list">' + lista.map(function (x) {
+      return '<li><a class="chip" href="' + esc(x.href) + '">' + esc(x.texto) + "</a></li>";
+    }).join("") + "</ul>";
+  }
+
+  /* La imagen de un punto, por el `id` de una foto (de un trabajo, de un
+     piercing o del local) o la clave de un vídeo (su primer fotograma). Es
+     de adorno: lo que cuenta el punto está en su texto.                    */
+  var FOTOS_TODAS = S.obras.concat(S.estudio.fotos || [])
+    .concat([].concat.apply([], S.servicios.map(function (sv) { return sv.fotos || []; })));
+  function fotoPunto(id) {
+    var f = FOTOS_TODAS.filter(function (x) { return x.id === id && x.img; })[0];
+    if (f) {
+      var delLocal = (S.estudio.fotos || []).indexOf(f) > -1;
+      return N.imgHTML({ base: f.img, tipo: delLocal ? "estudio" : "obra", alt: "", ratio: f.ratio, foco: f.foco,
+                         sizes: "(min-width: 60rem) 36vw, 92vw" });
+    }
+    var v = S.videos && S.videos[id];
+    return v ? '<img src="assets/vid/' + esc(v.base) + '-poster.webp" alt="" width="600" height="' +
+      Math.round(600 / v.ratio) + '" loading="lazy" decoding="async">' : "";
+  }
+
+  /* El cuadro de un punto: de una a cuatro fotos (se reparten el sitio) o
+     el cartel negro de WhatsApp.                                          */
+  function cuadroPunto(x) {
+    if (x.tarjeta === "whatsapp") {
+      return '<div class="marco marco--wasap en-negro">' + N.BOCADILLO +
+        '<p class="marco__numero num">' + esc(S.studio.whatsappVisible) + "</p>" +
+        '<p class="etiqueta marco__nota"><span class="corchetes">' + esc(S.studio.cita) + "</span></p></div>";
+    }
+    var fotos = (x.fotos || []).map(fotoPunto).filter(Boolean).slice(0, 4);
+    return '<div class="marco marco--' + fotos.length + '">' + fotos.map(function (h) {
+      return '<span class="marco__foto">' + h + "</span>";
+    }).join("") + "</div>";
+  }
+
+  /* Los puntos: en escritorio, un cuadro fijo a la izquierda con la imagen
+     del punto que se está leyendo y los textos a la derecha, uno por
+     pantalla; al llegar cada uno al centro, su imagen barre la anterior
+     (puntosQueCambian). En el móvil, cada punto lleva su imagen encima.   */
+  function puntosHTML(lista) {
+    var n = lista.length, dos = function (k) { return String(k).padStart(2, "0"); };
+    return '<div class="puntos">' +
+      '<div class="puntos__visor" aria-hidden="true">' +
+        lista.map(function (x, i) {
+          return '<div class="puntos__cuadro"' + (i === 0 ? " data-activa" : "") + ">" + cuadroPunto(x) + "</div>";
+        }).join("") +
+        '<p class="puntos__contador etiqueta"><span data-contador>' + dos(1) + "</span> / " + dos(n) + "</p>" +
+      "</div>" +
+      '<ol class="puntos__lista" role="list">' + lista.map(function (x, i) {
+        return '<li class="punto">' +
+          '<div class="punto__marco" aria-hidden="true">' + cuadroPunto(x) + "</div>" +
+          '<p class="etiqueta punto__num">' + dos(i + 1) + " / " + dos(n) + "</p>" +
+          '<h3 class="d2 punto__titulo">' + esc(x.titulo) + "</h3>" +
+          '<p class="lead punto__texto">' + esc(x.texto) + "</p>" +
+          (x.enlaces ? enlacesPunto(x.enlaces) : "") +
+        "</li>";
+      }).join("") + "</ol>" +
+    "</div>";
+  }
+
+  /* La frase final, en la banda negra: cada palabra en su caja, para
+     subir desde abajo una detrás de otra (cierreQueSube).                 */
+  function cierreHTML(frases) {
+    var n = 0;
+    var grande = String(frases[0] || "").split(/\s+/).filter(Boolean).map(function (w) {
+      return '<span class="palabra"><span style="--n:' + (n++) + '">' + esc(w) + "</span></span>";
+    }).join(" ");
+    return '<div class="estudio__cierre en-negro" data-cierre>' +
+      '<p class="estudio__grande">' + grande + "</p>" +
+      (frases[1] ? '<p class="lead estudio__segunda">' + esc(frases[1]) + "</p>" : "") +
+      '<p class="estudio__accion" data-cta>' +
+        botonWasap(I.cita, S.studio.botonWhatsapp.mensaje, "btn--macizo btn--grande") + "</p>" +
+      '<p class="sm estudio__directo">' + esc(E.directo) + "</p>" +
+    "</div>";
+  }
+
+  /* El local por dentro: el vídeo va junto al manifiesto; las fotos que no
+     salen ya en los puntos, en un mosaico desigual debajo. Una foto que
+     falta es un hueco con su proporción.                                   */
   var fotosEstudio = S.estudio.fotos || [];
+  var enPuntos = [].concat.apply([], (E.puntos || []).map(function (x) { return x.fotos || []; }));
+  var fotosMosaico = fotosEstudio.filter(function (f) { return enPuntos.indexOf(f.id) === -1; });
   /* Sin ninguna foto todavía, un solo hueco en vez de uno por foto. */
-  var mosaicoFotos = conFoto(fotosEstudio).length ? fotosEstudio
+  var mosaicoFotos = conFoto(fotosMosaico).length ? fotosMosaico
+    : conFoto(fotosEstudio).length ? []
     : fotosEstudio.slice(0, 1).map(function (f) { return { id: f.id, ratio: f.ratio, pendiente: true }; });
   if ($("[data-inicio-estudio]")) N.grupos.estudio = conFoto(fotosEstudio).map(function (f) {
     return { id: f.id, img: f.img, alt: f.alt, ratio: f.ratio, titulo: f.titulo, tipo: "estudio" };
   });
   set("[data-inicio-estudio]",
-    '<div class="mosaico">' +
-      (N.videoHTML(S.estudio.video) ? '<div class="mosaico__video">' + N.videoHTML(S.estudio.video) + "</div>" : "") +
+    '<div class="estudio__intro">' +
+      (E.manifiesto ? manifiestoHTML(E.manifiesto) : "") +
+      (N.videoHTML(S.estudio.video) ? '<div class="estudio__video">' + N.videoHTML(S.estudio.video) + "</div>" : "") +
+    "</div>" +
+    (E.cifras && E.cifras.length ? cifrasHTML(E.cifras) : "") +
+    (E.puntos && E.puntos.length ? puntosHTML(E.puntos) : "") +
+    (mosaicoFotos.length ? '<div class="mosaico">' +
       mosaicoFotos.map(function (f, i) {
         return '<div class="mosaico__foto mosaico__foto--' + (i + 1) + '" id="obra-' + esc(f.id) + '">' +
           (f.img
@@ -192,22 +328,146 @@
                             detalle: f.pendiente ? T.servicio.pendiente : "" })) +
           "</div>";
       }).join("") +
-    "</div>" +
-    /* El texto del estudio, debajo de las fotos del local: sus párrafos a
-       la izquierda y, a la derecha, su frase final en grande con el botón
-       de cita. Es un botón de cita más: el flotante se aparta mientras se
-       ve (data-cta).                                                      */
-    '<div class="estudio__texto">' +
-      '<div class="estudio__parrafos">' + (I.estudio.texto || []).map(function (p) {
-        return '<p class="body">' + esc(p) + "</p>";
-      }).join("") + "</div>" +
-      '<div class="estudio__cierre">' +
-        (I.estudio.cierre ? '<p class="d3 estudio__frase">' + esc(I.estudio.cierre) + "</p>" : "") +
-        '<p class="estudio__accion" data-cta>' +
-          botonWasap(I.cita, S.studio.botonWhatsapp.mensaje, "btn--macizo btn--grande") + "</p>" +
-        '<p class="sm t2 estudio__directo">' + esc(I.estudio.directo) + "</p>" +
-      "</div>" +
-    "</div>");
+    "</div>" : "") +
+    (E.cierre ? cierreHTML([].concat(E.cierre)) : ""));
+
+  /* El manifiesto se entinta al leerlo: las palabras están en gris (el más
+     claro que aún se lee bien a este tamaño, 3,2:1) y pasan a negro según
+     el texto sube por la pantalla, de la primera a la última, como si se
+     fuera leyendo. Las frases marcadas se tapan con su bloque negro cuando
+     les llega el turno. Solo se mide mientras está en pantalla. Sin
+     JavaScript o con «reducir movimiento», todo en negro desde el principio. */
+  (function manifiestoQueSeEntinta() {
+    var el = $(".manifiesto");
+    if (!el || N.quieto() || !("IntersectionObserver" in window)) return;
+    var marcas = $$("mark", el);
+    var total = $$(".w", el).length;
+    var dentro = false, pidiendo = false;
+    el.setAttribute("data-anim", "");
+    function medir() {
+      pidiendo = false;
+      var r = el.getBoundingClientRect(), h = window.innerHeight;
+      var empieza = h * 0.88, acaba = h * 0.42;
+      var p = (empieza - r.top) / (r.height + empieza - acaba);
+      p = Math.min(1, Math.max(0, p));
+      /* Hasta 1,2: la última palabra también termina de entintarse. */
+      el.style.setProperty("--p", (p * 1.2).toFixed(3));
+      marcas.forEach(function (m) {
+        var fin = parseFloat(m.style.getPropertyValue("--fin")) || 0;
+        m.toggleAttribute("data-lleno", p * 1.2 >= fin + 0.12);
+      });
+    }
+    function pedir() { if (!pidiendo) { pidiendo = true; requestAnimationFrame(medir); } }
+    new IntersectionObserver(function (e) {
+      dentro = e[0].isIntersecting;
+      if (dentro) pedir();
+    }, { rootMargin: "10% 0px" }).observe(el);
+    window.addEventListener("scroll", function () { if (dentro) pedir(); }, { passive: true });
+    window.addEventListener("resize", function () { if (dentro) pedir(); });
+    medir();
+  })();
+
+  /* Las cifras cuentan desde cero al aparecer, una vez. La cifra de verdad
+     está siempre en su sitio (y es lo que lee el lector de pantalla): el
+     contador va encima, en una capa que se quita al terminar, así el ancho
+     no cambia mientras cuenta.                                            */
+  (function cifrasQueCuentan() {
+    var lista = $(".cifras");
+    if (!lista || N.quieto() || !("IntersectionObserver" in window)) return;
+    var obs = new IntersectionObserver(function (e) {
+      if (!e[0].isIntersecting) return;
+      obs.disconnect();
+      lista.setAttribute("data-contando", "");
+      var cuentas = $$(".cifra__final", lista).map(function (f) {
+        var t = f.textContent, m = /(\d+)(?:,(\d+))?/.exec(t);
+        if (!m) return null;
+        var decimales = m[2] ? m[2].length : 0;
+        var valor = parseFloat(m[1] + (m[2] ? "." + m[2] : ""));
+        var c = document.createElement("span");
+        c.className = "cifra__contador";
+        c.setAttribute("aria-hidden", "true");
+        f.parentNode.appendChild(c);
+        return { c: c, antes: t.slice(0, m.index), despues: t.slice(m.index + m[0].length), valor: valor, dec: decimales };
+      }).filter(Boolean);
+      var t0 = performance.now(), DURA = 1400;
+      (function paso(ahora) {
+        var x = Math.min(1, (ahora - t0) / DURA);
+        var suave = 1 - Math.pow(1 - x, 3);
+        cuentas.forEach(function (k) {
+          var v = (k.valor * suave).toFixed(k.dec).replace(".", ",");
+          k.c.textContent = k.antes + v + k.despues;
+        });
+        if (x < 1) requestAnimationFrame(paso);
+        else {
+          cuentas.forEach(function (k) { k.c.remove(); });
+          lista.removeAttribute("data-contando");
+        }
+      })(t0);
+    }, { threshold: 0.5 });
+    obs.observe(lista);
+  })();
+
+  /* Los puntos, al leerlos. En escritorio, el punto que pasa por el centro
+     de la pantalla pone su imagen en el cuadro fijo: la nueva barre a la
+     anterior de abajo arriba, y la de antes se queda debajo hasta que la
+     tapa (data-antes). Cada punto, además, entra al llegar: su imagen se
+     abre (en el móvil) y el texto sube detrás, una vez.                    */
+  (function puntosQueCambian() {
+    var caja = $(".puntos");
+    if (!caja || !("IntersectionObserver" in window)) return;
+    var cuadros = $$(".puntos__cuadro", caja), items = $$(".punto", caja);
+    var contador = $("[data-contador]", caja);
+    var activo = 0, espera = null;
+    function activar(i) {
+      if (i === activo || !cuadros[i]) return;
+      var viejo = cuadros[activo];
+      cuadros.forEach(function (c) { c.removeAttribute("data-antes"); });
+      viejo.removeAttribute("data-activa");
+      viejo.setAttribute("data-antes", "");
+      cuadros[i].setAttribute("data-activa", "");
+      if (contador) contador.textContent = String(i + 1).padStart(2, "0");
+      activo = i;
+      clearTimeout(espera);
+      espera = setTimeout(function () { viejo.removeAttribute("data-antes"); }, 900);
+    }
+    /* Las fotos de los cuadros que esperan están recortadas del todo y el
+       navegador no las pide hasta que se destapan: la nueva entraría en
+       gris. Se piden todas cuando la sección se acerca, no antes.          */
+    var cerca = new IntersectionObserver(function (e) {
+      if (!e[0].isIntersecting) return;
+      cerca.disconnect();
+      $$(".puntos__visor img", caja).forEach(function (img) { img.loading = "eager"; });
+    }, { rootMargin: "100% 0px" });
+    cerca.observe(caja);
+    var centro = new IntersectionObserver(function (e) {
+      e.forEach(function (x) { if (x.isIntersecting) activar(items.indexOf(x.target)); });
+    }, { rootMargin: "-45% 0px -45% 0px" });
+    items.forEach(function (it) { centro.observe(it); });
+    if (N.quieto()) return;
+    caja.setAttribute("data-anim", "");
+    var entrada = new IntersectionObserver(function (e) {
+      e.forEach(function (x) {
+        if (!x.isIntersecting) return;
+        x.target.setAttribute("data-visto", "");
+        entrada.unobserve(x.target);
+      });
+    }, { rootMargin: "0px 0px -15% 0px" });
+    items.forEach(function (it) { entrada.observe(it); });
+  })();
+
+  /* La frase final sube palabra a palabra cuando la banda llega a la
+     pantalla, una vez.                                                    */
+  (function cierreQueSube() {
+    var el = $("[data-cierre]");
+    if (!el || N.quieto() || !("IntersectionObserver" in window)) return;
+    el.setAttribute("data-anim", "");
+    var obs = new IntersectionObserver(function (e) {
+      if (!e[0].isIntersecting) return;
+      el.setAttribute("data-visto", "");
+      obs.disconnect();
+    }, { threshold: 0.35 });
+    obs.observe(el);
+  })();
 
   /* La muestra: la primera foto de cada estilo, luego la segunda de cada
      uno…, para que se vean todos los estilos antes de repetir. Rejilla de
@@ -861,28 +1121,6 @@
     var bandaPasos = $("[data-servicio-pasos]");
     if (bandaPasos) bandaPasos.hidden = !(SV.pasos && SV.pasos.length);
 
-    /* Los pasos entran uno detrás de otro al llegar a ellos: el filete de
-       cada fila se traza de izquierda a derecha, el número sube desde su
-       línea base y el texto aparece detrás. Solo la primera vez. Sin
-       JavaScript o con «reducir movimiento», están quietos y visibles: el
-       estado de espera lo pone esto, no el CSS.                            */
-    (function pasosEnMovimiento() {
-      var lista = $(".pasos");
-      if (!lista || N.quieto() || !("IntersectionObserver" in window)) return;
-      lista.setAttribute("data-pasos-anim", "");
-      var obs = new IntersectionObserver(function (entradas) {
-        var orden = 0;
-        entradas.forEach(function (e) {
-          if (!e.isIntersecting) return;
-          /* Las que entran a la vez, escalonadas: 110 ms entre una y otra. */
-          e.target.style.setProperty("--retardo", (orden++ * 110) + "ms");
-          e.target.setAttribute("data-visto", "");
-          obs.unobserve(e.target);
-        });
-      }, { rootMargin: "0px 0px -10% 0px" });
-      $$(".pasos__paso", lista).forEach(function (f) { obs.observe(f); });
-    })();
-
     /* Fotos de la página (piercing, láser, micropigmentación). */
     /* Sin ninguna foto todavía, la sección no sale: el botón de «ver
        trabajos» de la cabecera tampoco.                                     */
@@ -1153,6 +1391,31 @@
           '<span class="error__resumen">' + esc(p.resumen) + "</span>" +
           '<i class="flecha" aria-hidden="true"></i></a></li>';
       }).join("") + "</ul>";
+  })();
+
+  /* Las listas numeradas (el «paso a paso» de cada servicio y los puntos
+     del estudio) entran fila a fila al llegar a ellas: el filete de cada
+     fila se traza de izquierda a derecha, el número sube desde su línea
+     base y el texto aparece detrás. Solo la primera vez. Sin JavaScript o
+     con «reducir movimiento», están quietas y visibles: el estado de
+     espera lo pone esto, no el CSS.                                       */
+  (function pasosEnMovimiento() {
+    var listas = $$(".pasos");
+    if (!listas.length || N.quieto() || !("IntersectionObserver" in window)) return;
+    var obs = new IntersectionObserver(function (entradas) {
+      var orden = 0;
+      entradas.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        /* Las que entran a la vez, escalonadas: 110 ms entre una y otra. */
+        e.target.style.setProperty("--retardo", (orden++ * 110) + "ms");
+        e.target.setAttribute("data-visto", "");
+        obs.unobserve(e.target);
+      });
+    }, { rootMargin: "0px 0px -10% 0px" });
+    listas.forEach(function (lista) {
+      lista.setAttribute("data-pasos-anim", "");
+      $$(".pasos__paso", lista).forEach(function (f) { obs.observe(f); });
+    });
   })();
 
   /* La barra de estilos o de guías, cuando ya están pintadas las dos. */

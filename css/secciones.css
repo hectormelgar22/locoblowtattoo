@@ -20,26 +20,23 @@
    ============================================================================ */
 
 /* --- PORTADA · el cartel del logotipo ------------------------------------- */
-/* El cartel del PDF del estudio, tal cual, ocupando la primera pantalla; al
-   pie, separado por un filete, lo que hay que hacer. En el móvil cabe entero,
-   con el botón de cita incluido, en 390 × 844. El tamaño lo pone la altura
-   de la pantalla: el cartel es casi cuadrado y en horizontal se saldría.   */
+/* El cartel del PDF del estudio, tal cual y solo, ocupando la primera
+   pantalla entera (lo pide el estudio, 30/09/2026). Lo que hay que hacer,
+   la frase y los botones, espera debajo, separado por un filete: aparece al
+   bajar. El tamaño lo pone la altura de la pantalla: el cartel es casi
+   cuadrado (1,072 de ancho por 1 de alto) y en horizontal se saldría.     */
 
-.portada {
-  display: grid;
-  grid-template-rows: minmax(0, 1fr) auto;
-  min-height: calc(100svh - var(--alto-nav) - var(--s3) * 2);
-  padding-block: var(--s4) var(--s6);
-}
+.portada { padding-bottom: var(--s6); }
 .portada__cartel {
   display: grid;
   place-items: center;
+  min-height: calc(100svh - var(--alto-nav));
   margin: 0;
-  padding-block: var(--s5) var(--s7);
+  padding-block: var(--s5);
   color: var(--tinta);
 }
 .portada__cartel .marca-cartel {
-  width: min(100%, clamp(15rem, calc((100svh - 23rem) * 1.072), 38rem));
+  width: min(100%, clamp(15rem, calc((100svh - var(--alto-nav) - 6rem) * 1.072), 44rem));
   height: auto;
 }
 
@@ -55,7 +52,7 @@
 .portada__nota { flex-basis: 100%; }
 
 @media (min-width: 60rem) {
-  .portada { padding-block: var(--s5) var(--s7); }
+  .portada { padding-bottom: var(--s7); }
   .portada__pie {
     grid-template-columns: minmax(0, 1fr) auto;
     align-items: end;
@@ -78,21 +75,7 @@
 .mosaico__video { grid-column: 1 / -1; }
 .mosaico__foto .rejilla__lamina { aspect-ratio: auto; }
 .mosaico__foto img { height: auto; }
-/* El texto del estudio, debajo de las fotos: sus párrafos y, aparte, la
-   frase con la que cierra, en grande y bajo un filete, con el botón. */
-.estudio__texto { display: grid; gap: var(--s7); margin-top: var(--s8); }
-.estudio__parrafos { display: grid; gap: var(--s4); max-width: 60ch; }
-.estudio__parrafos p { color: var(--tinta-2); }
-.estudio__cierre {
-  display: grid;
-  gap: var(--s5);
-  align-content: start;
-  padding-top: var(--s5);
-  border-top: var(--hair) solid var(--tinta);
-}
-.estudio__frase { margin: 0; max-width: 18ch; text-wrap: balance; }
-.estudio__accion .btn { width: 100%; }
-.estudio__directo { max-width: 44ch; }
+.mosaico { margin-bottom: var(--s8); }
 
 @media (min-width: 48rem) {
   .mosaico {
@@ -103,17 +86,297 @@
   .mosaico__foto--1 { align-self: end; }
   .mosaico__foto--2 { align-self: start; margin-top: var(--s9); }
 }
+@media (min-width: 60rem) {
+  .mosaico { column-gap: var(--s5); }
+  .mosaico__video .video { max-width: none; }
+}
+
+/* --- EL ESTUDIO · quiénes somos ------------------------------------------ */
+/* Su texto, en cuatro piezas: el manifiesto en grande, las cifras, sus
+   puntos numerados y la frase final en negro. Ningún párrafo suelto.      */
+
+/* El manifiesto: su primer párrafo, a tamaño de titular pequeño. Se lee
+   entintándose (paginas.js, manifiestoQueSeEntinta): cada palabra pasa de
+   gris a negro según el texto sube por la pantalla. --p es por dónde va la
+   lectura (de 0 a 1,2) y --i, el sitio de cada palabra (de 0 a 1). Sin
+   JavaScript, --p vale 1,2 y todo está en negro.                          */
+.manifiesto {
+  --p: 1.2;
+  max-width: 32ch;
+  margin: 0 0 var(--s8);
+  font-size: clamp(1.5rem, 1.05rem + 2.1vw, 2.875rem);
+  font-weight: var(--w-titulo);
+  font-feature-settings: "ss01" 1;
+  line-height: 1.3;
+  letter-spacing: -0.022em;
+  color: var(--tinta);
+  text-wrap: pretty;
+}
+.manifiesto[data-anim] .w {
+  color: color-mix(in srgb, var(--tinta) calc(clamp(0, (var(--p) - var(--i)) * 5, 1) * 100%), var(--tinta-suave));
+}
+/* Las frases clave, tapadas con un bloque negro: el cartel en negativo.
+   Con JavaScript, el bloque se extiende de izquierda a derecha cuando la
+   lectura llega al final de la frase (data-lleno).                        */
+/* El bloque sobresale un poco de sus palabras (padding) sin moverlas de
+   sitio (margin negativo igual): el espacio y el punto de al lado quedan
+   donde estaban.                                                          */
+.manifiesto mark {
+  padding: 0 0.1em;
+  margin: 0 -0.1em;
+  background: linear-gradient(var(--tinta), var(--tinta)) no-repeat 0 0 / 100% 100%;
+  color: var(--claro);
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+.manifiesto mark .w { color: var(--claro); }
+.manifiesto[data-anim] mark {
+  background-size: 0% 100%;
+  transition: background-size 700ms var(--ease-out);
+}
+.manifiesto[data-anim] mark .w { transition: color 260ms ease 160ms; }
+.manifiesto[data-anim] mark[data-lleno] { background-size: 100% 100%; }
+.manifiesto[data-anim] mark[data-lleno] .w { color: var(--claro); }
+
+/* Las cifras: lo que se ve de un vistazo, a tamaño de cartel, entre
+   filetes. Cuentan desde cero al aparecer (cifrasQueCuentan): el contador
+   va encima de la cifra de verdad, que mientras tanto no se ve.           */
+.cifras {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin: 0 0 var(--s8);
+  border-top: var(--hair) solid var(--tinta);
+}
+.cifra {
+  padding: var(--s4) var(--s3) var(--s5) 0;
+  border-bottom: var(--hair) solid var(--filete);
+}
+.cifra:nth-child(even) { padding-left: var(--s4); border-left: var(--hair) solid var(--filete); }
+.cifra__num {
+  position: relative;
+  margin: 0;
+  font-size: clamp(2.75rem, 1.6rem + 5vw, 6.5rem);
+  font-weight: var(--w-display);
+  font-feature-settings: "ss01" 1;
+  font-variant-numeric: tabular-nums;
+  line-height: 0.9;
+  letter-spacing: -0.045em;
+  color: var(--tinta);
+}
+.cifra__contador { position: absolute; top: 0; left: 0; white-space: nowrap; }
+[data-contando] .cifra__final { color: transparent; }
+.cifra__txt { max-width: 24ch; margin: var(--s3) 0 0; font-size: var(--fs-sm); color: var(--tinta-2); }
+
+.punto__enlaces { display: flex; flex-wrap: wrap; gap: var(--s2); margin-top: var(--s4); }
+.punto__enlaces .chip { text-decoration: none; }
+
+/* El manifiesto con el vídeo del local al lado: en escritorio, el vídeo en
+   la columna de la izquierda, quieto mientras se lee; en el móvil, debajo. */
+.estudio__intro { display: grid; gap: var(--s6); margin-bottom: var(--s8); }
+.estudio__intro .manifiesto { margin: 0; }
+.estudio__video .video { max-width: none; }
+
+/* Los puntos. En escritorio: el cuadro fijo a la izquierda (sticky) y los
+   textos a la derecha, uno por pantalla. En el móvil: cada punto con su
+   imagen encima y el cuadro fijo no se usa.                               */
+.puntos { margin-bottom: var(--s8); border-top: var(--hair) solid var(--tinta); }
+.puntos__visor { display: none; }
+.puntos__lista { display: grid; }
+.punto {
+  display: grid;
+  gap: var(--s4);
+  justify-items: start;
+  padding-block: var(--s7);
+  border-bottom: var(--hair) solid var(--filete);
+}
+.punto:last-child { border-bottom: 0; }
+.punto__num { color: var(--tinta-3); }
+.punto__titulo { max-width: 14ch; margin: 0; }
+.punto__texto { max-width: 38ch; margin: 0; color: var(--tinta-2); }
+.punto__marco { justify-self: stretch; aspect-ratio: 4 / 3; margin-bottom: var(--s2); }
+
+/* El cuadro: de una a cuatro fotos que se reparten el sitio, pegadas como
+   en la rejilla, o el cartel negro de WhatsApp.                           */
+.marco { display: grid; gap: 3px; width: 100%; height: 100%; }
+.marco--2 { grid-template-rows: 1fr 1fr; }
+.marco--3 { grid-template-columns: 1fr 1fr; grid-template-rows: 3fr 2fr; }
+.marco--3 .marco__foto:first-child { grid-column: 1 / -1; }
+.marco--4 { grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; }
+.marco__foto { position: relative; overflow: hidden; min-height: 0; background: var(--suelo-hondo); }
+.marco__foto img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.marco--wasap {
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: var(--s4);
+  padding: var(--s6);
+  text-align: center;
+}
+.marco--wasap .marca-wasap { width: clamp(4rem, 30%, 9rem); height: auto; }
+.marco__numero {
+  margin: 0;
+  font-size: var(--fs-d2);
+  font-weight: var(--w-display);
+  letter-spacing: var(--tr-d2);
+  line-height: 1;
+  color: var(--claro);
+  white-space: nowrap;
+}
+.marco__nota { margin: 0; color: var(--noche-2); }
+
+/* Entrada de cada punto (con JavaScript y movimiento): su imagen se abre de
+   abajo arriba y el texto sube detrás, escalonado.                        */
+.puntos[data-anim] .punto__marco { clip-path: inset(100% 0 0 0); transition: clip-path 900ms var(--ease-out); }
+.puntos[data-anim] .punto > :not(.punto__marco) {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 600ms ease, transform 800ms var(--ease-out);
+}
+.puntos[data-anim] .punto > :nth-child(3) { transition-delay: 80ms; }
+.puntos[data-anim] .punto > :nth-child(4) { transition-delay: 160ms; }
+.puntos[data-anim] .punto > :nth-child(5) { transition-delay: 240ms; }
+.puntos[data-anim] .punto[data-visto] .punto__marco { clip-path: inset(0); }
+.puntos[data-anim] .punto[data-visto] > :not(.punto__marco) { opacity: 1; transform: none; }
+
+@media (min-width: 60rem) {
+  /* El vídeo, grande (5 de 12 columnas), pero nunca más alto que la
+     pantalla bajo la barra: en un portátil bajo se estrecha.              */
+  .estudio__intro {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    column-gap: var(--s8);
+    align-items: start;
+    margin-bottom: var(--s9);
+  }
+  .estudio__video { grid-column: 1; grid-row: 1; position: sticky; top: calc(var(--alto-nav) + var(--s6)); }
+  .estudio__video .video { max-width: min(100%, calc((100svh - var(--alto-nav) - var(--s6) * 2) * 0.8)); }
+  .estudio__intro .manifiesto { grid-column: 2; grid-row: 1; max-width: 30ch; font-size: clamp(2.25rem, 0.9rem + 2.1vw, 3.125rem); }
+
+  .puntos {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    column-gap: var(--s8);
+    margin-bottom: var(--s9);
+  }
+  .puntos__visor {
+    position: sticky;
+    top: calc(var(--alto-nav) + var(--s6));
+    display: block;
+    align-self: start;
+    height: min(calc(100svh - var(--alto-nav) - var(--s6) * 2), 46rem);
+    margin-top: var(--s6);
+    overflow: hidden;
+    background: var(--suelo-hondo);
+  }
+  /* Los cuadros, uno encima de otro. El activo se abre de abajo arriba
+     encima del anterior, que espera debajo (data-antes) hasta que lo tapa.
+     La foto del activo, además, se asienta: entra un poco grande.         */
+  .puntos__cuadro {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    clip-path: inset(100% 0 0 0);
+    transition: clip-path 850ms var(--ease-out);
+  }
+  .puntos__cuadro[data-antes] { z-index: 1; clip-path: inset(0); transition: none; }
+  .puntos__cuadro[data-activa] { z-index: 2; clip-path: inset(0); }
+  .puntos__cuadro img { transform: scale(1.08); transition: transform 1600ms var(--ease-out); }
+  .puntos__cuadro[data-activa] img { transform: none; }
+  .puntos__contador {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    z-index: 3;
+    margin: 0;
+    padding: var(--s2) var(--s3);
+    background: var(--tinta);
+    color: var(--claro);
+  }
+  .punto {
+    min-height: min(72svh, 40rem);
+    align-content: center;
+    padding-block: var(--s8);
+  }
+  .punto__marco { display: none; }
+  .punto__texto { font-size: var(--fs-lead); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .puntos__cuadro, .puntos__cuadro img { transition: none; }
+}
+
+/* El cierre: su última frase, en una banda negra, enorme. Cada palabra
+   sube desde su línea al llegar (cierreQueSube) y detrás llegan la segunda
+   frase y el botón. En el móvil va de borde a borde, como el paso a paso. */
+.estudio__cierre {
+  display: grid;
+  gap: var(--s5);
+  margin: var(--s9) calc(var(--gutter) * -1) 0;
+  padding: var(--s8) var(--gutter);
+}
+.estudio__grande {
+  margin: 0;
+  font-size: var(--fs-d1);
+  font-weight: var(--w-display);
+  font-feature-settings: "ss01" 1;
+  line-height: 0.92;
+  letter-spacing: var(--tr-d1);
+  color: var(--claro);
+}
+/* Cada palabra en su caja: sube desde abajo sin verse fuera de ella. El
+   relleno de abajo deja sitio a la «q» y la «p».                          */
+.palabra { display: inline-block; overflow: hidden; vertical-align: top; padding-bottom: 0.1em; margin-bottom: -0.1em; }
+.palabra > span { display: inline-block; }
+.estudio__segunda {
+  max-width: 22ch;
+  margin: 0;
+  font-size: var(--fs-d3);
+  font-weight: var(--w-lead);
+  line-height: 1.2;
+  letter-spacing: var(--tr-d3);
+  color: var(--noche-2);
+}
+.estudio__accion { margin: var(--s2) 0 0; }
+.estudio__accion .btn { width: 100%; }
+.estudio__directo { max-width: 44ch; margin: 0; color: var(--noche-3); }
+
+.estudio__cierre[data-anim] .palabra > span {
+  transform: translateY(105%);
+  transition: transform 900ms var(--ease-out) calc(var(--n, 0) * 90ms);
+}
+.estudio__cierre[data-anim] :is(.estudio__segunda, .estudio__accion, .estudio__directo) {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 600ms ease 550ms, transform 800ms var(--ease-out) 550ms;
+}
+.estudio__cierre[data-anim][data-visto] .palabra > span,
+.estudio__cierre[data-anim][data-visto] :is(.estudio__segunda, .estudio__accion, .estudio__directo) {
+  opacity: 1;
+  transform: none;
+}
+
 @media (min-width: 48rem) {
   .estudio__accion .btn { width: auto; }
 }
 @media (min-width: 60rem) {
-  .estudio__texto {
+  /* El manifiesto va a la derecha del vídeo del local (.estudio__intro):
+     la lectura baja en diagonal desde el titular, como en el cartel.      */
+  .cifras { grid-template-columns: repeat(4, minmax(0, 1fr)); margin-bottom: var(--s9); }
+  .cifra { padding: var(--s5) var(--s4) 0 var(--s5); border-bottom: 0; border-left: var(--hair) solid var(--filete); }
+  .cifra:first-child { padding-left: 0; border-left: 0; }
+  .cifra:nth-child(even) { padding-left: var(--s5); }
+  .mosaico { margin-bottom: var(--s9); }
+  .estudio__cierre {
     grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    grid-template-areas: "grande grande" "segunda accion" "segunda directo";
     column-gap: var(--s8);
-    margin-top: var(--s9);
+    row-gap: var(--s5);
+    margin-inline: 0;
+    padding: var(--s10) var(--s8) var(--s9);
   }
-  .mosaico { column-gap: var(--s5); }
-  .mosaico__video .video { max-width: none; }
+  .estudio__grande { grid-area: grande; margin-bottom: var(--s5); }
+  .estudio__segunda { grid-area: segunda; }
+  .estudio__accion { grid-area: accion; margin: 0; align-self: end; }
+  .estudio__directo { grid-area: directo; }
 }
 
 /* --- TRABAJOS · la muestra ------------------------------------------------- */

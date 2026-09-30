@@ -22,6 +22,9 @@
   --tinta-viva:    #2A2927;   /* al pasar por encima de un bloque negro      */
   --tinta-2:       #302F2C;   /*  8.94:1  texto secundario                   */
   --tinta-3:       #4D4C49;   /*  5.73:1  pies y etiquetas (5.18 en hondo)   */
+  --tinta-suave:   #72716E;   /*  3.26:1  SOLO texto grande (24 px o más)
+                                         aún por leer: el manifiesto del
+                                         estudio antes de entintarse     */
   --tinta-off:     #8B8A87;   /*  2.30:1  SOLO controles deshabilitados      */
 
   /* --- FILETES -------------------------------------------------------------- */

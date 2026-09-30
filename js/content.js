@@ -140,21 +140,49 @@ window.STUDIO = {
       verTatuajes: "Ver tatuajes",
       nota: "Escríbenos y te contesta un compañero del estudio.",
 
-      // Quiénes somos, con las fotos y el vídeo del local.
-      // FUENTE: el texto de inicio que mandó el estudio (30/09/2026). La
-      // entradilla es su primer párrafo; `texto`, el resto, uno por párrafo;
-      // `cierre`, su última frase, que va en grande junto al botón de cita.
+      // Quiénes somos: el texto de inicio que mandó el estudio (30/09/2026),
+      // repartido en cuatro piezas para que se lea de un tirón.
+      // · `manifiesto`: su primer párrafo, en grande. Lo que va entre
+      //   asteriscos (*así*) se tapa con un bloque negro al leerlo.
+      // · `cifras`: lo que se ve de un vistazo. {nota} y {resenas} salen de
+      //   la ficha de Google (studio.google).
+      // · `puntos`: el resto de su texto, un punto por párrafo, cada uno con
+      //   su imagen: `fotos` (de una a cuatro, por su `id`: de un trabajo,
+      //   de un piercing, del local o la clave de un vídeo, que pone su
+      //   primer fotograma) o `tarjeta: "whatsapp"`, un cartel negro con el
+      //   número. `enlaces` pone debajo los estilos o los servicios de los
+      //   que habla. Las fotos del local que no salen aquí salen, debajo,
+      //   en el mosaico.
+      // · `cierre`: su última frase, en la banda negra con el botón de cita.
       estudio: {
         etiqueta: "El estudio",
         titular: "Desde 2015 en A Coruña.",
-        entradilla: "Somos un estudio en el centro de A Coruña con más de diez años de trayectoria. En este tiempo hemos crecido sin perder lo que nos define: un espacio profesional y cercano, donde cada trabajo se hace con calma y con cuidado. Varios primeros premios en convenciones de tatuaje avalan la experiencia de nuestro equipo.",
-        texto: [
-          "Trabajamos todos los estilos, desde realismo black & grey y fineline hasta color, dotwork, anime y otros estilos, adaptando cada diseño a tu idea y a ti.",
-          "En el mismo espacio encontrarás también piercing, eliminación de tatuajes con láser y micropigmentación capilar.",
-          "Cuidamos la calidad, la higiene y el trato: queremos que, desde el primer mensaje hasta que sales por la puerta, sepas qué vamos a hacer y te sientas a gusto durante todo el proceso.",
-          "Todas las consultas, presupuestos y citas se gestionan directamente a través de WhatsApp, para centralizar la atención y poder llevar un mejor seguimiento de cada cliente."
+        manifiesto: "Somos un estudio en el centro de A Coruña con *más de diez años de trayectoria*. En este tiempo hemos crecido sin perder lo que nos define: un espacio *profesional y cercano*, donde cada trabajo se hace con calma y con cuidado. *Varios primeros premios* en convenciones de tatuaje avalan la experiencia de nuestro equipo.",
+        // PROVISIONAL: las cifras y los titulares de cada punto los ha puesto
+        // la web a partir del texto del estudio; pendiente de que lo revise.
+        cifras: [
+          { cifra: "+10", texto: "años de trayectoria en el centro de A Coruña" },
+          { cifra: "{nota}", texto: "de media en Google, con {resenas} reseñas" },
+          { cifra: "4", texto: "especialidades en un mismo estudio" },
+          { cifra: "1.os", texto: "premios en convenciones de tatuaje" }
         ],
-        cierre: "Tu idea empieza aquí. Nosotros nos encargamos de darle forma.",
+        puntos: [
+          { titulo: "Todos los estilos",
+            texto: "Trabajamos todos los estilos, desde realismo black & grey y fineline hasta color, dotwork, anime y otros estilos, adaptando cada diseño a tu idea y a ti.",
+            fotos: ["bg-1", "fl-1", "tr-1", "an-1"],
+            enlaces: "estilos" },
+          { titulo: "Todo en un mismo sitio",
+            texto: "En el mismo espacio encontrarás también piercing, eliminación de tatuajes con láser y micropigmentación capilar.",
+            fotos: ["bg-2", "piercing-1", "laser"],
+            enlaces: "servicios" },
+          { titulo: "Calidad, higiene y trato",
+            texto: "Cuidamos la calidad, la higiene y el trato: queremos que, desde el primer mensaje hasta que sales por la puerta, sepas qué vamos a hacer y te sientas a gusto durante todo el proceso.",
+            fotos: ["estudio-1"] },
+          { titulo: "Todo por WhatsApp",
+            texto: "Todas las consultas, presupuestos y citas se gestionan directamente a través de WhatsApp, para centralizar la atención y poder llevar un mejor seguimiento de cada cliente.",
+            tarjeta: "whatsapp" }
+        ],
+        cierre: ["Tu idea empieza aquí.", "Nosotros nos encargamos de darle forma."],
         directo: "Si ya has venido y sabes con qué artista quieres trabajar, puedes escribirle directamente. Si no tienes su número, pídenoslo."
       },
 
