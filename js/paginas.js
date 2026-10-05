@@ -18,7 +18,23 @@
   if (!S || !N) return;
   var $ = N.$, $$ = N.$$, esc = N.esc, T = S.textos, SV = N.SERVICIO;
 
-  function set(sel, html) { var n = $(sel); if (n) n.innerHTML = html; return n; }
+  /* Pinta un bloque. Si el HTML volcado ya es exactamente lo que se iba a
+     pintar (lleva la misma firma), no lo repinta: así el navegador no
+     vuelve a maquetar la página ni a pedir sus fotos al cargar. Si
+     content.js ha cambiado y el HTML aún no se ha vuelto a volcar, la
+     firma no coincide y se pinta como siempre.                            */
+  function firma(t) {
+    for (var h = 5381, i = 0; i < t.length; i++) h = ((h << 5) + h + t.charCodeAt(i)) | 0;
+    return (h >>> 0).toString(36);
+  }
+  function pintar(n, html) {
+    var f = firma(html);
+    if (n.getAttribute("data-firma") === f) return n;
+    n.innerHTML = html;
+    n.setAttribute("data-firma", f);
+    return n;
+  }
+  function set(sel, html) { var n = $(sel); return n ? pintar(n, html) : n; }
 
   var NUEVA = '<span class="visually-hidden"> (se abre en WhatsApp)</span>';
   var TT = T.tatuajes;
@@ -47,7 +63,7 @@
   $$("[data-cab]").forEach(function (cab) {
     var ruta = cab.getAttribute("data-cab").split(".");
     var t = ruta.reduce(function (o, k) { return o && o[k]; }, T);
-    if (t) cab.innerHTML = cabHTML(t, ruta[ruta.length - 1]);
+    if (t) pintar(cab, cabHTML(t, ruta[ruta.length - 1]));
   });
 
   /* Lista de «dato: valor». Un punto sin valor en content.js no se pinta. */
@@ -859,7 +875,7 @@
     if (lead && G) lead.textContent = N.rellenar(O.entradilla, { nota: G.nota, n: G.resenas });
     var seccion = host.closest("section");
     if (seccion) seccion.hidden = !lista.length;
-    host.innerHTML = '<ol class="opiniones" role="list">' + lista.map(function (o, i) {
+    pintar(host, '<ol class="opiniones" role="list">' + lista.map(function (o, i) {
       var a = o.artista ? N.artistaPor(o.artista) : null;
       var estrellas = "";
       for (var k = 0; k < 5; k++) estrellas += "<i" + (k < o.nota ? "" : ' class="apagada"') + "></i>";
@@ -887,7 +903,7 @@
     }).join("") + "</ol>" +
     (G ? '<p class="opiniones__todas"><a class="btn btn--grande" href="' + esc(G.ficha) + '" target="_blank" rel="noopener">' +
           esc(N.rellenar(O.todas, { n: G.resenas })) + '<i class="flecha" aria-hidden="true"></i>' +
-          '<span class="visually-hidden"> (se abre en Google Maps)</span></a></p>' : "");
+          '<span class="visually-hidden"> (se abre en Google Maps)</span></a></p>' : ""));
   })();
 
   /* El giro de las opiniones, adaptado de «Smooth Scrolling Image Effects»
@@ -1085,7 +1101,8 @@
     if (cab) cab.classList.toggle("scab--sin-media", !media);
     var mediaNueva = $("[data-servicio-cab] .scab__media");
     var imgPrevia = mediaPrevia && $("img", mediaPrevia), imgNueva = mediaNueva && $("img", mediaNueva);
-    if (imgPrevia && imgNueva && imgPrevia.getAttribute("srcset") === imgNueva.getAttribute("srcset")) {
+    if (mediaNueva !== mediaPrevia && imgPrevia && imgNueva &&
+        imgPrevia.getAttribute("srcset") === imgNueva.getAttribute("srcset")) {
       mediaNueva.replaceWith(mediaPrevia);
     }
 
@@ -1330,8 +1347,8 @@
         primera = i;
       }
       pos.textContent = String(Math.min(primera + 1, lis.length)).padStart(2, "0");
-      flechas[0].disabled = x <= 2;
-      flechas[1].disabled = x >= sw - cw - 2;
+      flechas[0].setAttribute("aria-disabled", String(x <= 2));
+      flechas[1].setAttribute("aria-disabled", String(x >= sw - cw - 2));
     }
     function pedir() { if (!pidiendo) { pidiendo = true; requestAnimationFrame(pintar); cargarCerca(); } }
     pista.addEventListener("scroll", pedir, { passive: true });
@@ -1364,6 +1381,7 @@
        de una: nunca dejan una foto partida a la izquierda.               */
     flechas.forEach(function (b) {
       b.addEventListener("click", function () {
+        if (b.getAttribute("aria-disabled") === "true") return;
         var paso = Number(b.getAttribute("data-paso"));
         var x = pista.scrollLeft, ancho = pista.clientWidth * 0.8;
         var piezas = $$(".carrete__item", pista).filter(function (li) { return !li.hidden; });
@@ -1388,8 +1406,49 @@
       var i = focos.indexOf(document.activeElement);
       if (i === -1) return;
       var j = i + (ev.key === "ArrowRight" ? 1 : -1);
-      if (focos[j]) { ev.preventDefault(); focos[j].focus(); }
+      if (focos[j]) { ev.preventDefault(); focos[j].focus({ preventScroll: true }); traer(focos[j]); }
     });
+    /* Lo que recibe el foco (con el tabulador o con las flechas) se ve
+       entero: si asoma a medias por un borde, la fila lo trae a su sitio. */
+    function traer(el) {
+      var li = el.closest(".carrete__item");
+      if (!li) return;
+      var q = pista.getBoundingClientRect(), r = li.getBoundingClientRect(), margen = primeraPieza.offsetLeft;
+      if (r.left >= q.left + margen - 1 && r.right <= q.right - margen + 1) return;
+      pista.scrollTo({ left: inicioDe(li), behavior: N.quieto() ? "auto" : "smooth" });
+    }
+    /* Solo con el teclado: un clic del ratón también da el foco, y a mitad
+       de un arrastre la fila no debe recolocarse sola.                    */
+    pista.addEventListener("focusin", function (ev) {
+      var teclado = true;
+      try { teclado = ev.target.matches(":focus-visible"); } catch (e) {}
+      if (teclado && !arrastre) traer(ev.target);
+    });
+
+    /* Rueda y trackpad. El navegador da cada gesto entero al primer sitio
+       que puede moverse en su dirección: con un trackpad, un gesto casi
+       vertical lleva siempre algo de lateral, se lo quedaba la fila y la
+       página no bajaba. Aquí se mira la intención del gesto en sus primeros
+       píxeles: si es lateral, la fila se mueve sola, como siempre; si es
+       vertical, baja la página, y lo poco de lateral que traiga no cuenta.
+       La rueda de un ratón (vertical pura) no se toca: el navegador la
+       mueve con su propio suavizado.                                      */
+    var gesto = null;
+    pista.addEventListener("wheel", function (ev) {
+      if (ev.ctrlKey) return;   /* pellizco del trackpad: es zoom */
+      var k = ev.deltaMode === 1 ? 16 : ev.deltaMode === 2 ? window.innerHeight : 1;
+      var dx = ev.deltaX * k, dy = ev.deltaY * k;
+      if (!gesto || ev.timeStamp - gesto.t > 200) gesto = { eje: "", sx: 0, sy: 0 };
+      gesto.t = ev.timeStamp;
+      gesto.sx += Math.abs(dx);
+      gesto.sy += Math.abs(dy);
+      if (!gesto.eje && gesto.sx + gesto.sy > 10) gesto.eje = gesto.sx > gesto.sy * 1.2 ? "x" : "y";
+      if (gesto.eje === "x") return;
+      if (gesto.eje === "y" && !dx) return;
+      ev.preventDefault();
+      if (!gesto.eje) pista.scrollLeft += dx;   /* aún sin decidir: cada uno lo suyo */
+      window.scrollBy(0, dy);
+    }, { passive: false });
 
     /* Arrastrar con el ratón, con su inercia al soltar. El dedo y el
        trackpad ya lo hacen solos; esto es solo para el ratón. Si se ha
@@ -1400,8 +1459,11 @@
       if (ev.target.closest(".video__boton, a")) return;
       cancelAnimationFrame(inercia);
       arrastre = { x: ev.clientX, izq: pista.scrollLeft, t: performance.now(), v: 0, ultimoX: ev.clientX, movido: false };
+      window.addEventListener("pointermove", mover);
+      window.addEventListener("pointerup", soltar);
+      window.addEventListener("pointercancel", soltar);
     });
-    window.addEventListener("pointermove", function (ev) {
+    function mover(ev) {
       if (!arrastre) return;
       var dx = ev.clientX - arrastre.x;
       if (!arrastre.movido && Math.abs(dx) < 6) return;
@@ -1410,8 +1472,11 @@
       arrastre.v = (ev.clientX - arrastre.ultimoX) / dt;
       arrastre.t = ahora; arrastre.ultimoX = ev.clientX;
       pista.scrollLeft = arrastre.izq - dx;
-    });
+    }
     function soltar() {
+      window.removeEventListener("pointermove", mover);
+      window.removeEventListener("pointerup", soltar);
+      window.removeEventListener("pointercancel", soltar);
       if (!arrastre) return;
       var a = arrastre; arrastre = null;
       caja.removeAttribute("data-arrastrando");
@@ -1427,8 +1492,6 @@
         inercia = requestAnimationFrame(paso);
       })();
     }
-    window.addEventListener("pointerup", soltar);
-    window.addEventListener("pointercancel", soltar);
     pista.addEventListener("click", function (ev) {
       if (huboArrastre) { ev.stopPropagation(); ev.preventDefault(); }
     }, true);

@@ -1187,13 +1187,6 @@ a.muestra__artista { display: inline-block; padding-block: 6px; margin-block: -6
   border-bottom: var(--hair) solid var(--filete);
   scroll-margin-top: var(--alto-estilos);   /* la barra fija ya la reserva <html> */
 }
-/* Siete filas con sesenta fotos: las que quedan lejos no se maquetan hasta
-   acercarse. El navegador recuerda lo que miden (auto), así que la barra
-   de scroll no baila al volver.                                          */
-.estilo + .estilo {
-  content-visibility: auto;
-  contain-intrinsic-size: auto 56rem;
-}
 .estilo__cab {
   display: grid;
   gap: var(--s4);
@@ -1419,10 +1412,10 @@ a.muestra__artista { display: inline-block; padding-block: 6px; margin-block: -6
 .carrete__flecha + .carrete__flecha { margin-left: calc(var(--s4) * -1 + var(--s1)); }
 .carrete__flecha .flecha { translate: -0.12em 0; }
 .carrete__flecha--atras .flecha { rotate: 225deg; translate: 0.12em 0; }
-.carrete__flecha:active:not(:disabled) { transform: scale(0.94); }
-.carrete__flecha:disabled { color: var(--tinta-off); border-color: var(--filete); cursor: default; }
+.carrete__flecha:active:not([aria-disabled="true"]) { transform: scale(0.94); }
+.carrete__flecha[aria-disabled="true"] { color: var(--tinta-off); border-color: var(--filete); cursor: default; }
 @media (hover: hover) and (pointer: fine) {
-  .carrete__flecha:not(:disabled):hover { background: var(--tinta); border-color: var(--tinta); color: var(--claro); }
+  .carrete__flecha:not([aria-disabled="true"]):hover { background: var(--tinta); border-color: var(--tinta); color: var(--claro); }
 }
 /* Con el dedo, la fila se pasa sola: las flechas sobran. */
 @media (pointer: coarse) {
@@ -1697,6 +1690,14 @@ a.muestra__artista { display: inline-block; padding-block: 6px; margin-block: -6
   .guia__cab { position: static; }
   .guia__avisar { background: none; color: var(--tinta); border: 2px solid var(--tinta); }
   .guia__avisar li, .guia__avisar .etiqueta { color: var(--tinta); }
+  /* En papel no hay scroll lateral: el carrete se abre en filas, sin
+     mandos ni el bloque de WhatsApp, y cada foto entera en su página.   */
+  .carrete__pista { flex-wrap: wrap; overflow: visible; margin: 0; padding: 0; }
+  .carrete__pista::after, .carrete__mandos, .carrete__filtro, .carrete__fin,
+  .carrete > .estilo__accion, .carrete__cursor { display: none !important; }
+  .carrete { --alto: 9cm; }
+  .carrete__item { break-inside: avoid; animation: none !important; transform: none !important; }
+  .carrete__lamina img { animation: none !important; opacity: 1 !important; }
 }
 
 /* ============================================================================
