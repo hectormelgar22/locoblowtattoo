@@ -21,6 +21,7 @@
   function set(sel, html) { var n = $(sel); if (n) n.innerHTML = html; return n; }
 
   var NUEVA = '<span class="visually-hidden"> (se abre en WhatsApp)</span>';
+  var TT = T.tatuajes;
 
   /* Enlace de WhatsApp con su mensaje. `macizo` solo para el botón que pide
      cita en cada pantalla: en toda la web hay uno a la vista.               */
@@ -59,10 +60,9 @@
   }
 
   /* --- fotos --------------------------------------------------------------------- */
-  /* La rejilla de una página: fotos a 4:5, como la rejilla de Instagram, que
-     es donde esta gente mira tatuajes. A pantalla completa (visor.js) se
-     ven enteras. Bajo cada una, quién la hizo: la web no se ordena por
-     artistas, pero cada foto dice de quién es.                              */
+  /* Las fotos de cada página van en su carrete (más abajo): enteras, con
+     su proporción. Bajo cada una, quién la hizo: cada foto dice de quién
+     es, y el nombre lleva a su Instagram.                                   */
 
   /* El nombre de un artista: enlace a su Instagram si lo tiene. El lector
      de pantalla oye adónde lleva; el nombre visible va primero, para quien
@@ -82,30 +82,11 @@
       (p.titulo ? '<span class="rejilla__titulo">' + esc(p.titulo) + "</span>" : "") + "</p>";
   }
 
-  /* Un trabajo se ve si tiene foto, o si es un reel publicado. */
+  /* Un trabajo se ve si tiene foto, o si es un reel publicado, y no lo han
+     dejado fuera con `publicar: false`.                                     */
   function publicada(o) {
+    if (o.publicar === false) return false;
     return !!(o.img || (o.video && S.videos[o.video] && S.videos[o.video].publicar));
-  }
-
-  /* Fotos y reels mezclados, en el orden de content.js. `grupo` dice con qué
-     fotos pasa el visor (los reels se ven en su sitio): las de ese estilo o
-     las de esa página.                                                      */
-  function rejillaHTML(piezas, grupo) {
-    return '<ul class="rejilla" role="list">' + piezas.filter(publicada).map(function (p, i) {
-      if (p.video) {
-        return '<li class="rejilla__item rejilla__item--video" id="obra-' + esc(p.id) + '">' +
-          N.videoHTML(p.video) + pieFoto({ artista: p.artista, titulo: p.titulo }) + "</li>";
-      }
-      return '<li class="rejilla__item" id="obra-' + esc(p.id) + '">' +
-        '<button class="rejilla__boton" type="button" data-abrir="' + esc(p.id) + '" data-grupo="' + esc(grupo) + '">' +
-          '<span class="rejilla__lamina" data-revelar data-revelar-orden="' + (i % 3) + '">' +
-            N.imgHTML({
-              base: p.img, tipo: "obra", alt: p.alt, ratio: p.ratio, foco: p.foco,
-              sizes: "(min-width: 60rem) 22vw, (min-width: 21.25rem) 46vw, 92vw"
-            }) +
-          "</span>" +
-        "</button>" + pieFoto(p) + "</li>";
-    }).join("") + "</ul>";
   }
 
   /* Mientras no haya ninguna foto, un solo hueco ancho, no una fila de
@@ -1092,7 +1073,8 @@
           esc(SV.titular) + "</h1>" +
       "</div>" +
       '<div class="scab__texto">' +
-        '<p class="lead scab__entradilla">' + esc(SV.entradilla) + "</p>" +
+        '<p class="lead scab__entradilla' + (SV.cuerpo ? " scab__lema" : "") + '">' + esc(SV.entradilla) + "</p>" +
+        textoServicio(SV) +
         '<div class="scab__acciones" data-cta-principal data-cta>' +
           botonWasap(SV.boton, SV.mensaje, "btn--macizo btn--grande") +
           bajar +
@@ -1126,10 +1108,15 @@
        trabajos» de la cabecera tampoco.                                     */
     if (SV.pagina !== "tatuajes") {
       N.grupos[SV.pagina] = fotosSV;
+      var tit = SV.fotosTitulo || T.servicio.fotos;
       var seccionFotos = set("[data-servicio-fotos]", fotosSV.length
-        ? '<header class="cab"><p class="etiqueta corchetes">' + esc(T.servicio.fotos.etiqueta) + "</p>" +
-            '<h2 class="d2" id="t-fotos">' + esc(T.servicio.fotos.titular) + "</h2></header>" +
-          rejillaHTML(fotosSV, SV.pagina)
+        ? '<header class="cab"><p class="etiqueta corchetes">' + esc(tit.etiqueta) + "</p>" +
+            '<h2 class="d2" id="t-fotos">' + esc(tit.titular) + "</h2></header>" +
+          '<div class="carrete-marco">' + carreteHTML({
+            id: SV.pagina, nombre: tit.etiqueta, obras: fotosSV, grupo: SV.pagina,
+            fin: finHTML(SV.etiqueta, T.servicio.finTitular, T.servicio.finTexto,
+                         botonWasap(SV.boton, SV.mensaje, "btn--macizo"))
+          }) + "</div>"
         : "");
       if (seccionFotos) seccionFotos.hidden = !fotosSV.length;
     }
@@ -1139,6 +1126,23 @@
           '<h2 class="d2" id="t-preguntas">' + esc(T.servicio.preguntas.titular) + "</h2></header>" +
         faqHTML(SV.preguntas) + guiaEnlace(SV)
       : "");
+  }
+
+  /* El texto de un servicio que se cuenta con más de una línea (el láser,
+     con el de Origen Láser): sus párrafos, el remate y la firma, con el
+     Instagram de quien firma.                                              */
+  function textoServicio(sv) {
+    if (!sv.cuerpo) return "";
+    var quien = sv.firmaArtista ? N.artistaPor(sv.firmaArtista) : null;
+    return (sv.cuerpo || []).map(function (t) { return '<p class="scab__parrafo">' + esc(t) + "</p>"; }).join("") +
+      (sv.remate ? '<p class="scab__remate">' + esc(sv.remate) + "</p>" : "") +
+      (sv.firma
+        ? '<p class="scab__firma etiqueta">' + esc(sv.firma) +
+            (quien && quien.instagram
+              ? ' <a class="scab__insta" href="' + esc(N.instaURL(quien.instagram)) + '" rel="noopener">@' +
+                  esc(quien.instagram) + '<span class="visually-hidden"> (Instagram)</span></a>'
+              : "") + "</p>"
+        : "");
   }
 
   /* El enlace de un servicio a su guía de cuidados, si la tiene. */
@@ -1157,8 +1161,6 @@
      estilo tiene su dirección (tatuajes#anime).
      ============================================================================ */
 
-  var TT = T.tatuajes;
-
   set("[data-estilos-nav]",
     '<ul class="estilos-nav__lista" role="list">' + ESTILOS.map(function (e) {
       var n = obrasDe(e).length;
@@ -1166,24 +1168,338 @@
         (n ? ' <span class="estilos-nav__n num">' + n + "</span>" : "") + "</a></li>";
     }).join("") + "</ul>");
 
-  set("[data-estilos]", ESTILOS.map(function (e) {
+  /* Los artistas de un estilo, en el orden en que salen sus trabajos. */
+  function artistasDe(obras) {
+    var vistos = [];
+    obras.forEach(function (o) { if (o.artista && vistos.indexOf(o.artista) === -1) vistos.push(o.artista); });
+    return vistos.map(N.artistaPor).filter(Boolean);
+  }
+
+  /* «Ezel y Maou», «Ana, Ezel y Maou». */
+  function yLista(partes) {
+    return partes.length < 2 ? partes.join("") : partes.slice(0, -1).join(", ") + " y " + partes[partes.length - 1];
+  }
+
+  /* EL CARRETE: los trabajos de un estilo en fila, enteros, a la misma
+     altura y cada uno con su proporción (no se recorta ninguno). Se pasan
+     de lado con el dedo, el trackpad, arrastrando con el ratón o con las
+     flechas, y la fila sale de la columna hasta el borde de la pantalla:
+     lo que asoma a la derecha dice que hay más. Así cada estilo ocupa una
+     pantalla, no una pared de miniaturas.
+     Sin JavaScript es una fila con scroll lateral, sin mandos.
+     Al final, un bloque negro con el paso a WhatsApp.                       */
+  /* `c`: id y nombre de la fila, sus obras, el grupo del visor, el botón
+     de arriba (`accion`), el bloque del final (`fin`, ya en HTML) y si se
+     puede elegir artista (`filtro`).                                       */
+  function carreteHTML(c) {
+    var obras = c.obras, grupo = c.grupo;
+    var artistas = c.filtro ? artistasDe(obras) : [];
+    var items = obras.map(function (p, i) {
+      /* Se revelan al llegar solo las que se ven al bajar hasta la fila;
+         las de más a la derecha ya entran con el propio scroll lateral. */
+      var revelar = i < 4 ? ' data-revelar data-revelar-orden="' + i + '"' : "";
+      if (p.video) {
+        var v = S.videos[p.video];
+        return '<li class="carrete__item carrete__item--video" id="obra-' + esc(p.id) + '"' +
+          ' data-artista="' + esc(p.artista || "") + '" style="--r:' + v.ratio + '">' +
+          N.videoHTML(p.video) + pieFoto({ artista: p.artista, titulo: p.titulo }) + "</li>";
+      }
+      return '<li class="carrete__item" id="obra-' + esc(p.id) + '" data-artista="' + esc(p.artista || "") + '"' +
+        ' style="--r:' + p.ratio + '">' +
+        '<button class="rejilla__boton" type="button" data-abrir="' + esc(p.id) + '" data-grupo="' + esc(grupo) + '">' +
+          '<span class="rejilla__lamina carrete__lamina"' + revelar + ">" +
+            N.imgHTML({
+              base: p.img, tipo: "obra", alt: p.alt, ratio: p.ratio, clase: "carrete__img",
+              sizes: "(min-width: 60rem) 34rem, 80vw"
+            }) +
+          "</span>" +
+        "</button>" + pieFoto(p) + "</li>";
+    }).join("");
+
+    var fin = '<li class="carrete__item carrete__fin en-negro" style="--r:0.62">' + c.fin + "</li>";
+
+    /* Elegir artista: solo si en el estilo hay más de uno. */
+    var filtro = artistas.length > 1
+      ? '<div class="carrete__filtro" role="group" aria-label="' + esc(TT.filtrar + " " + c.nombre) + '">' +
+          [{ slug: "", nombre: TT.todos, n: obras.length }].concat(artistas.map(function (a) {
+            return { slug: a.slug, nombre: a.nombre, n: obras.filter(function (o) { return o.artista === a.slug; }).length };
+          })).map(function (x, k) {
+            return '<button class="carrete__chip" type="button" data-filtro="' + esc(x.slug) + '"' +
+              ' aria-pressed="' + (k === 0) + '">' + esc(x.nombre) +
+              ' <span class="carrete__chip-n num">' + x.n + "</span></button>";
+          }).join("") +
+        "</div>"
+      : "";
+
+    return '<div class="carrete" data-carrete="' + esc(c.id) + '" data-grupo="' + esc(grupo) + '">' +
+      filtro + (c.accion || "") +
+      '<ul class="carrete__pista" role="list" aria-label="' + esc(c.nombre) + '">' + items + fin + "</ul>" +
+      '<div class="carrete__mandos">' +
+        '<div class="carrete__barra" aria-hidden="true"><span class="carrete__avance"></span></div>' +
+        '<p class="carrete__pos etiqueta num" aria-hidden="true">' +
+          '<span data-carrete-pos>01</span> / <span data-carrete-total>' + String(obras.length).padStart(2, "0") + "</span></p>" +
+        '<button class="carrete__flecha carrete__flecha--atras" type="button" data-paso="-1" aria-label="' + esc(TT.anteriores) + '">' +
+          '<i class="flecha" aria-hidden="true"></i></button>' +
+        '<button class="carrete__flecha" type="button" data-paso="1" aria-label="' + esc(TT.siguientes) + '">' +
+          '<i class="flecha" aria-hidden="true"></i></button>' +
+      "</div>" +
+      '<p class="visually-hidden" aria-live="polite" data-carrete-aviso></p>' +
+    "</div>";
+  }
+
+  /* El bloque negro del final de la fila. */
+  function finHTML(etiqueta, titular, texto, boton) {
+    return '<p class="etiqueta corchetes">' + esc(etiqueta) + "</p>" +
+      '<p class="carrete__fin-titular">' + esc(titular) + "</p>" +
+      '<p class="carrete__fin-texto">' + esc(texto) + "</p>" +
+      '<p class="carrete__fin-accion" data-carrete-cita>' + boton + "</p>";
+  }
+
+  set("[data-estilos]", ESTILOS.map(function (e, k) {
     var obras = obrasDe(e);
     N.grupos["estilo:" + e.id] = conFoto(obras);
     var n = obras.length;
+    var artistas = artistasDe(obras);
+    var accion = '<p class="estilo__accion">' +
+      botonWasap(TT.botonEstilo, N.rellenar(TT.mensajeEstilo, { estilo: e.nombre.toLowerCase() }),
+                 "", ": " + e.nombre) + "</p>";
     return '<section class="estilo" id="' + esc(e.id) + '" aria-labelledby="t-' + esc(e.id) + '">' +
       '<header class="estilo__cab">' +
-        '<h2 class="d2 estilo__nombre" id="t-' + esc(e.id) + '" style="--letras:' + palabraMasLarga(e.nombre) + '">' +
+        '<p class="estilo__regla etiqueta num"><span>' + String(k + 1).padStart(2, "0") + "</span>" +
+          (n ? '<span class="estilo__cuenta">' + esc(N.rellenar(TT.trabajos, { n: n })) + "</span>" : "") + "</p>" +
+        '<h2 class="d1 estilo__nombre" id="t-' + esc(e.id) + '" style="--letras:' + palabraMasLarga(e.nombre) + '">' +
           esc(e.nombre) + "</h2>" +
-        (e.descripcion ? '<p class="estilo__desc">' + esc(e.descripcion) + "</p>" : "") +
-        '<p class="estilo__accion">' +
-          botonWasap(TT.botonEstilo, N.rellenar(TT.mensajeEstilo, { estilo: e.nombre.toLowerCase() }),
-                     "", ": " + e.nombre) + "</p>" +
+        '<div class="estilo__texto">' +
+          (e.descripcion ? '<p class="estilo__desc">' + esc(e.descripcion) + "</p>" : "") +
+          (artistas.length
+            ? '<p class="estilo__artistas">' + esc(TT.por) + " " +
+                yLista(artistas.map(function (a) { return artistaHTML(a, "estilo__artista"); })) + "</p>"
+            : "") +
+        "</div>" +
       "</header>" +
       '<div class="estilo__obras">' +
-        (n ? rejillaHTML(obras, "estilo:" + e.id) : pendienteHTML(e.nombre, TT.pendiente)) +
+        (n ? carreteHTML({
+               id: e.id, nombre: e.nombre, obras: obras, grupo: "estilo:" + e.id, accion: accion, filtro: true,
+               fin: finHTML(e.nombre, TT.finTitular, TT.finTexto,
+                            botonWasap(TT.botonEstilo, N.rellenar(TT.mensajeEstilo, { estilo: e.nombre.toLowerCase() }),
+                                       "btn--macizo", ": " + e.nombre))
+             })
+           : pendienteHTML(e.nombre, TT.pendiente) + accion) +
       "</div>" +
     "</section>";
   }).join(""));
+
+  /* Lo que hace del carrete algo más que una fila con scroll: mandos,
+     arrastre con ratón, avance, filtro por artista y el cursor que dice
+     qué pasa si pulsas. Todo es mejora: sin esto, la fila se sigue pasando
+     con el dedo o el trackpad y cada foto se abre igual.                   */
+  $$("[data-carrete]").forEach(function (caja) {
+    var pista = $(".carrete__pista", caja);
+    var avance = $(".carrete__avance", caja);
+    var pos = $("[data-carrete-pos]", caja);
+    var total = $("[data-carrete-total]", caja);
+    var aviso = $("[data-carrete-aviso]", caja);
+    var flechas = $$("[data-paso]", caja);
+    var grupo = caja.getAttribute("data-grupo");
+    var estilo = N.estiloPor(caja.getAttribute("data-carrete"));
+    var todas = N.grupos[grupo] || [];
+    caja.setAttribute("data-listo", "");
+
+    function visibles() {
+      return $$(".carrete__item:not(.carrete__fin)", pista).filter(function (li) { return !li.hidden; });
+    }
+    var primeraPieza = $(".carrete__item", pista);
+    function inicioDe(li) {
+      /* Dónde empieza cada pieza dentro de la pista: la primera arranca
+         alineada con la columna, y ese es el cero.                       */
+      return li.offsetLeft - primeraPieza.offsetLeft;
+    }
+
+    /* La barra: el trozo negro es lo que se ve de la fila, y se mueve con
+       ella. El contador, la primera pieza que asoma entera.              */
+    var pidiendo = false;
+    function pintar() {
+      pidiendo = false;
+      var sw = pista.scrollWidth, cw = pista.clientWidth, x = pista.scrollLeft;
+      var parte = sw > 0 ? Math.min(1, cw / sw) : 1;
+      avance.style.width = (parte * 100) + "%";
+      avance.style.transform = "translateX(" + (sw > cw ? (x / (sw - cw)) * (1 / parte - 1) * 100 : 0) + "%)";
+      var lis = visibles(), primera = 0;
+      for (var i = 0; i < lis.length; i++) {
+        if (inicioDe(lis[i]) + lis[i].offsetWidth * 0.5 > x) { primera = i; break; }
+        primera = i;
+      }
+      pos.textContent = String(Math.min(primera + 1, lis.length)).padStart(2, "0");
+      flechas[0].disabled = x <= 2;
+      flechas[1].disabled = x >= sw - cw - 2;
+    }
+    function pedir() { if (!pidiendo) { pidiendo = true; requestAnimationFrame(pintar); cargarCerca(); } }
+    pista.addEventListener("scroll", pedir, { passive: true });
+    window.addEventListener("resize", pedir);
+    /* La primera medida, en el fotograma siguiente: medir siete filas
+       mientras la página aún se está montando obligaría a maquetarla
+       antes de tiempo, una vez por fila.                               */
+    pedir();
+
+    /* El navegador no adelanta las fotos «lazy» que esperan a la derecha
+       de una fila con scroll: solo las pide al asomar, y asomarían en
+       blanco. Mientras la fila está cerca de la pantalla, se piden las de
+       la pantalla siguiente antes de llegar.                              */
+    var cerca = false;
+    function cargarCerca() {
+      if (!cerca) return;
+      var hasta = pista.scrollLeft + pista.clientWidth * 2.2;
+      $$("img[loading='lazy']", pista).forEach(function (img) {
+        if (img.closest(".carrete__item").offsetLeft < hasta) img.loading = "eager";
+      });
+    }
+    if ("IntersectionObserver" in window) {
+      new IntersectionObserver(function (e) {
+        cerca = e[0].isIntersecting;
+        cargarCerca();
+      }, { rootMargin: "600px 0px" }).observe(pista);
+    }
+
+    /* Las flechas pasan una pantalla de piezas, y paran justo en el borde
+       de una: nunca dejan una foto partida a la izquierda.               */
+    flechas.forEach(function (b) {
+      b.addEventListener("click", function () {
+        var paso = Number(b.getAttribute("data-paso"));
+        var x = pista.scrollLeft, ancho = pista.clientWidth * 0.8;
+        var piezas = $$(".carrete__item", pista).filter(function (li) { return !li.hidden; });
+        var destino = paso > 0 ? null : 0;
+        piezas.forEach(function (li) {
+          var a = inicioDe(li);
+          if (paso > 0 && a > x + 4 && a <= x + ancho) destino = a;
+          if (paso < 0 && a < x - 4 && a >= x - ancho - 1) destino = destino === 0 ? a : Math.min(destino, a);
+        });
+        if (destino === null) {   /* una pieza más ancha que el paso */
+          var siguiente = piezas.filter(function (li) { return inicioDe(li) > x + 4; })[0];
+          destino = siguiente ? inicioDe(siguiente) : pista.scrollWidth;
+        }
+        pista.scrollTo({ left: destino, behavior: N.quieto() ? "auto" : "smooth" });
+      });
+    });
+
+    /* Con el teclado: las flechas del teclado van de una foto a la otra. */
+    pista.addEventListener("keydown", function (ev) {
+      if (ev.key !== "ArrowRight" && ev.key !== "ArrowLeft") return;
+      var focos = $$(".carrete__item:not([hidden]) .rejilla__boton, .carrete__item:not([hidden]) .video__boton, .carrete__fin .btn", pista);
+      var i = focos.indexOf(document.activeElement);
+      if (i === -1) return;
+      var j = i + (ev.key === "ArrowRight" ? 1 : -1);
+      if (focos[j]) { ev.preventDefault(); focos[j].focus(); }
+    });
+
+    /* Arrastrar con el ratón, con su inercia al soltar. El dedo y el
+       trackpad ya lo hacen solos; esto es solo para el ratón. Si se ha
+       arrastrado, el clic que viene después no abre la foto.            */
+    var arrastre = null, huboArrastre = false, inercia = 0;
+    pista.addEventListener("pointerdown", function (ev) {
+      if (ev.pointerType !== "mouse" || ev.button !== 0) return;
+      if (ev.target.closest(".video__boton, a")) return;
+      cancelAnimationFrame(inercia);
+      arrastre = { x: ev.clientX, izq: pista.scrollLeft, t: performance.now(), v: 0, ultimoX: ev.clientX, movido: false };
+    });
+    window.addEventListener("pointermove", function (ev) {
+      if (!arrastre) return;
+      var dx = ev.clientX - arrastre.x;
+      if (!arrastre.movido && Math.abs(dx) < 6) return;
+      if (!arrastre.movido) { arrastre.movido = true; caja.setAttribute("data-arrastrando", ""); }
+      var ahora = performance.now(), dt = Math.max(1, ahora - arrastre.t);
+      arrastre.v = (ev.clientX - arrastre.ultimoX) / dt;
+      arrastre.t = ahora; arrastre.ultimoX = ev.clientX;
+      pista.scrollLeft = arrastre.izq - dx;
+    });
+    function soltar() {
+      if (!arrastre) return;
+      var a = arrastre; arrastre = null;
+      caja.removeAttribute("data-arrastrando");
+      if (!a.movido) return;
+      huboArrastre = true;
+      setTimeout(function () { huboArrastre = false; }, 0);
+      if (N.quieto()) return;
+      var v = -a.v * 16;   /* px por fotograma */
+      (function paso() {
+        if (Math.abs(v) < 0.4) return;
+        pista.scrollLeft += v;
+        v *= 0.92;
+        inercia = requestAnimationFrame(paso);
+      })();
+    }
+    window.addEventListener("pointerup", soltar);
+    window.addEventListener("pointercancel", soltar);
+    pista.addEventListener("click", function (ev) {
+      if (huboArrastre) { ev.stopPropagation(); ev.preventDefault(); }
+    }, true);
+    pista.addEventListener("dragstart", function (ev) { ev.preventDefault(); });
+
+    /* Elegir artista: se quedan sus trabajos, el visor pasa solo por los
+       suyos y el bloque final pide cita con esa persona.                 */
+    var chips = $$("[data-filtro]", caja);
+    var cita = $("[data-carrete-cita]", caja);
+    chips.forEach(function (chip) {
+      chip.addEventListener("click", function () {
+        var slug = chip.getAttribute("data-filtro");
+        if (chip.getAttribute("aria-pressed") === "true") return;
+        chips.forEach(function (c) { c.setAttribute("aria-pressed", String(c === chip)); });
+        var lis = $$(".carrete__item:not(.carrete__fin)", pista);
+        lis.forEach(function (li) { li.hidden = !!slug && li.getAttribute("data-artista") !== slug; });
+        N.grupos[grupo] = todas.filter(function (o) { return !slug || o.artista === slug; });
+        var a = slug ? N.artistaPor(slug) : null;
+        var n = visibles().length;
+        total.textContent = String(n).padStart(2, "0");
+        if (cita) {
+          cita.innerHTML = a
+            ? botonWasap(N.rellenar(TT.botonArtista, { artista: a.nombre }),
+                         N.rellenar(TT.mensajeArtista, { estilo: estilo.nombre.toLowerCase(), artista: a.nombre }),
+                         "btn--macizo", ": " + estilo.nombre)
+            : botonWasap(TT.botonEstilo, N.rellenar(TT.mensajeEstilo, { estilo: estilo.nombre.toLowerCase() }),
+                         "btn--macizo", ": " + estilo.nombre);
+        }
+        aviso.textContent = (a ? a.nombre : TT.todos) + ": " + N.rellenar(TT.trabajos, { n: n });
+        pista.scrollTo({ left: 0, behavior: "auto" });
+        N.revelar();
+        /* Las que quedan entran en fila, una detrás de otra. */
+        if (!N.quieto() && pista.animate) {
+          visibles().concat($$(".carrete__fin", pista)).slice(0, 6).forEach(function (li, i) {
+            li.animate([{ opacity: 0, transform: "translateX(2.5rem)" }, { opacity: 1, transform: "none" }],
+                       { duration: 520, delay: i * 55, easing: "cubic-bezier(0.23, 1, 0.32, 1)", fill: "backwards" });
+          });
+        }
+        pintar();
+      });
+    });
+
+    /* El cursor de la fila, solo con ratón: un bloque negro pequeño que
+       dice «Ver» sobre una foto y «Arrastra» entre ellas. Es decorativo:
+       el lector de pantalla no lo oye y el puntero de verdad sigue ahí.  */
+    if (window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
+      var cursor = document.createElement("span");
+      cursor.className = "carrete__cursor etiqueta";
+      cursor.setAttribute("aria-hidden", "true");
+      caja.appendChild(cursor);
+      var cx = 0, cy = 0, tx = 0, ty = 0, moviendo = 0;
+      function seguir() {
+        cx += (tx - cx) * (N.quieto() ? 1 : 0.28);
+        cy += (ty - cy) * (N.quieto() ? 1 : 0.28);
+        cursor.style.transform = "translate(" + cx.toFixed(1) + "px," + cy.toFixed(1) + "px)";
+        moviendo = Math.abs(tx - cx) + Math.abs(ty - cy) > 0.3 ? requestAnimationFrame(seguir) : 0;
+      }
+      pista.addEventListener("pointermove", function (ev) {
+        if (ev.pointerType !== "mouse") return;
+        var r = caja.getBoundingClientRect();
+        tx = ev.clientX - r.left; ty = ev.clientY - r.top;
+        if (!cursor.hasAttribute("data-visible")) { cx = tx; cy = ty; }
+        var sobre = ev.target.closest(".rejilla__boton");
+        var control = ev.target.closest(".video__boton, a, .carrete__fin");
+        cursor.textContent = arrastre && arrastre.movido ? TT.cursorArrastra : sobre ? TT.cursorVer : TT.cursorArrastra;
+        cursor.toggleAttribute("data-visible", !control);
+        if (!moviendo) moviendo = requestAnimationFrame(seguir);
+      });
+      pista.addEventListener("pointerleave", function () { cursor.removeAttribute("data-visible"); });
+    }
+  });
 
   /* Direcciones viejas de los estilos (tatuajes#black-and-grey, #anime):
      enlaces que alguien ya compartió llevan a la sección que los recoge. */
@@ -1254,7 +1570,20 @@
     var fotos = (IG.fotos || []).map(function (id) {
       return S.obras.filter(function (o) { return o.id === id && o.img; })[0];
     }).filter(Boolean);
-    var equipo = S.artistas.filter(function (a) { return a.instagram; });
+    /* Cada artista con trabajos en la web, y lo que hace: sus estilos (en
+       el orden de la página de tatuajes) y los servicios donde salen sus
+       fotos. Así quien tiene dos cuentas (Haroz) deja claro cuál es cuál,
+       y quien no tiene ningún trabajo publicado no sale.                   */
+    function queHace(a) {
+      var estilos = ESTILOS.filter(function (e) {
+        return S.obras.some(function (o) { return o.artista === a.slug && o.estilo === e.id && publicada(o); });
+      }).map(function (e) { return e.nombre; });
+      var servicios = S.servicios.filter(function (sv) {
+        return (sv.fotos || []).some(function (f) { return f.artista === a.slug && f.img; });
+      }).map(function (sv) { return sv.menu; });
+      return estilos.concat(servicios);
+    }
+    var equipo = S.artistas.filter(function (a) { return a.instagram && queHace(a).length; });
     host.innerHTML =
       '<div class="insta__texto">' +
         '<p class="etiqueta corchetes">' + esc(IG.etiqueta) + "</p>" +
@@ -1269,7 +1598,8 @@
               '<h3 class="etiqueta etiqueta--suave">' + esc(IG.equipo) + "</h3>" +
               '<ul class="insta__artistas" role="list">' + equipo.map(function (a) {
                 return '<li><a class="insta__artista" href="' + esc(N.instaURL(a.instagram)) + '" rel="noopener">' +
-                  '<span class="insta__nombre">' + esc(a.nombre) + "</span>" +
+                  '<span class="insta__nombre">' + esc(a.nombre) +
+                    '<span class="insta__que etiqueta">' + esc(queHace(a).join(" · ")) + "</span></span>" +
                   '<span class="insta__usuario">@' + esc(a.instagram) + "</span>" +
                   '<i class="flecha" aria-hidden="true"></i></a></li>';
               }).join("") + "</ul>" +

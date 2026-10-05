@@ -1,26 +1,14 @@
 /* =============================================================================
    LOCO BLOW · FOTOS
-   La rejilla de cada página (4:5, como la de Instagram) y el visor a pantalla
-   completa, con teclado y gesto.
+   Las miniaturas que se pulsan y el visor a pantalla completa, con teclado
+   y gesto.
    ========================================================================== */
 
-/* --- REJILLA ----------------------------------------------------------------- */
-/* Todas las miniaturas a 4:5: el ritmo de la rejilla de Instagram, que es
-   donde esta gente mira tatuajes, y ninguna foto empuja a otra. El recorte
-   se puede mover por foto (`foco` en content.js); en el visor se ven enteras.
-   Sin mampostería: la rejilla es CSS, se ve igual sin JavaScript y no se
-   mueve nada al llegar las fotos.                                            */
-
-.rejilla {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: var(--s5) var(--s3);
-}
-@media (max-width: 21.249rem) { .rejilla { grid-template-columns: minmax(0, 1fr); } }
-@media (min-width: 48rem) { .rejilla { grid-template-columns: repeat(3, minmax(0, 1fr)); column-gap: var(--s4); } }
-
-.rejilla__item { min-width: 0; }
-.rejilla__item .video { --ratio: 4 / 5; }
+/* --- MINIATURAS ------------------------------------------------------------- */
+/* La foto que se pulsa para verla en grande: en la muestra del inicio, a
+   4:5 como la rejilla de Instagram; en los carretes de cada página
+   (secciones.css), entera y con su proporción. El recorte de la muestra
+   se puede mover por foto (`foco` en content.js).                         */
 
 .rejilla__boton {
   display: block;

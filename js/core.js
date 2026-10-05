@@ -681,18 +681,21 @@
     }
 
     var alto = window.innerHeight || 800;
-    $$("[data-revelar]:not([data-revelar='espera']):not([data-revelar='hecho'])")
-      .forEach(function (n) {
-        /* Lo que ya está en pantalla al cargar no se oculta para volver a
-           mostrarlo: con el contenido volcado en el HTML eso sería un
-           parpadeo, no un revelado.                                        */
-        if (n.getBoundingClientRect().top < alto) {
-          n.setAttribute("data-revelar", "hecho");
-          return;
-        }
-        n.setAttribute("data-revelar", "espera");
-        observadorRevelado.observe(n);
-      });
+    var piezas = $$("[data-revelar]:not([data-revelar='espera']):not([data-revelar='hecho'])");
+    /* Primero se mide todo y luego se marca: medir después de cada marca
+       obligaría a maquetar la página una vez por foto.                    */
+    var arriba = piezas.map(function (n) { return n.getBoundingClientRect().top; });
+    piezas.forEach(function (n, i) {
+      /* Lo que ya está en pantalla al cargar no se oculta para volver a
+         mostrarlo: con el contenido volcado en el HTML eso sería un
+         parpadeo, no un revelado.                                          */
+      if (arriba[i] < alto) {
+        n.setAttribute("data-revelar", "hecho");
+        return;
+      }
+      n.setAttribute("data-revelar", "espera");
+      observadorRevelado.observe(n);
+    });
   }
 
   /* --- cabecera ------------------------------------------------------------------ */

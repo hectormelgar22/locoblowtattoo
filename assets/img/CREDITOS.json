@@ -1,5 +1,1363 @@
 [
   {
+    "archivo": "ezel-1",
+    "alt": "Rengoku, de Kimetsu no Yaiba, a color en el antebrazo, con su frase en japonés y la parte de abajo en negro y grises.",
+    "autor": "@ezel_tattoo.studio",
+    "fuente": "Original del estudio",
+    "proporcion": 0.75,
+    "anchos": [
+      1200,
+      900,
+      720,
+      600,
+      380
+    ]
+  },
+  {
+    "archivo": "ezel-2",
+    "alt": "Crocodile, de One Piece, con su cicatriz y el garfio dorado, en negro y grises con toques de color en el antebrazo.",
+    "autor": "@ezel_tattoo.studio",
+    "fuente": "Original del estudio",
+    "proporcion": 0.75,
+    "anchos": [
+      1200,
+      900,
+      720,
+      600,
+      380
+    ]
+  },
+  {
+    "archivo": "ezel-3",
+    "alt": "Brazo entero a color con personajes de One Piece: Shanks arriba, con su pelo rojo, y los demás hasta la muñeca.",
+    "autor": "@ezel_tattoo.studio",
+    "fuente": "Original del estudio",
+    "proporcion": 0.6937,
+    "anchos": [
+      1110,
+      900,
+      720,
+      600,
+      380
+    ]
+  },
+  {
+    "archivo": "ezel-4",
+    "alt": "Shenron, el dragón de Dragon Ball, en verde con los ojos rojos y las bolas de dragón alrededor, a color en la pierna.",
+    "autor": "@ezel_tattoo.studio",
+    "fuente": "Original del estudio",
+    "proporcion": 0.75,
+    "anchos": [
+      1200,
+      900,
+      720,
+      600,
+      380
+    ]
+  },
+  {
+    "archivo": "ezel-5",
+    "alt": "Chica pelirroja de ojos azules con una luna en la cabeza, un cangrejo y olas, a color en el gemelo.",
+    "autor": "@ezel_tattoo.studio",
+    "fuente": "Original del estudio",
+    "proporcion": 0.75,
+    "anchos": [
+      1200,
+      900,
+      720,
+      600,
+      380
+    ]
+  },
+  {
+    "archivo": "ezel-6",
+    "alt": "Gabumon, de Digimon, y su digivice, a color sobre una mancha roja y naranja, en la pierna.",
+    "autor": "@ezel_tattoo.studio",
+    "fuente": "Original del estudio",
+    "proporcion": 0.75,
+    "anchos": [
+      1200,
+      900,
+      720,
+      600,
+      380
+    ]
+  },
+  {
+    "archivo": "ezel-7",
+    "alt": "Deadpool en pequeño junto a otro personaje, dentro de un corazón y con las palabras «kiss me», a color en la pierna.",
+    "autor": "@ezel_tattoo.studio",
+    "fuente": "Original del estudio",
+    "proporcion": 0.75,
+    "anchos": [
+      1200,
+      900,
+      720,
+      600,
+      380
+    ]
+  },
+  {
+    "archivo": "ezel-8",
+    "alt": "Luffy en su Gear 4, de One Piece, a color en el gemelo, con humo morado detrás.",
+    "autor": "@ezel_tattoo.studio",
+    "fuente": "Original del estudio",
+    "proporcion": 0.75,
+    "anchos": [
+      1200,
+      900,
+      720,
+      600,
+      380
+    ]
+  },
+  {
+    "archivo": "maou-1",
+    "alt": "Dos personajes de anime en negro y grises en el antebrazo: uno con el ceño fruncido arriba y otro con cinta en la frente abajo.",
+    "autor": "@maou_tattoo",
+    "fuente": "Original del estudio",
+    "proporcion": 0.7588,
+    "anchos": [
+      1214,
+      900,
+      720,
+      600,
+      380
+    ]
+  },
+  {
+    "archivo": "maou-2",
+    "alt": "Personaje de anime sonriente bajo una corona, en negro y grises en el antebrazo, entre rayos.",
+    "autor": "@maou_tattoo",
+    "fuente": "Original del estudio",
+    "proporcion": 0.8387,
+    "anchos": [
+      1342,
+      900,
+      720,
+      600,
+      380
+    ]
+  },
+  {
+    "archivo": "maou-3",
+    "alt": "Mikasa y Eren, de Attack on Titan, en negro y grises en el antebrazo, separados por un trazo de luz.",
+    "autor": "@maou_tattoo",
+    "fuente": "Original del estudio",
+    "proporcion": 0.755,
+    "anchos": [
+      1208,
+      900,
+      720,
+      600,
+      380
+    ]
+  },
+  {
+    "archivo": "maou-4",
+    "alt": "Ulquiorra, de Bleach, en viñetas de manga en negro y grises en el antebrazo, con su frase «What… is a heart».",
+    "autor": "@maou_tattoo",
+    "fuente": "Original del estudio",
+    "proporcion": 0.8175,
+    "anchos": [
+      1308,
+      900,
+      720,
+      600,
+      380
+    ]
+  },
+  {
+    "archivo": "maou-5",
+    "alt": "Guerrero de anime con casco y gesto decidido, en negro y grises en el antebrazo, entre trazos de energía.",
+    "autor": "@maou_tattoo",
+    "fuente": "Original del estudio",
+    "proporcion": 0.7738,
+    "anchos": [
+      1238,
+      900,
+      720,
+      600,
+      380
+    ]
+  },
+  {
+    "archivo": "maou-6",
+    "alt": "Bestia de anime con colmillos, envuelta en energía, en negro y grises con un tono rojizo en el antebrazo.",
+    "autor": "@maou_tattoo",
+    "fuente": "Original del estudio",
+    "proporcion": 0.7738,
+    "anchos": [
+      1238,
+      900,
+      720,
+      600,
+      380
+    ]
+  },
+  {
+    "archivo": "maou-7",
+    "alt": "Franja horizontal con una mirada de anime de ojos rasgados, en negro y grises con un tono rojizo, en el brazo.",
+    "autor": "@maou_tattoo",
+    "fuente": "Original del estudio",
+    "proporcion": 0.8892,
+    "anchos": [
+      1284,
+      900,
+      720,
+      600,
+      380
+    ]
+  },
+  {
+    "archivo": "maou-8",
+    "alt": "Zoro, de One Piece, empuñando su katana, en negro y grises del hombro al codo.",
+    "autor": "@maou_tattoo",
+    "fuente": "Original del estudio",
+    "proporcion": 0.8413,
+    "anchos": [
+      1346,
+      900,
+      720,
+      600,
+      380
+    ]
+  },
+  {
+    "archivo": "maou-9",
+    "alt": "Bestia japonesa entre nubes y olas, en negro y grises en el antebrazo.",
+    "autor": "@maou_tattoo",
+    "fuente": "Original del estudio",
+    "proporcion": 0.8163,
+    "anchos": [
+      1306,
+      900,
+      720,
+      600,
+      380
+    ]
+  },
+  {
+    "archivo": "fernando-1",
+    "alt": "Cabeza de mujer sobre las olas, con flores en el pelo y dos mariposas, en tradicional a color en el brazo.",
+    "autor": "@fernandovoyeur",
+    "fuente": "Original del estudio",
+    "proporcion": 0.8024,
+    "anchos": [
+      1125,
+      900,
+      720,
+      600,
+      380
+    ]
+  },
+  {
+    "archivo": "fernando-2",
+    "alt": "Retrato de un hombre con traje y corbata en tradicional, dentro de un óvalo con el mar, un ancla y flores rojas, en el antebrazo.",
+    "autor": "@fernandovoyeur",
+    "fuente": "Original del estudio",
+    "proporcion": 0.8041,
+    "anchos": [
+      1125,
+      900,
+      720,
+      600,
+      380
+    ]
+  },
+  {
+    "archivo": "fernando-3",
+    "alt": "Un sol con cara sobre una máscara sonriente, en tradicional en negro en el brazo.",
+    "autor": "@fernandovoyeur",
+    "fuente": "Original del estudio",
+    "proporcion": 0.7934,
+    "anchos": [
+      1125,
+      900,
+      720,
+      600,
+      380
+    ]
+  },
+  {
+    "archivo": "fernando-4",
+    "alt": "Cabeza de caballo dentro de una herradura, con flores rojas, en tradicional a color en el brazo.",
+    "autor": "@fernandovoyeur",
+    "fuente": "Original del estudio",
+    "proporcion": 0.8886,
+    "anchos": [
+      1125,
+      900,
+      720,
+      600,
+      380
+    ]
+  },
+  {
+    "archivo": "fernando-5",
+    "alt": "Caballito de mar en rojo y negro, con burbujas, en tradicional en el antebrazo.",
+    "autor": "@fernandovoyeur",
+    "fuente": "Original del estudio",
+    "proporcion": 0.9367,
+    "anchos": [
+      1125,
+      900,
+      720,
+      600,
+      380
+    ]
+  },
+  {
+    "archivo": "fernando-6",
+    "alt": "Anciana con pañuelo, mantón y bastón que lleva un fardo en la cabeza, en tradicional en negro en el antebrazo.",
+    "autor": "@fernandovoyeur",
+    "fuente": "Original del estudio",
+    "proporcion": 0.7829,
+    "anchos": [
+      1125,
+      900,
+      720,
+      600,
+      380
+    ]
+  },
+  {
+    "archivo": "fernando-7",
+    "alt": "Figura con máscara, tocado de plumas y traje de colores que toca un cuerno, en tradicional a color en la pierna.",
+    "autor": "@fernandovoyeur",
+    "fuente": "Original del estudio",
+    "proporcion": 0.7617,
+    "anchos": [
+      1125,
+      900,
+      720,
+      600,
+      380
+    ]
+  },
+  {
+    "archivo": "fernando-8",
+    "alt": "Barco pesquero con su matrícula de A Coruña, el sol detrás y una flor delante, en tradicional a color en la pierna.",
+    "autor": "@fernandovoyeur",
+    "fuente": "Original del estudio",
+    "proporcion": 0.7617,
+    "anchos": [
+      1125,
+      900,
+      720,
+      600,
+      380
+    ]
+  },
+  {
+    "archivo": "haroz-2",
+    "alt": "Retrato de Salvador Dalí con su bigote, en negro y grises en el hombro.",
+    "autor": "@haroz.tattoo",
+    "fuente": "Original del estudio",
+    "proporcion": 0.8127,
+    "anchos": [
+      1206,
+      900,
+      720,
+      600,
+      380
+    ]
+  },
+  {
+    "archivo": "haroz-19",
+    "alt": "Bulldog francés pequeño, en microrrealismo en el antebrazo.",
+    "autor": "@haroz.tattoo",
+    "fuente": "Original del estudio",
+    "proporcion": 0.8025,
+    "anchos": [
+      1284,
+      900,
+      720,
+      600,
+      380
+    ]
+  },
+  {
+    "archivo": "haroz-7",
+    "alt": "Tigre rugiendo entre hojas, en realismo en negro y grises en el antebrazo.",
+    "autor": "@haroz.tattoo",
+    "fuente": "Original del estudio",
+    "proporcion": 0.8387,
+    "anchos": [
+      1206,
+      900,
+      720,
+      600,
+      380
+    ]
+  },
+  {
+    "archivo": "haroz-10",
+    "alt": "Chica maquillada de payaso que guiña un ojo y saca la lengua, en negro y grises en el antebrazo.",
+    "autor": "@haroz.tattoo",
+    "fuente": "Original del estudio",
+    "proporcion": 0.8013,
+    "anchos": [
+      1206,
+      900,
+      720,
+      600,
+      380
+    ]
+  },
+  {
+    "archivo": "haroz-36",
+    "alt": "Teckel con la lengua fuera, pequeño, en microrrealismo.",
+    "autor": "@haroz.tattoo",
+    "fuente": "Original del estudio",
+    "proporcion": 0.7667,
+    "anchos": [
+      1206,
+      900,
+      720,
+      600,
+      380
+    ]
+  },
+  {
+    "archivo": "haroz-8",
+    "alt": "Virgen rezando, con el manto sobre la cabeza y un rosario entre las manos, en negro y grises en el brazo.",
+    "autor": "@haroz.tattoo",
+    "fuente": "Original del estudio",
+    "proporcion": 0.7561,
+    "anchos": [
+      1206,
+      900,
+      720,
+      600,
+      380
+    ]
+  },
+  {
+    "archivo": "haroz-9",
+    "alt": "Retrato realista de un hombre mayor en negro y grises en el antebrazo, con las arrugas marcadas a sombra.",
+    "autor": "@haroz.tattoo",
+    "fuente": "Original del estudio",
+    "proporcion": 0.7716,
+    "anchos": [
+      1206,
+      900,
+      720,
+      600,
+      380
+    ]
+  },
+  {
+    "archivo": "haroz-22",
+    "alt": "Pastor alemán con la lengua fuera, en realismo en negro y grises en el antebrazo.",
+    "autor": "@haroz.tattoo",
+    "fuente": "Original del estudio",
+    "proporcion": 0.8812,
+    "anchos": [
+      1410,
+      900,
+      720,
+      600,
+      380
+    ]
+  },
+  {
+    "archivo": "haroz-26",
+    "alt": "Tyrion, de Juego de tronos, en negro y grises en el brazo, con otro rostro encima.",
+    "autor": "@haroz.tattoo",
+    "fuente": "Original del estudio",
+    "proporcion": 0.75,
+    "anchos": [
+      1200,
+      900,
+      720,
+      600,
+      380
+    ]
+  },
+  {
+    "archivo": "haroz-38",
+    "alt": "Gato esfinge de ojos verdes, pequeño, en microrrealismo en el antebrazo.",
+    "autor": "@haroz.tattoo",
+    "fuente": "Original del estudio",
+    "proporcion": 0.7614,
+    "anchos": [
+      1206,
+      900,
+      720,
+      600,
+      380
+    ]
+  },
+  {
+    "archivo": "haroz-12",
+    "alt": "Lobo en negro y grises entre rosas rojas, en el hombro.",
+    "autor": "@haroz.tattoo",
+    "fuente": "Original del estudio",
+    "proporcion": 0.8013,
+    "anchos": [
+      1206,
+      900,
+      720,
+      600,
+      380
+    ]
+  },
+  {
+    "archivo": "haroz-21",
+    "alt": "Un Seat 600 con su matrícula antigua, en negro y grises en la pierna.",
+    "autor": "@haroz.tattoo",
+    "fuente": "Original del estudio",
+    "proporcion": 0.9169,
+    "anchos": [
+      739,
+      739,
+      720,
+      600,
+      380
+    ]
+  },
+  {
+    "archivo": "haroz-5",
+    "alt": "Mujer con maquillaje de payaso que fuma con la mano en la boca, en negro y grises en el gemelo.",
+    "autor": "@haroz.tattoo",
+    "fuente": "Original del estudio",
+    "proporcion": 0.811,
+    "anchos": [
+      1206,
+      900,
+      720,
+      600,
+      380
+    ]
+  },
+  {
+    "archivo": "haroz-15",
+    "alt": "Cabeza de pitbull, pequeña, en microrrealismo en el antebrazo.",
+    "autor": "@haroz.tattoo",
+    "fuente": "Original del estudio",
+    "proporcion": 0.8263,
+    "anchos": [
+      1284,
+      900,
+      720,
+      600,
+      380
+    ]
+  },
+  {
+    "archivo": "haroz-3",
+    "alt": "Pennywise, el payaso de «It», sonriendo, en negro y grises en el antebrazo.",
+    "autor": "@haroz.tattoo",
+    "fuente": "Original del estudio",
+    "proporcion": 0.7861,
+    "anchos": [
+      1176,
+      900,
+      720,
+      600,
+      380
+    ]
+  },
+  {
+    "archivo": "haroz-20",
+    "alt": "León entre flores, en negro y grises en el antebrazo.",
+    "autor": "@haroz.tattoo",
+    "fuente": "Original del estudio",
+    "proporcion": 0.7512,
+    "anchos": [
+      634,
+      634,
+      634,
+      600,
+      380
+    ]
+  },
+  {
+    "archivo": "haroz-17",
+    "alt": "Cabeza de galgo, pequeña, en microrrealismo en el antebrazo.",
+    "autor": "@haroz.tattoo",
+    "fuente": "Original del estudio",
+    "proporcion": 0.8121,
+    "anchos": [
+      1284,
+      900,
+      720,
+      600,
+      380
+    ]
+  },
+  {
+    "archivo": "haroz-23",
+    "alt": "Rostro de mujer con corona y un niño ángel, en negro y grises en el antebrazo.",
+    "autor": "@haroz.tattoo",
+    "fuente": "Original del estudio",
+    "proporcion": 0.7069,
+    "anchos": [
+      1131,
+      900,
+      720,
+      600,
+      380
+    ]
+  },
+  {
+    "archivo": "haroz-6",
+    "alt": "Lobo enseñando los dientes, en realismo en negro y grises en el antebrazo.",
+    "autor": "@haroz.tattoo",
+    "fuente": "Original del estudio",
+    "proporcion": 0.804,
+    "anchos": [
+      1206,
+      900,
+      720,
+      600,
+      380
+    ]
+  },
+  {
+    "archivo": "haroz-13",
+    "alt": "Rostro de anciano que sale de un árbol, en negro y grises en el antebrazo.",
+    "autor": "@haroz.tattoo",
+    "fuente": "Original del estudio",
+    "proporcion": 0.8045,
+    "anchos": [
+      1206,
+      900,
+      720,
+      600,
+      380
+    ]
+  },
+  {
+    "archivo": "haroz-35",
+    "alt": "Perro pequeño de pelo largo, sonriendo, en microrrealismo en la pierna.",
+    "autor": "@haroz.tattoo",
+    "fuente": "Original del estudio",
+    "proporcion": 0.7599,
+    "anchos": [
+      1206,
+      900,
+      720,
+      600,
+      380
+    ]
+  },
+  {
+    "archivo": "haroz-31",
+    "alt": "Brazo entero en negro y grises: un rostro de mujer partido con el de un tigre y, debajo, un león.",
+    "autor": "@haroz.tattoo",
+    "fuente": "Original del estudio",
+    "proporcion": 0.7117,
+    "anchos": [
+      1138,
+      900,
+      720,
+      600,
+      380
+    ]
+  },
+  {
+    "archivo": "haroz-4",
+    "alt": "Mujer de ojos azules con sombrero, en realismo en el gemelo.",
+    "autor": "@haroz.tattoo",
+    "fuente": "Original del estudio",
+    "proporcion": 0.8013,
+    "anchos": [
+      1206,
+      900,
+      720,
+      600,
+      380
+    ]
+  },
+  {
+    "archivo": "haroz-27",
+    "alt": "Retrato realista de un hombre sonriendo, en negro y grises en el muslo.",
+    "autor": "@haroz.tattoo",
+    "fuente": "Original del estudio",
+    "proporcion": 0.75,
+    "anchos": [
+      1200,
+      900,
+      720,
+      600,
+      380
+    ]
+  },
+  {
+    "archivo": "lineal-22",
+    "alt": "Cabeza de leopardo rugiendo en puntillismo en el pecho, junto a una rosa y una rama de olivo.",
+    "autor": "@haroz.tattoo.lineales",
+    "fuente": "Original del estudio",
+    "proporcion": 0.7618,
+    "anchos": [
+      1206,
+      900,
+      720,
+      600,
+      380
+    ]
+  },
+  {
+    "archivo": "lineal-6",
+    "alt": "Tres figuras abrazadas dibujadas solo con línea fina, sin sombra, en el muslo.",
+    "autor": "@haroz.tattoo.lineales",
+    "fuente": "Original del estudio",
+    "proporcion": 0.7628,
+    "anchos": [
+      1206,
+      900,
+      720,
+      600,
+      380
+    ]
+  },
+  {
+    "archivo": "lineal-23",
+    "alt": "La Torre de Hércules en puntillismo, pequeña, en el antebrazo.",
+    "autor": "@haroz.tattoo.lineales",
+    "fuente": "Original del estudio",
+    "proporcion": 0.7796,
+    "anchos": [
+      1206,
+      900,
+      720,
+      600,
+      380
+    ]
+  },
+  {
+    "archivo": "lineal-3",
+    "alt": "Mariposa con las alas abiertas en línea fina y sombra punteada, en el brazo.",
+    "autor": "@haroz.tattoo.lineales",
+    "fuente": "Original del estudio",
+    "proporcion": 0.8221,
+    "anchos": [
+      1206,
+      900,
+      720,
+      600,
+      380
+    ]
+  },
+  {
+    "archivo": "lineal-79",
+    "alt": "Una flor de pétalos largos en línea fina que baja del hombro por la espalda.",
+    "autor": "@haroz.tattoo.lineales",
+    "fuente": "Original del estudio",
+    "proporcion": 0.7528,
+    "anchos": [
+      1206,
+      900,
+      720,
+      600,
+      380
+    ]
+  },
+  {
+    "archivo": "lineal-92",
+    "alt": "Jack y Sally sobre la colina en espiral, recortados contra la luna, en puntillismo en el brazo.",
+    "autor": "@haroz.tattoo.lineales",
+    "fuente": "Original del estudio",
+    "proporcion": 0.75,
+    "anchos": [
+      1206,
+      900,
+      720,
+      600,
+      380
+    ]
+  },
+  {
+    "archivo": "lineal-13",
+    "alt": "Corazón anatómico del que salen flores, en línea fina y punteado en el antebrazo.",
+    "autor": "@haroz.tattoo.lineales",
+    "fuente": "Original del estudio",
+    "proporcion": 0.7852,
+    "anchos": [
+      1206,
+      900,
+      720,
+      600,
+      380
+    ]
+  },
+  {
+    "archivo": "lineal-37",
+    "alt": "Mickey Mouse en puntillismo, de cuerpo entero, en el antebrazo.",
+    "autor": "@haroz.tattoo.lineales",
+    "fuente": "Original del estudio",
+    "proporcion": 0.8225,
+    "anchos": [
+      1186,
+      900,
+      720,
+      600,
+      380
+    ]
+  },
+  {
+    "archivo": "lineal-90",
+    "alt": "La silueta de una ciudad, con sus cúpulas y torres, en línea fina alrededor del brazo.",
+    "autor": "@haroz.tattoo.lineales",
+    "fuente": "Original del estudio",
+    "proporcion": 0.7677,
+    "anchos": [
+      1206,
+      900,
+      720,
+      600,
+      380
+    ]
+  },
+  {
+    "archivo": "lineal-83",
+    "alt": "Casco espartano en puntillismo, con todo el volumen hecho a puntos, en el antebrazo.",
+    "autor": "@haroz.tattoo.lineales",
+    "fuente": "Original del estudio",
+    "proporcion": 0.9256,
+    "anchos": [
+      1206,
+      900,
+      720,
+      600,
+      380
+    ]
+  },
+  {
+    "archivo": "lineal-75",
+    "alt": "Girasol en línea fina y sombra suave en el brazo.",
+    "autor": "@haroz.tattoo.lineales",
+    "fuente": "Original del estudio",
+    "proporcion": 0.7647,
+    "anchos": [
+      1206,
+      900,
+      720,
+      600,
+      380
+    ]
+  },
+  {
+    "archivo": "lineal-62",
+    "alt": "Winnie the Pooh e Ígor abrazados, en puntillismo en el antebrazo.",
+    "autor": "@haroz.tattoo.lineales",
+    "fuente": "Original del estudio",
+    "proporcion": 0.8381,
+    "anchos": [
+      1206,
+      900,
+      720,
+      600,
+      380
+    ]
+  },
+  {
+    "archivo": "lineal-11",
+    "alt": "Una concha de vieira en línea fina y punteado en el brazo.",
+    "autor": "@haroz.tattoo.lineales",
+    "fuente": "Original del estudio",
+    "proporcion": 0.7955,
+    "anchos": [
+      1206,
+      900,
+      720,
+      600,
+      380
+    ]
+  },
+  {
+    "archivo": "lineal-68",
+    "alt": "La Trifuerza de Zelda con sus alas, en puntillismo en la pierna.",
+    "autor": "@haroz.tattoo.lineales",
+    "fuente": "Original del estudio",
+    "proporcion": 0.7716,
+    "anchos": [
+      1206,
+      900,
+      720,
+      600,
+      380
+    ]
+  },
+  {
+    "archivo": "lineal-5",
+    "alt": "Montañas, un bosque y un camino dentro de un triángulo, en línea fina y punteado en el brazo.",
+    "autor": "@haroz.tattoo.lineales",
+    "fuente": "Original del estudio",
+    "proporcion": 0.7133,
+    "anchos": [
+      1152,
+      900,
+      720,
+      600,
+      380
+    ]
+  },
+  {
+    "archivo": "lineal-19",
+    "alt": "«Los amantes» de Magritte, dos figuras besándose con la cabeza tapada, en puntillismo en el antebrazo.",
+    "autor": "@haroz.tattoo.lineales",
+    "fuente": "Original del estudio",
+    "proporcion": 0.7484,
+    "anchos": [
+      1151,
+      900,
+      720,
+      600,
+      380
+    ]
+  },
+  {
+    "archivo": "lineal-54",
+    "alt": "Flor de loto ornamental con puntos y adornos en línea fina, en la pierna.",
+    "autor": "@haroz.tattoo.lineales",
+    "fuente": "Original del estudio",
+    "proporcion": 0.7746,
+    "anchos": [
+      1206,
+      900,
+      720,
+      600,
+      380
+    ]
+  },
+  {
+    "archivo": "lineal-69",
+    "alt": "Goku de niño sobre su nube, de Dragon Ball, en puntillismo en el antebrazo.",
+    "autor": "@haroz.tattoo.lineales",
+    "fuente": "Original del estudio",
+    "proporcion": 0.7826,
+    "anchos": [
+      1206,
+      900,
+      720,
+      600,
+      380
+    ]
+  },
+  {
+    "archivo": "lineal-16",
+    "alt": "Un globo aerostático en línea fina y punteado en el antebrazo.",
+    "autor": "@haroz.tattoo.lineales",
+    "fuente": "Original del estudio",
+    "proporcion": 0.7552,
+    "anchos": [
+      1206,
+      900,
+      720,
+      600,
+      380
+    ]
+  },
+  {
+    "archivo": "lineal-91",
+    "alt": "La máscara Aku Aku de Crash Bandicoot, con sus plumas, en puntillismo en la pierna.",
+    "autor": "@haroz.tattoo.lineales",
+    "fuente": "Original del estudio",
+    "proporcion": 0.7428,
+    "anchos": [
+      1054,
+      900,
+      720,
+      600,
+      380
+    ]
+  },
+  {
+    "archivo": "lineal-24",
+    "alt": "Dos golondrinas en vuelo, en línea fina y punteado en el antebrazo.",
+    "autor": "@haroz.tattoo.lineales",
+    "fuente": "Original del estudio",
+    "proporcion": 0.7945,
+    "anchos": [
+      1206,
+      900,
+      720,
+      600,
+      380
+    ]
+  },
+  {
+    "archivo": "lineal-63",
+    "alt": "Mafalda gritando con un periódico en las manos, en línea fina y negro en el brazo.",
+    "autor": "@haroz.tattoo.lineales",
+    "fuente": "Original del estudio",
+    "proporcion": 0.7731,
+    "anchos": [
+      1206,
+      900,
+      720,
+      600,
+      380
+    ]
+  },
+  {
+    "archivo": "lineal-116",
+    "alt": "«Memento mori» en letra caligráfica grande a lo largo del antebrazo.",
+    "autor": "@haroz.tattoo.lineales",
+    "fuente": "Original del estudio",
+    "proporcion": 0.7633,
+    "anchos": [
+      1206,
+      900,
+      720,
+      600,
+      380
+    ]
+  },
+  {
+    "archivo": "lineal-53",
+    "alt": "La señora Potts y Chip, de La bella y la bestia, uno en cada antebrazo de dos personas, en línea fina.",
+    "autor": "@haroz.tattoo.lineales",
+    "fuente": "Original del estudio",
+    "proporcion": 0.7667,
+    "anchos": [
+      1206,
+      900,
+      720,
+      600,
+      380
+    ]
+  },
+  {
+    "archivo": "laser-3",
+    "alt": "Una luna con colgantes en el antebrazo y otro tatuaje pequeño en la muñeca: el original, a las 3 sesiones y a las 6, ya sin tinta.",
+    "autor": "@origenlasertatuajes",
+    "fuente": "Original del estudio",
+    "proporcion": 1.0,
+    "anchos": [
+      1500,
+      900,
+      720,
+      600,
+      380
+    ]
+  },
+  {
+    "archivo": "laser-8",
+    "alt": "Dos tatuajes antiguos en el brazo, un símbolo y una daga con calavera, antes y después de 9 sesiones.",
+    "autor": "@origenlasertatuajes",
+    "fuente": "Original del estudio",
+    "proporcion": 1.0,
+    "anchos": [
+      1500,
+      900,
+      720,
+      600,
+      380
+    ]
+  },
+  {
+    "archivo": "laser-12",
+    "alt": "Un perro en la muñeca, aclarado con 8 sesiones y tapado después con un osito de peluche.",
+    "autor": "@origenlasertatuajes",
+    "fuente": "Original del estudio",
+    "proporcion": 1.0,
+    "anchos": [
+      1500,
+      900,
+      720,
+      600,
+      380
+    ]
+  },
+  {
+    "archivo": "laser-9",
+    "alt": "Letras árabes en el antebrazo, antes y después de 8 sesiones.",
+    "autor": "@origenlasertatuajes",
+    "fuente": "Original del estudio",
+    "proporcion": 1.0,
+    "anchos": [
+      1500,
+      900,
+      720,
+      600,
+      380
+    ]
+  },
+  {
+    "archivo": "laser-4",
+    "alt": "Un lobo pequeño en el dedo, antes y después de 4 sesiones.",
+    "autor": "@origenlasertatuajes",
+    "fuente": "Original del estudio",
+    "proporcion": 1.0,
+    "anchos": [
+      1500,
+      900,
+      720,
+      600,
+      380
+    ]
+  },
+  {
+    "archivo": "laser-13",
+    "alt": "Una línea de letras a lo largo de la columna, antes y después de 6 sesiones.",
+    "autor": "@origenlasertatuajes",
+    "fuente": "Original del estudio",
+    "proporcion": 1.0028,
+    "anchos": [
+      1080,
+      900,
+      720,
+      600,
+      380
+    ]
+  },
+  {
+    "archivo": "laser-10",
+    "alt": "Una estrella negra en el tobillo, antes y después de 8 sesiones.",
+    "autor": "@origenlasertatuajes",
+    "fuente": "Original del estudio",
+    "proporcion": 1.0,
+    "anchos": [
+      1500,
+      900,
+      720,
+      600,
+      380
+    ]
+  },
+  {
+    "archivo": "laser-15",
+    "alt": "Una cabeza de perro en línea en la pierna, antes y después de 19 sesiones.",
+    "autor": "@origenlasertatuajes",
+    "fuente": "Original del estudio",
+    "proporcion": 1.0009,
+    "anchos": [
+      1080,
+      900,
+      720,
+      600,
+      380
+    ]
+  },
+  {
+    "archivo": "laser-5",
+    "alt": "Una rama de flores de cerezo en la cadera, antes y después de 6 sesiones.",
+    "autor": "@origenlasertatuajes",
+    "fuente": "Original del estudio",
+    "proporcion": 1.0,
+    "anchos": [
+      1500,
+      900,
+      720,
+      600,
+      380
+    ]
+  },
+  {
+    "archivo": "laser-11",
+    "alt": "Unas iniciales en la cadera, antes y después de 11 sesiones.",
+    "autor": "@origenlasertatuajes",
+    "fuente": "Original del estudio",
+    "proporcion": 1.0,
+    "anchos": [
+      1500,
+      900,
+      720,
+      600,
+      380
+    ]
+  },
+  {
+    "archivo": "laser-6",
+    "alt": "La palabra «TRECE» en la muñeca, antes y después de 8 sesiones.",
+    "autor": "@origenlasertatuajes",
+    "fuente": "Original del estudio",
+    "proporcion": 1.0,
+    "anchos": [
+      1500,
+      900,
+      720,
+      600,
+      380
+    ]
+  },
+  {
+    "archivo": "laser-14",
+    "alt": "Unas coordenadas en el brazo, antes y después de 10 sesiones.",
+    "autor": "@origenlasertatuajes",
+    "fuente": "Original del estudio",
+    "proporcion": 1.0,
+    "anchos": [
+      1080,
+      900,
+      720,
+      600,
+      380
+    ]
+  },
+  {
+    "archivo": "laser-7",
+    "alt": "Un tatuaje pequeño en la espalda, junto al tirante, antes y después de 4 sesiones.",
+    "autor": "@origenlasertatuajes",
+    "fuente": "Original del estudio",
+    "proporcion": 1.0,
+    "anchos": [
+      1080,
+      900,
+      720,
+      600,
+      380
+    ]
+  },
+  {
+    "archivo": "pi-2",
+    "alt": "Nostril doble: dos bolitas juntas en el lateral de la nariz, en blanco y negro.",
+    "autor": "",
+    "fuente": "Original del estudio",
+    "proporcion": 0.5629,
+    "anchos": [
+      958,
+      900,
+      720,
+      600,
+      380
+    ]
+  },
+  {
+    "archivo": "pi-10",
+    "alt": "Industrial: una barra recta que cruza la parte de arriba de la oreja, en blanco y negro.",
+    "autor": "",
+    "fuente": "Original del estudio",
+    "proporcion": 0.5954,
+    "anchos": [
+      1080,
+      900,
+      720,
+      600,
+      380
+    ]
+  },
+  {
+    "archivo": "pi-4",
+    "alt": "Smiley: una bolita que asoma sobre los dientes de arriba al sonreír, en blanco y negro.",
+    "autor": "",
+    "fuente": "Original del estudio",
+    "proporcion": 0.7692,
+    "anchos": [
+      1080,
+      900,
+      720,
+      600,
+      380
+    ]
+  },
+  {
+    "archivo": "pi-1",
+    "alt": "Nueve piercings en un mosaico: labio, cejas, orejas, septum y nariz.",
+    "autor": "",
+    "fuente": "Original del estudio",
+    "proporcion": 0.562,
+    "anchos": [
+      1151,
+      900,
+      720,
+      600,
+      380
+    ]
+  },
+  {
+    "archivo": "pi-8",
+    "alt": "Chica con flequillo, con una barra en la ceja, un aro en la nariz y una estrella pequeña bajo el ojo, en blanco y negro.",
+    "autor": "",
+    "fuente": "Original del estudio",
+    "proporcion": 0.5782,
+    "anchos": [
+      1080,
+      900,
+      720,
+      600,
+      380
+    ]
+  },
+  {
+    "archivo": "pi-3",
+    "alt": "Piercing de ombligo con una barra curva de bola, sobre unos vaqueros.",
+    "autor": "",
+    "fuente": "Original del estudio",
+    "proporcion": 0.8,
+    "anchos": [
+      1080,
+      900,
+      720,
+      600,
+      380
+    ]
+  },
+  {
+    "archivo": "pi-5",
+    "alt": "Labret vertical: una barra que sale por el borde del labio de abajo y por debajo de él, en blanco y negro.",
+    "autor": "",
+    "fuente": "Original del estudio",
+    "proporcion": 0.7574,
+    "anchos": [
+      1080,
+      900,
+      720,
+      600,
+      380
+    ]
+  },
+  {
+    "archivo": "pi-6",
+    "alt": "Un piercing en cada ceja, visto de lado, de tres cuartos y de frente.",
+    "autor": "",
+    "fuente": "Original del estudio",
+    "proporcion": 0.562,
+    "anchos": [
+      1151,
+      900,
+      720,
+      600,
+      380
+    ]
+  },
+  {
+    "archivo": "pi-11",
+    "alt": "Dos bolitas en el lóbulo, una encima de otra, de perfil, en blanco y negro.",
+    "autor": "",
+    "fuente": "Original del estudio",
+    "proporcion": 0.5742,
+    "anchos": [
+      1080,
+      900,
+      720,
+      600,
+      380
+    ]
+  },
+  {
+    "archivo": "pi-9",
+    "alt": "Ceja horizontal: dos bolitas a lo largo de la ceja, en blanco y negro.",
+    "autor": "",
+    "fuente": "Original del estudio",
+    "proporcion": 0.5748,
+    "anchos": [
+      1080,
+      900,
+      720,
+      600,
+      380
+    ]
+  },
+  {
+    "archivo": "pi-7",
+    "alt": "Una bolita en el lóbulo, de perfil, en blanco y negro.",
+    "autor": "",
+    "fuente": "Original del estudio",
+    "proporcion": 0.6061,
+    "anchos": [
+      1080,
+      900,
+      720,
+      600,
+      380
+    ]
+  },
+  {
     "archivo": "bg-1",
     "alt": "Máscara de tengu en negro y grises en el antebrazo, de nariz larga y ceño fruncido, rodeada de plumas.",
     "autor": "@haroz.tattoo",

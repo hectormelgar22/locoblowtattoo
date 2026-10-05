@@ -1,7 +1,8 @@
 /* =============================================================================
    LOCO BLOW · TOKENS
-   Sale del cartel del rebranding (post fijado del 10/09/2026): negro sobre
-   gris cálido, una palabra enorme, lo demás pequeño, ancho y entre corchetes.
+   Sale del cartel del rebranding (post fijado del 10/09/2026) y del vale
+   regalo (05/10/2026): negro sobre crema, una palabra enorme, lo demás
+   pequeño, ancho y entre corchetes.
    La web es monocroma a propósito: el color lo ponen los tatuajes.
    Cada contraste de aquí está medido con tools/contraste.py, no estimado.
    ========================================================================== */
@@ -9,39 +10,37 @@
 :root {
   color-scheme: light;
 
-  /* --- SUELO · el gris del cartel ------------------------------------------ */
-  /* #D4D3CF medido en dos capturas distintas del post (mediana de la zona
-     sin texto). PROVISIONAL: pendiente de confirmar con el archivo original
-     del rebranding; la compresión de Instagram mueve el gris uno o dos
-     puntos, no más.                                                          */
-  --suelo:         #D4D3CF;
-  --suelo-hondo:   #CAC9C4;   /* huecos de foto y vídeo, campos             */
+  /* --- SUELO · el crema del vale regalo ------------------------------------ */
+  /* #FAF2E5 medido en el vale regalo del estudio (05/10/2026): el jefe pidió
+     la web de ese color. Sustituye al gris del cartel del rebranding.        */
+  --suelo:         #FAF2E5;
+  --suelo-hondo:   #F0E6D3;   /* huecos de foto y vídeo, campos             */
 
-  /* --- TINTA · el negro del cartel, con un punto de calor ------------------ */
-  --tinta:         #0B0B0A;   /* 13.14:1  titulares, texto, lo pulsable      */
-  --tinta-viva:    #2A2927;   /* al pasar por encima de un bloque negro      */
-  --tinta-2:       #302F2C;   /*  8.94:1  texto secundario                   */
-  --tinta-3:       #4D4C49;   /*  5.73:1  pies y etiquetas (5.18 en hondo)   */
-  --tinta-suave:   #72716E;   /*  3.26:1  SOLO texto grande (24 px o más)
+  /* --- TINTA · el negro del vale, con un punto de calor --------------------- */
+  --tinta:         #141311;   /* 16.71:1  titulares, texto, lo pulsable      */
+  --tinta-viva:    #2B2926;   /* al pasar por encima de un bloque negro      */
+  --tinta-2:       #45423E;   /*  8.99:1  texto secundario                   */
+  --tinta-3:       #605D57;   /*  5.90:1  pies y etiquetas (5.30 en hondo)   */
+  --tinta-suave:   #89857D;   /*  3.31:1  SOLO texto grande (24 px o más)
                                          aún por leer: el manifiesto del
                                          estudio antes de entintarse     */
-  --tinta-off:     #8B8A87;   /*  2.30:1  SOLO controles deshabilitados      */
+  --tinta-off:     #A7A198;   /*  2.31:1  SOLO controles deshabilitados      */
 
   /* --- FILETES -------------------------------------------------------------- */
-  --filete:        #ABAAA6;   /* decorativo: separa, no señala               */
-  --filete-fn:     #686764;   /*  3.78:1  FUNCIONAL: borde de un control     */
+  --filete:        #BFB9AF;   /* decorativo: separa, no señala               */
+  --filete-fn:     #7F7B74;   /*  3.79:1  FUNCIONAL: borde de un control     */
 
-  /* --- BANDA NEGRA · el cartel en negativo ---------------------------------- */
+  /* --- BANDA NEGRA · el vale en negativo ------------------------------------ */
   /* Para el pie y para lo que va sobre vídeo. Mismo sistema, invertido.      */
-  --claro:         #EEEDE9;   /* 16.81:1  texto sobre bloque negro           */
-  --noche-2:       #ABAAA7;   /*  8.48:1  secundario sobre negro             */
-  --noche-3:       #878683;   /*  5.41:1  pies sobre negro                   */
-  --noche-fn:      #666562;   /*  3.38:1  borde funcional sobre negro        */
-  --noche-filete:  #363532;   /* decorativo sobre negro                      */
+  --claro:         #FAF2E5;   /* 16.71:1  texto sobre bloque negro           */
+  --noche-2:       #B5AFA5;   /*  8.52:1  secundario sobre negro             */
+  --noche-3:       #8F8A82;   /*  5.42:1  pies sobre negro                   */
+  --noche-fn:      #6C6962;   /*  3.39:1  borde funcional sobre negro        */
+  --noche-filete:  #34322E;   /* decorativo sobre negro                      */
 
   /* Lo interactivo tiene un solo color, y es la tinta. No hay un acento
      inventado: en el rebranding no aparece ninguno. Un bloque negro macizo
-     con texto claro se ve desde lejos sobre este gris, que es justo lo que
+     con texto claro se ve desde lejos sobre este crema, que es justo lo que
      hace el propio cartel con la palabra.                                     */
 
   /* --- TIPOGRAFIA ----------------------------------------------------------- */

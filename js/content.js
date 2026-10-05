@@ -167,13 +167,14 @@ window.STUDIO = {
           { cifra: "1.os", texto: "premios en convenciones de tatuaje" }
         ],
         puntos: [
-          { titulo: "Todos los estilos",
-            texto: "Trabajamos todos los estilos, desde realismo black & grey y fineline hasta color, dotwork, anime y otros estilos, adaptando cada diseño a tu idea y a ti.",
-            fotos: ["bg-1", "fl-1", "tr-1", "an-1"],
+          // Ajustado a las cuatro categorías oficiales (05/10/2026).
+          { titulo: "Cuatro estilos",
+            texto: "Trabajamos realismo y microrrealismo, anime, tradicional, fine line y puntillismo, adaptando cada diseño a tu idea y a ti.",
+            fotos: ["ezel-3", "fernando-4", "haroz-7", "lineal-92"],
             enlaces: "estilos" },
           { titulo: "Todo en un mismo sitio",
             texto: "En el mismo espacio encontrarás también piercing, eliminación de tatuajes con láser y micropigmentación capilar.",
-            fotos: ["bg-2", "piercing-1", "laser"],
+            fotos: ["haroz-8", "pi-2", "laser"],
             enlaces: "servicios" },
           { titulo: "Calidad, higiene y trato",
             texto: "Cuidamos la calidad, la higiene y el trato: queremos que, desde el primer mensaje hasta que sales por la puerta, sepas qué vamos a hacer y te sientas a gusto durante todo el proceso.",
@@ -252,6 +253,10 @@ window.STUDIO = {
       fotos:     { etiqueta: "Trabajos",  titular: "Hechos en el estudio." },
       preguntas: { etiqueta: "Preguntas", titular: "Antes de escribir." },
       verFotos: "Ver trabajos",
+      // El bloque negro al final de la fila de fotos de cada servicio.
+      // PROVISIONAL: pendiente de que el estudio revise el texto.
+      finTitular: "¿Te animas?",
+      finTexto: "Escríbenos y te contamos cómo sería en tu caso.",
       // Lo que se ve donde irán las fotos, mientras no lleguen.
       pendiente: "Las fotos llegan con los originales del estudio"
     },
@@ -263,7 +268,25 @@ window.STUDIO = {
       mensajeEstilo: "Hola, os escribo desde la web. Quiero un tatuaje de estilo {estilo}: te cuento la idea, la zona y el tamaño aproximado.",
       botonEstilo: "Quiero este estilo",
       // Lo que dice un estilo que aún no tiene fotos.
-      pendiente: "Pronto, trabajos de este estilo aquí. Si es lo que buscas, escríbenos y te enseñamos más."
+      pendiente: "Pronto, trabajos de este estilo aquí. Si es lo que buscas, escríbenos y te enseñamos más.",
+      // El carrete de cada estilo: las fotos en fila, enteras, que se pasan
+      // de lado. {n} se cambia por el número de trabajos.
+      // PROVISIONAL: pendiente de que el estudio revise el texto.
+      trabajos: "{n} trabajos",
+      por: "Por",
+      todos: "Todos",
+      filtrar: "Ver los trabajos de",
+      anteriores: "Trabajos anteriores",
+      siguientes: "Más trabajos",
+      // Lo que dice el cursor sobre las fotos (solo con ratón).
+      cursorVer: "Ver",
+      cursorArrastra: "Arrastra",
+      // La última pieza del carrete: el paso a WhatsApp después de verlo.
+      // Con un artista elegido, el mensaje dice con quién: {artista}.
+      finTitular: "¿Es tu estilo?",
+      finTexto: "Cuéntanos la idea, la zona y el tamaño, y te decimos quién y cuándo.",
+      mensajeArtista: "Hola, os escribo desde la web. Quiero un tatuaje de estilo {estilo} con {artista}: te cuento la idea, la zona y el tamaño aproximado.",
+      botonArtista: "Quiero cita con {artista}"
     },
 
     // El visor a pantalla completa de las fotos.
@@ -304,7 +327,7 @@ window.STUDIO = {
       equipo: "Y cada artista, en el suyo",
       // Los trabajos de la cuadrícula (los `id` de la lista 5, solo fotos).
       // Mejor distintos de los que salen en la muestra del inicio.
-      fotos: ["bg-3", "an-3", "bw-2", "an-6", "an-7", "an-5"]
+      fotos: ["haroz-26", "ezel-4", "lineal-23", "fernando-5", "maou-8", "lineal-37"]
     }
   },
 
@@ -339,7 +362,7 @@ window.STUDIO = {
       boton: "Pedir cita para tatuarme",
       meta: {
         titulo: "Tatuajes en A Coruña por estilos · Loco Blow Tattoo",
-        descripcion: "Realismo black & grey, fine line, color, dotwork, anime y más: los trabajos del estudio por estilos, con su artista. Cita previa por WhatsApp."
+        descripcion: "Realismo y microrrealismo, anime, tradicional, fine line y puntillismo: los trabajos del estudio por estilos, con su artista. Cita previa por WhatsApp."
       },
       preguntas: [
         {
@@ -397,43 +420,45 @@ window.STUDIO = {
         { dato: "Quién", valor: null },             // PROVISIONAL: pendiente de confirmar
         { dato: "Curación", valor: "Semanas en el lóbulo, meses en el cartílago" }
       ],
-      // PROVISIONAL: sacadas de Instagram (25/09/2026). Sin artista: el
+      // FUENTE: fotos oficiales del estudio (05/10/2026). Sin artista: el
       // estudio no dice quién los hace. Las que enseñan la cara salen
       // porque ya están en su Instagram; pendiente de que el estudio
       // confirme que el permiso de cada persona cubre también la web.
-      // La primera es la de la cabecera de la página. Van alternando
-      // oreja, cara y cuerpo.
+      // La primera es la de la cabecera de la página.
       fotos: [
-        { id: "piercing-1", artista: "", titulo: "Industrial",
-          alt: "Industrial en la oreja: una barra recta que atraviesa la parte de arriba del cartílago de lado a lado.",
-          img: "piercing-1", ratio: 0.7524 },
-        { id: "piercing-6", artista: "", titulo: "Nostril doble",
-          alt: "Nostril doble: dos bolitas juntas en el lateral de la nariz y un aro fino, en blanco y negro.",
-          img: "piercing-6", ratio: 0.5635, foco: "50% 40%" },
-        { id: "piercing-2", artista: "", titulo: "Labret vertical",
+        { id: "pi-2", artista: "", titulo: "Nostril doble",
+          alt: "Nostril doble: dos bolitas juntas en el lateral de la nariz, en blanco y negro.",
+          img: "pi-2", ratio: 0.5629 },
+        { id: "pi-10", artista: "", titulo: "Industrial",
+          alt: "Industrial: una barra recta que cruza la parte de arriba de la oreja, en blanco y negro.",
+          img: "pi-10", ratio: 0.5954 },
+        { id: "pi-4", artista: "", titulo: "Smiley",
+          alt: "Smiley: una bolita que asoma sobre los dientes de arriba al sonreír, en blanco y negro.",
+          img: "pi-4", ratio: 0.7692 },
+        { id: "pi-1", artista: "", titulo: "",
+          alt: "Nueve piercings en un mosaico: labio, cejas, orejas, septum y nariz.",
+          img: "pi-1", ratio: 0.562 },
+        { id: "pi-8", artista: "", titulo: "Ceja y nariz",
+          alt: "Chica con flequillo, con una barra en la ceja, un aro en la nariz y una estrella pequeña bajo el ojo, en blanco y negro.",
+          img: "pi-8", ratio: 0.5782 },
+        { id: "pi-3", artista: "", titulo: "Ombligo",
+          alt: "Piercing de ombligo con una barra curva de bola, sobre unos vaqueros.",
+          img: "pi-3", ratio: 0.8 },
+        { id: "pi-5", artista: "", titulo: "Labret vertical",
           alt: "Labret vertical: una barra que sale por el borde del labio de abajo y por debajo de él, en blanco y negro.",
-          img: "piercing-2", ratio: 0.7682 },
-        { id: "piercing-8", artista: "", titulo: "Ceja vertical",
-          alt: "Ceja vertical: una barra con dos bolitas en la punta de la ceja, junto a un aro en la nariz.",
-          img: "piercing-8", ratio: 0.7495 },
-        { id: "piercing-3", artista: "", titulo: "Hélix",
-          alt: "Oreja de perfil con un aro fino en el hélix, arriba del todo del cartílago.",
-          img: "piercing-3", ratio: 0.5741, foco: "50% 25%" },
-        { id: "piercing-7", artista: "", titulo: "Smiley",
-          alt: "Smiley: una barra en el frenillo del labio de arriba, que asoma con dos bolitas sobre los dientes al sonreír, en blanco y negro.",
-          img: "piercing-7", ratio: 0.7713 },
-        { id: "piercing-4", artista: "", titulo: "Ombligo",
-          alt: "Piercing de ombligo con una barra curva de bola, sobre unos vaqueros bajados.",
-          img: "piercing-4", ratio: 0.7959 },
-        { id: "piercing-9", artista: "", titulo: "Ceja horizontal",
-          alt: "Ceja horizontal: dos bolitas a lo largo de la ceja, y un hélix y un aro en la oreja.",
-          img: "piercing-9", ratio: 0.7687 },
-        { id: "piercing-10", artista: "", titulo: "Dilatación y hélix",
-          alt: "Dilatación en el lóbulo con un túnel negro, dos bolitas en el hélix y un aro en la nariz.",
-          img: "piercing-10", ratio: 0.7592 },
-        { id: "piercing-5", artista: "", titulo: "Pezón",
-          alt: "Piercing de pezón con una barra recta, recién hecho, sobre un pecho tatuado en negro.",
-          img: "piercing-5", ratio: 0.7607 }
+          img: "pi-5", ratio: 0.7574 },
+        { id: "pi-6", artista: "", titulo: "Cejas",
+          alt: "Un piercing en cada ceja, visto de lado, de tres cuartos y de frente.",
+          img: "pi-6", ratio: 0.562 },
+        { id: "pi-11", artista: "", titulo: "Lóbulo doble",
+          alt: "Dos bolitas en el lóbulo, una encima de otra, de perfil, en blanco y negro.",
+          img: "pi-11", ratio: 0.5742 },
+        { id: "pi-9", artista: "", titulo: "Ceja horizontal",
+          alt: "Ceja horizontal: dos bolitas a lo largo de la ceja, en blanco y negro.",
+          img: "pi-9", ratio: 0.5748 },
+        { id: "pi-7", artista: "", titulo: "Lóbulo",
+          alt: "Una bolita en el lóbulo, de perfil, en blanco y negro.",
+          img: "pi-7", ratio: 0.6061 }
       ],
       mensaje: "Hola, os escribo desde la web. Quiero hacerme un piercing en: ",
       boton: "Pedir cita para un piercing",
@@ -480,9 +505,18 @@ window.STUDIO = {
       id: "laser", pagina: "laser", menu: "Láser",
       etiqueta: "Láser", nombre: "Eliminación de tatuajes con láser",
       titular: "Láser.",
-      // PROVISIONAL: pendiente de que el estudio confirme el enfoque
-      // (eliminación completa y aclarado para tapar).
-      entradilla: "Quitamos tatuajes con láser en A Coruña: entero, o lo justo para aclararlo y taparlo con uno nuevo. Primero se valora la tinta y la piel, y a partir de ahí se plantean las sesiones.",
+      // FUENTE: el texto de Origen Láser (05/10/2026), tal cual, en la
+      // cabecera. Sin el emoji del final: en la web saldría a color, y la web
+      // es en blanco y negro. `cuerpo`, `remate` y `firma` solo los tiene
+      // un servicio que se cuenta con más de una línea.
+      entradilla: "Origen Láser, el principio del fin de tu tatuaje.",
+      cuerpo: [
+        "Riki, profesional al frente de Origen Láser desde 2020 y fundador de Loco Blow, cuenta con amplia experiencia y numerosos tratamientos realizados, tanto de eliminaciones completas como parciales para facilitar futuros cover-up.",
+        "Trabaja con una Ink Hunter Master Nd:YAG Q-Switched, adaptando cada tratamiento a las características de cada piel y tatuaje."
+      ],
+      remate: "No lo pienses más, ese tribal de los 90 o el nombre de tu ex tienen los días contados.",
+      firma: "Origen Láser.",
+      firmaArtista: "riki",
       resumen: "Para quitar un tatuaje entero o aclararlo y taparlo con otro.",
       // PROVISIONAL: pendiente de que Riki revise los pasos
       pasos: [
@@ -492,14 +526,55 @@ window.STUDIO = {
         { titulo: "Quitar o aclarar", texto: "Si lo que quieres es taparlo con otro tatuaje, a veces bastan unas pocas sesiones para aclararlo." }
       ],
       puntos: [
-        { dato: "Quién", valor: "Riki, en el estudio desde 2015" },          // FUENTE: destacado · PROVISIONAL
+        // Quién y con qué equipo ya lo dice el texto de arriba.
         { dato: "Primera visita", valor: "Para valorar el tatuaje" },        // PROVISIONAL: pendiente de confirmar
         { dato: "Sesiones", valor: "Varias, con semanas de descanso entre una y otra" } // PROVISIONAL: pendiente de confirmar
       ],
       video: "laser",
+      // Los antes y después, con el número de sesiones que dice la propia
+      // foto. FUENTE: el estudio (05/10/2026), con la marca de Origen Láser.
+      // PROVISIONAL: pendiente de que confirmen el permiso de cada persona.
+      fotosTitulo: { etiqueta: "Antes y después", titular: "Sesión a sesión." },
       fotos: [
-        // Un antes y después solo con permiso por escrito de la persona.
-        // { id: "laser-1", artista: "riki", titulo: "Tras 4 sesiones", alt: "…", img: "laser-1", ratio: 0.8 },
+        { id: "laser-3", artista: "riki", titulo: "Original, 3 y 6 sesiones",
+          alt: "Una luna con colgantes en el antebrazo y otro tatuaje pequeño en la muñeca: el original, a las 3 sesiones y a las 6, ya sin tinta.",
+          img: "laser-3", ratio: 1.0 },
+        { id: "laser-8", artista: "riki", titulo: "9 sesiones",
+          alt: "Dos tatuajes antiguos en el brazo, un símbolo y una daga con calavera, antes y después de 9 sesiones.",
+          img: "laser-8", ratio: 1.0 },
+        { id: "laser-12", artista: "riki", titulo: "8 sesiones y cover-up",
+          alt: "Un perro en la muñeca, aclarado con 8 sesiones y tapado después con un osito de peluche.",
+          img: "laser-12", ratio: 1.0 },
+        { id: "laser-9", artista: "riki", titulo: "8 sesiones",
+          alt: "Letras árabes en el antebrazo, antes y después de 8 sesiones.",
+          img: "laser-9", ratio: 1.0 },
+        { id: "laser-4", artista: "riki", titulo: "4 sesiones",
+          alt: "Un lobo pequeño en el dedo, antes y después de 4 sesiones.",
+          img: "laser-4", ratio: 1.0 },
+        { id: "laser-13", artista: "riki", titulo: "6 sesiones",
+          alt: "Una línea de letras a lo largo de la columna, antes y después de 6 sesiones.",
+          img: "laser-13", ratio: 1.0028 },
+        { id: "laser-10", artista: "riki", titulo: "8 sesiones",
+          alt: "Una estrella negra en el tobillo, antes y después de 8 sesiones.",
+          img: "laser-10", ratio: 1.0 },
+        { id: "laser-15", artista: "riki", titulo: "19 sesiones",
+          alt: "Una cabeza de perro en línea en la pierna, antes y después de 19 sesiones.",
+          img: "laser-15", ratio: 1.0009 },
+        { id: "laser-5", artista: "riki", titulo: "6 sesiones",
+          alt: "Una rama de flores de cerezo en la cadera, antes y después de 6 sesiones.",
+          img: "laser-5", ratio: 1.0 },
+        { id: "laser-11", artista: "riki", titulo: "11 sesiones",
+          alt: "Unas iniciales en la cadera, antes y después de 11 sesiones.",
+          img: "laser-11", ratio: 1.0 },
+        { id: "laser-6", artista: "riki", titulo: "8 sesiones",
+          alt: "La palabra «TRECE» en la muñeca, antes y después de 8 sesiones.",
+          img: "laser-6", ratio: 1.0 },
+        { id: "laser-14", artista: "riki", titulo: "10 sesiones",
+          alt: "Unas coordenadas en el brazo, antes y después de 10 sesiones.",
+          img: "laser-14", ratio: 1.0 },
+        { id: "laser-7", artista: "riki", titulo: "4 sesiones",
+          alt: "Un tatuaje pequeño en la espalda, junto al tirante, antes y después de 4 sesiones.",
+          img: "laser-7", ratio: 1.0 }
       ],
       mensaje: "Hola, os escribo desde la web. Quiero información para quitar (o aclarar) un tatuaje con láser.",
       boton: "Preguntar por el láser",
@@ -615,9 +690,9 @@ window.STUDIO = {
   /* --- 4. ESTILOS ---------------------------------------------------------- */
   // La página de tatuajes va por estilos, no por tatuadores: una sección por
   // estilo, en este orden, con sus mejores fotos.
-  // FUENTE: el texto de inicio del estudio (30/09/2026): «realismo black &
-  // grey y fineline hasta color, dotwork, anime y otros estilos». Lo que no
-  // es de ninguno de los cinco va en «Otros estilos».
+  // FUENTE: las cuatro categorías oficiales del estudio, con sus fotos y
+  // su tatuador (05/10/2026). Los estilos de antes (color, dotwork, otros
+  // estilos) ya no salen: sus trabajos quedan con `publicar: false`.
   //
   // `id` es la dirección de la sección: <dominio>/tatuajes#dotwork
   // `antes` son direcciones de listas anteriores (la de la biografía de
@@ -627,18 +702,14 @@ window.STUDIO = {
   // botón de WhatsApp, pero al final de la página: en cuanto tenga su
   // primera foto, ocupa su sitio en este orden.
   estilos: [
-    { id: "black-and-grey", nombre: "Realismo black & grey", antes: ["realismo", "microrealismo"],
-      descripcion: "Retratos, animales y figuras en negro y grises, con la sombra trabajada a mano hasta que parecen una foto." },
-    { id: "fine-line",      nombre: "Fine line",
-      descripcion: "Línea fina y detalle pequeño: flores, personajes y símbolos, con trazo limpio y delicado." },
-    { id: "color",          nombre: "Color", antes: ["acuarela", "tradicional"],
-      descripcion: "Tatuajes a color: personajes, tradicional y piezas con toda su paleta." },
-    { id: "dotwork",        nombre: "Dotwork", antes: ["puntillismo"],
-      descripcion: "La sombra, punto a punto: tonos suaves y un acabado que recuerda al grabado." },
-    { id: "anime",          nombre: "Anime",
-      descripcion: "Personajes de anime y manga, fieles al trazo del original, en negro o con toques de color." },
-    { id: "otros-estilos",  nombre: "Otros estilos", antes: ["blackwork"],
-      descripcion: "Blackwork, tradicional en negro y todo lo que no cabe en una etiqueta. Cuéntanos tu idea." }
+    { id: "realismo",    nombre: "Realismo y microrrealismo", antes: ["black-and-grey", "microrealismo", "microrrealismo"],
+      descripcion: "Retratos, animales y figuras en negro y grises, con la sombra trabajada hasta que parecen una foto. Y en pequeño, el mismo detalle en unos centímetros." },
+    { id: "anime",       nombre: "Anime",
+      descripcion: "Personajes de anime y manga fieles al original: a todo color o en negro y grises, del antebrazo a la manga entera." },
+    { id: "tradicional", nombre: "Tradicional",
+      descripcion: "Línea negra gruesa, color plano y motivos de siempre: barcos, caballos, retratos y flores, hechos para durar." },
+    { id: "fine-line",   nombre: "Fine line y puntillismo", antes: ["puntillismo", "dotwork", "fineline", "lineales"],
+      descripcion: "Línea fina y sombra hecha a puntos: piezas pequeñas y delicadas, flores, personajes y letras, y piezas grandes en puntillismo." }
   ],
 
   /* --- 5. OBRAS · los trabajos de tatuaje -------------------------------- */
@@ -660,79 +731,312 @@ window.STUDIO = {
   // Una foto se comparte con su dirección: <dominio>/tatuajes#obra-bg-1.
   // Por eso el `id` no cambia aunque la foto cambie de estilo.
   //
-  // PROVISIONAL: las fotos y los reels los pasó el estudio sacados de
-  // Instagram (24 y 25/09/2026). Se cambian por los originales cuando lleguen.
+  // FUENTE: las de las cuatro categorías son las oficiales del estudio
+  // (05/10/2026). Las de antes (fotos y reels sacados de Instagram el 24 y
+  // 25/09/2026) quedan al final con `publicar: false`.
+  //
+  // `publicar: false` deja un trabajo fuera de la web sin borrarlo.
   // PROVISIONAL: el estilo de cada pieza lo ha puesto la web por su técnica
   // (30/09/2026); pendiente de que el estudio lo revise.
   obras: [
-    // --- Realismo black & grey: figuras y retratos primero, animales después
-    { id: "bg-1", estilo: "black-and-grey", artista: "haroz", titulo: "Tengu",
+    // --- Realismo y microrrealismo (oficial, 05/10/2026): Haroz. Las piezas
+    // grandes y las pequeñas, alternadas, para que se vean las dos cosas.
+    { id: "haroz-2", estilo: "realismo", artista: "haroz", titulo: "Dalí",
+      alt: "Retrato de Salvador Dalí con su bigote, en negro y grises en el hombro.",
+      img: "haroz-2", ratio: 0.8127 },
+    { id: "haroz-19", estilo: "realismo", artista: "haroz", titulo: "Bulldog francés",
+      alt: "Bulldog francés pequeño, en microrrealismo en el antebrazo.",
+      img: "haroz-19", ratio: 0.8025 },
+    { id: "haroz-7", estilo: "realismo", artista: "haroz", titulo: "Tigre",
+      alt: "Tigre rugiendo entre hojas, en realismo en negro y grises en el antebrazo.",
+      img: "haroz-7", ratio: 0.8387 },
+    { id: "haroz-10", estilo: "realismo", artista: "haroz", titulo: "",
+      alt: "Chica maquillada de payaso que guiña un ojo y saca la lengua, en negro y grises en el antebrazo.",
+      img: "haroz-10", ratio: 0.8013 },
+    { id: "haroz-36", estilo: "realismo", artista: "haroz", titulo: "Teckel",
+      alt: "Teckel con la lengua fuera, pequeño, en microrrealismo.",
+      img: "haroz-36", ratio: 0.7667 },
+    { id: "haroz-8", estilo: "realismo", artista: "haroz", titulo: "Virgen",
+      alt: "Virgen rezando, con el manto sobre la cabeza y un rosario entre las manos, en negro y grises en el brazo.",
+      img: "haroz-8", ratio: 0.7561 },
+    { id: "haroz-9", estilo: "realismo", artista: "haroz", titulo: "Retrato",
+      alt: "Retrato realista de un hombre mayor en negro y grises en el antebrazo, con las arrugas marcadas a sombra.",
+      img: "haroz-9", ratio: 0.7716 },
+    { id: "haroz-22", estilo: "realismo", artista: "haroz", titulo: "Pastor alemán",
+      alt: "Pastor alemán con la lengua fuera, en realismo en negro y grises en el antebrazo.",
+      img: "haroz-22", ratio: 0.8812 },
+    { id: "haroz-26", estilo: "realismo", artista: "haroz", titulo: "Juego de tronos",
+      alt: "Tyrion, de Juego de tronos, en negro y grises en el brazo, con otro rostro encima.",
+      img: "haroz-26", ratio: 0.75 },
+    { id: "haroz-38", estilo: "realismo", artista: "haroz", titulo: "Gato esfinge",
+      alt: "Gato esfinge de ojos verdes, pequeño, en microrrealismo en el antebrazo.",
+      img: "haroz-38", ratio: 0.7614 },
+    { id: "haroz-12", estilo: "realismo", artista: "haroz", titulo: "Lobo y rosas",
+      alt: "Lobo en negro y grises entre rosas rojas, en el hombro.",
+      img: "haroz-12", ratio: 0.8013 },
+    { id: "haroz-21", estilo: "realismo", artista: "haroz", titulo: "Seat 600",
+      alt: "Un Seat 600 con su matrícula antigua, en negro y grises en la pierna.",
+      img: "haroz-21", ratio: 0.9169 },
+    { id: "haroz-5", estilo: "realismo", artista: "haroz", titulo: "",
+      alt: "Mujer con maquillaje de payaso que fuma con la mano en la boca, en negro y grises en el gemelo.",
+      img: "haroz-5", ratio: 0.811 },
+    { id: "haroz-15", estilo: "realismo", artista: "haroz", titulo: "Pitbull",
+      alt: "Cabeza de pitbull, pequeña, en microrrealismo en el antebrazo.",
+      img: "haroz-15", ratio: 0.8263 },
+    { id: "haroz-3", estilo: "realismo", artista: "haroz", titulo: "Pennywise",
+      alt: "Pennywise, el payaso de «It», sonriendo, en negro y grises en el antebrazo.",
+      img: "haroz-3", ratio: 0.7861 },
+    { id: "haroz-20", estilo: "realismo", artista: "haroz", titulo: "León",
+      alt: "León entre flores, en negro y grises en el antebrazo.",
+      img: "haroz-20", ratio: 0.7512 },
+    { id: "haroz-17", estilo: "realismo", artista: "haroz", titulo: "Galgo",
+      alt: "Cabeza de galgo, pequeña, en microrrealismo en el antebrazo.",
+      img: "haroz-17", ratio: 0.8121 },
+    { id: "haroz-23", estilo: "realismo", artista: "haroz", titulo: "",
+      alt: "Rostro de mujer con corona y un niño ángel, en negro y grises en el antebrazo.",
+      img: "haroz-23", ratio: 0.7069 },
+    { id: "haroz-6", estilo: "realismo", artista: "haroz", titulo: "Lobo",
+      alt: "Lobo enseñando los dientes, en realismo en negro y grises en el antebrazo.",
+      img: "haroz-6", ratio: 0.804 },
+    { id: "haroz-13", estilo: "realismo", artista: "haroz", titulo: "",
+      alt: "Rostro de anciano que sale de un árbol, en negro y grises en el antebrazo.",
+      img: "haroz-13", ratio: 0.8045 },
+    { id: "haroz-35", estilo: "realismo", artista: "haroz", titulo: "",
+      alt: "Perro pequeño de pelo largo, sonriendo, en microrrealismo en la pierna.",
+      img: "haroz-35", ratio: 0.7599 },
+    { id: "haroz-31", estilo: "realismo", artista: "haroz", titulo: "Brazo entero",
+      alt: "Brazo entero en negro y grises: un rostro de mujer partido con el de un tigre y, debajo, un león.",
+      img: "haroz-31", ratio: 0.7117 },
+    { id: "haroz-4", estilo: "realismo", artista: "haroz", titulo: "",
+      alt: "Mujer de ojos azules con sombrero, en realismo en el gemelo.",
+      img: "haroz-4", ratio: 0.8013 },
+    { id: "haroz-27", estilo: "realismo", artista: "haroz", titulo: "Retrato",
+      alt: "Retrato realista de un hombre sonriendo, en negro y grises en el muslo.",
+      img: "haroz-27", ratio: 0.75 },
+
+    // --- Anime (oficial, 05/10/2026): Ezel a color y Maou en negro y grises,
+    // uno y uno, para que se vean los dos registros.
+    { id: "ezel-1", estilo: "anime", artista: "ezel", titulo: "Rengoku",
+      alt: "Rengoku, de Kimetsu no Yaiba, a color en el antebrazo, con su frase en japonés y la parte de abajo en negro y grises.",
+      img: "ezel-1", ratio: 0.75 },
+    { id: "maou-3", estilo: "anime", artista: "maou", titulo: "Attack on Titan",
+      alt: "Mikasa y Eren, de Attack on Titan, en negro y grises en el antebrazo, separados por un trazo de luz.",
+      img: "maou-3", ratio: 0.755 },
+    { id: "ezel-4", estilo: "anime", artista: "ezel", titulo: "Shenron",
+      alt: "Shenron, el dragón de Dragon Ball, en verde con los ojos rojos y las bolas de dragón alrededor, a color en la pierna.",
+      img: "ezel-4", ratio: 0.75 },
+    { id: "maou-4", estilo: "anime", artista: "maou", titulo: "Ulquiorra",
+      alt: "Ulquiorra, de Bleach, en viñetas de manga en negro y grises en el antebrazo, con su frase «What… is a heart».",
+      img: "maou-4", ratio: 0.8175 },
+    { id: "ezel-8", estilo: "anime", artista: "ezel", titulo: "Luffy, Gear 4",
+      alt: "Luffy en su Gear 4, de One Piece, a color en el gemelo, con humo morado detrás.",
+      img: "ezel-8", ratio: 0.75 },
+    { id: "maou-8", estilo: "anime", artista: "maou", titulo: "Zoro",
+      alt: "Zoro, de One Piece, empuñando su katana, en negro y grises del hombro al codo.",
+      img: "maou-8", ratio: 0.8413 },
+    { id: "ezel-2", estilo: "anime", artista: "ezel", titulo: "Crocodile",
+      alt: "Crocodile, de One Piece, con su cicatriz y el garfio dorado, en negro y grises con toques de color en el antebrazo.",
+      img: "ezel-2", ratio: 0.75 },
+    { id: "maou-7", estilo: "anime", artista: "maou", titulo: "",
+      alt: "Franja horizontal con una mirada de anime de ojos rasgados, en negro y grises con un tono rojizo, en el brazo.",
+      img: "maou-7", ratio: 0.8892 },
+    { id: "ezel-3", estilo: "anime", artista: "ezel", titulo: "Manga de One Piece",
+      alt: "Brazo entero a color con personajes de One Piece: Shanks arriba, con su pelo rojo, y los demás hasta la muñeca.",
+      img: "ezel-3", ratio: 0.6937 },
+    { id: "maou-2", estilo: "anime", artista: "maou", titulo: "",
+      alt: "Personaje de anime sonriente bajo una corona, en negro y grises en el antebrazo, entre rayos.",
+      img: "maou-2", ratio: 0.8387 },
+    { id: "ezel-5", estilo: "anime", artista: "ezel", titulo: "",
+      alt: "Chica pelirroja de ojos azules con una luna en la cabeza, un cangrejo y olas, a color en el gemelo.",
+      img: "ezel-5", ratio: 0.75 },
+    { id: "maou-5", estilo: "anime", artista: "maou", titulo: "",
+      alt: "Guerrero de anime con casco y gesto decidido, en negro y grises en el antebrazo, entre trazos de energía.",
+      img: "maou-5", ratio: 0.7738 },
+    { id: "ezel-6", estilo: "anime", artista: "ezel", titulo: "Gabumon",
+      alt: "Gabumon, de Digimon, y su digivice, a color sobre una mancha roja y naranja, en la pierna.",
+      img: "ezel-6", ratio: 0.75 },
+    { id: "maou-1", estilo: "anime", artista: "maou", titulo: "",
+      alt: "Dos personajes de anime en negro y grises en el antebrazo: uno con el ceño fruncido arriba y otro con cinta en la frente abajo.",
+      img: "maou-1", ratio: 0.7588 },
+    { id: "ezel-7", estilo: "anime", artista: "ezel", titulo: "Deadpool",
+      alt: "Deadpool en pequeño junto a otro personaje, dentro de un corazón y con las palabras «kiss me», a color en la pierna.",
+      img: "ezel-7", ratio: 0.75 },
+    { id: "maou-6", estilo: "anime", artista: "maou", titulo: "",
+      alt: "Bestia de anime con colmillos, envuelta en energía, en negro y grises con un tono rojizo en el antebrazo.",
+      img: "maou-6", ratio: 0.7738 },
+    { id: "maou-9", estilo: "anime", artista: "maou", titulo: "",
+      alt: "Bestia japonesa entre nubes y olas, en negro y grises en el antebrazo.",
+      img: "maou-9", ratio: 0.8163 },
+
+    // --- Tradicional (oficial, 05/10/2026): Fernando. Primero lo de aquí.
+    { id: "fernando-8", estilo: "tradicional", artista: "fer", titulo: "Barco pesquero",
+      alt: "Barco pesquero con su matrícula de A Coruña, el sol detrás y una flor delante, en tradicional a color en la pierna.",
+      img: "fernando-8", ratio: 0.7617 },
+    { id: "fernando-2", estilo: "tradicional", artista: "fer", titulo: "Retrato",
+      alt: "Retrato de un hombre con traje y corbata en tradicional, dentro de un óvalo con el mar, un ancla y flores rojas, en el antebrazo.",
+      img: "fernando-2", ratio: 0.8041 },
+    { id: "fernando-5", estilo: "tradicional", artista: "fer", titulo: "Caballito de mar",
+      alt: "Caballito de mar en rojo y negro, con burbujas, en tradicional en el antebrazo.",
+      img: "fernando-5", ratio: 0.9367 },
+    { id: "fernando-6", estilo: "tradicional", artista: "fer", titulo: "",
+      alt: "Anciana con pañuelo, mantón y bastón que lleva un fardo en la cabeza, en tradicional en negro en el antebrazo.",
+      img: "fernando-6", ratio: 0.7829 },
+    { id: "fernando-4", estilo: "tradicional", artista: "fer", titulo: "Caballo y herradura",
+      alt: "Cabeza de caballo dentro de una herradura, con flores rojas, en tradicional a color en el brazo.",
+      img: "fernando-4", ratio: 0.8886 },
+    { id: "fernando-3", estilo: "tradicional", artista: "fer", titulo: "Sol y máscara",
+      alt: "Un sol con cara sobre una máscara sonriente, en tradicional en negro en el brazo.",
+      img: "fernando-3", ratio: 0.7934 },
+    { id: "fernando-1", estilo: "tradicional", artista: "fer", titulo: "",
+      alt: "Cabeza de mujer sobre las olas, con flores en el pelo y dos mariposas, en tradicional a color en el brazo.",
+      img: "fernando-1", ratio: 0.8024 },
+    { id: "fernando-7", estilo: "tradicional", artista: "fer", titulo: "",
+      alt: "Figura con máscara, tocado de plumas y traje de colores que toca un cuerno, en tradicional a color en la pierna.",
+      img: "fernando-7", ratio: 0.7617 },
+
+    // --- Fine line y puntillismo (oficial, 05/10/2026): Haroz, en su cuenta
+    // de lineales. Línea fina y punteado alternados, grande y pequeño.
+    { id: "lineal-22", estilo: "fine-line", artista: "haroz-lineales", titulo: "Leopardo",
+      alt: "Cabeza de leopardo rugiendo en puntillismo en el pecho, junto a una rosa y una rama de olivo.",
+      img: "lineal-22", ratio: 0.7618 },
+    { id: "lineal-6", estilo: "fine-line", artista: "haroz-lineales", titulo: "Retrato en línea",
+      alt: "Tres figuras abrazadas dibujadas solo con línea fina, sin sombra, en el muslo.",
+      img: "lineal-6", ratio: 0.7628 },
+    { id: "lineal-23", estilo: "fine-line", artista: "haroz-lineales", titulo: "Torre de Hércules",
+      alt: "La Torre de Hércules en puntillismo, pequeña, en el antebrazo.",
+      img: "lineal-23", ratio: 0.7796 },
+    { id: "lineal-3", estilo: "fine-line", artista: "haroz-lineales", titulo: "Mariposa",
+      alt: "Mariposa con las alas abiertas en línea fina y sombra punteada, en el brazo.",
+      img: "lineal-3", ratio: 0.8221 },
+    { id: "lineal-79", estilo: "fine-line", artista: "haroz-lineales", titulo: "Flor en línea",
+      alt: "Una flor de pétalos largos en línea fina que baja del hombro por la espalda.",
+      img: "lineal-79", ratio: 0.7528 },
+    { id: "lineal-92", estilo: "fine-line", artista: "haroz-lineales", titulo: "Pesadilla antes de Navidad",
+      alt: "Jack y Sally sobre la colina en espiral, recortados contra la luna, en puntillismo en el brazo.",
+      img: "lineal-92", ratio: 0.75 },
+    { id: "lineal-13", estilo: "fine-line", artista: "haroz-lineales", titulo: "Corazón y flores",
+      alt: "Corazón anatómico del que salen flores, en línea fina y punteado en el antebrazo.",
+      img: "lineal-13", ratio: 0.7852 },
+    { id: "lineal-37", estilo: "fine-line", artista: "haroz-lineales", titulo: "Mickey",
+      alt: "Mickey Mouse en puntillismo, de cuerpo entero, en el antebrazo.",
+      img: "lineal-37", ratio: 0.8225 },
+    { id: "lineal-90", estilo: "fine-line", artista: "haroz-lineales", titulo: "Skyline",
+      alt: "La silueta de una ciudad, con sus cúpulas y torres, en línea fina alrededor del brazo.",
+      img: "lineal-90", ratio: 0.7677 },
+    { id: "lineal-83", estilo: "fine-line", artista: "haroz-lineales", titulo: "Casco espartano",
+      alt: "Casco espartano en puntillismo, con todo el volumen hecho a puntos, en el antebrazo.",
+      img: "lineal-83", ratio: 0.9256 },
+    { id: "lineal-75", estilo: "fine-line", artista: "haroz-lineales", titulo: "Girasol",
+      alt: "Girasol en línea fina y sombra suave en el brazo.",
+      img: "lineal-75", ratio: 0.7647 },
+    { id: "lineal-62", estilo: "fine-line", artista: "haroz-lineales", titulo: "Winnie the Pooh",
+      alt: "Winnie the Pooh e Ígor abrazados, en puntillismo en el antebrazo.",
+      img: "lineal-62", ratio: 0.8381 },
+    { id: "lineal-11", estilo: "fine-line", artista: "haroz-lineales", titulo: "Vieira",
+      alt: "Una concha de vieira en línea fina y punteado en el brazo.",
+      img: "lineal-11", ratio: 0.7955 },
+    { id: "lineal-68", estilo: "fine-line", artista: "haroz-lineales", titulo: "Trifuerza",
+      alt: "La Trifuerza de Zelda con sus alas, en puntillismo en la pierna.",
+      img: "lineal-68", ratio: 0.7716 },
+    { id: "lineal-5", estilo: "fine-line", artista: "haroz-lineales", titulo: "Montaña",
+      alt: "Montañas, un bosque y un camino dentro de un triángulo, en línea fina y punteado en el brazo.",
+      img: "lineal-5", ratio: 0.7133 },
+    { id: "lineal-19", estilo: "fine-line", artista: "haroz-lineales", titulo: "Los amantes",
+      alt: "«Los amantes» de Magritte, dos figuras besándose con la cabeza tapada, en puntillismo en el antebrazo.",
+      img: "lineal-19", ratio: 0.7484 },
+    { id: "lineal-54", estilo: "fine-line", artista: "haroz-lineales", titulo: "Flor de loto",
+      alt: "Flor de loto ornamental con puntos y adornos en línea fina, en la pierna.",
+      img: "lineal-54", ratio: 0.7746 },
+    { id: "lineal-69", estilo: "fine-line", artista: "haroz-lineales", titulo: "Goku",
+      alt: "Goku de niño sobre su nube, de Dragon Ball, en puntillismo en el antebrazo.",
+      img: "lineal-69", ratio: 0.7826 },
+    { id: "lineal-16", estilo: "fine-line", artista: "haroz-lineales", titulo: "Globo",
+      alt: "Un globo aerostático en línea fina y punteado en el antebrazo.",
+      img: "lineal-16", ratio: 0.7552 },
+    { id: "lineal-91", estilo: "fine-line", artista: "haroz-lineales", titulo: "Aku Aku",
+      alt: "La máscara Aku Aku de Crash Bandicoot, con sus plumas, en puntillismo en la pierna.",
+      img: "lineal-91", ratio: 0.7428 },
+    { id: "lineal-24", estilo: "fine-line", artista: "haroz-lineales", titulo: "Golondrinas",
+      alt: "Dos golondrinas en vuelo, en línea fina y punteado en el antebrazo.",
+      img: "lineal-24", ratio: 0.7945 },
+    { id: "lineal-63", estilo: "fine-line", artista: "haroz-lineales", titulo: "Mafalda",
+      alt: "Mafalda gritando con un periódico en las manos, en línea fina y negro en el brazo.",
+      img: "lineal-63", ratio: 0.7731 },
+    { id: "lineal-116", estilo: "fine-line", artista: "haroz-lineales", titulo: "Memento mori",
+      alt: "«Memento mori» en letra caligráfica grande a lo largo del antebrazo.",
+      img: "lineal-116", ratio: 0.7633 },
+    { id: "lineal-53", estilo: "fine-line", artista: "haroz-lineales", titulo: "La señora Potts y Chip",
+      alt: "La señora Potts y Chip, de La bella y la bestia, uno en cada antebrazo de dos personas, en línea fina.",
+      img: "lineal-53", ratio: 0.7667 },
+
+    // --- Realismo de antes (sacado de Instagram): lo sustituyen las oficiales.
+    { id: "bg-1", publicar: false, estilo: "realismo", artista: "haroz", titulo: "Tengu",
       alt: "Máscara de tengu en negro y grises en el antebrazo, de nariz larga y ceño fruncido, rodeada de plumas.",
       img: "bg-1", ratio: 0.8102 },
-    { id: "v-retrato", estilo: "black-and-grey", artista: "haroz", video: "retrato" },
-    { id: "bg-4", estilo: "black-and-grey", artista: "raul", titulo: "Samurái",
+    { id: "v-retrato", publicar: false, estilo: "realismo", artista: "haroz", video: "retrato" },
+    { id: "bg-4", publicar: false, estilo: "realismo", artista: "raul", titulo: "Samurái",
       alt: "Samurái con armadura y katana en negro y grises en el antebrazo, con una pagoda y el sol detrás.",
       img: "bg-4", ratio: 0.9907 },
-    { id: "v-payasa", estilo: "black-and-grey", artista: "", video: "payasa" },
-    { id: "bg-2", estilo: "black-and-grey", artista: "raul", titulo: "Torre de Hércules",
+    { id: "v-payasa", publicar: false, estilo: "realismo", artista: "", video: "payasa" },
+    { id: "bg-2", publicar: false, estilo: "realismo", artista: "raul", titulo: "Torre de Hércules",
       alt: "La Torre de Hércules en negro y grises, con los tentáculos de un pulpo enroscados alrededor de la torre.",
       img: "bg-2", ratio: 0.7997 },
-    { id: "v-perro", estilo: "black-and-grey", artista: "", video: "perro" },
-    { id: "bg-3", estilo: "black-and-grey", artista: "haroz", titulo: "Gato esfinge",
+    { id: "v-perro", publicar: false, estilo: "realismo", artista: "", video: "perro" },
+    { id: "bg-3", publicar: false, estilo: "realismo", artista: "haroz", titulo: "Gato esfinge",
       alt: "Retrato realista de un gato esfinge en el antebrazo, en negro y grises, con los ojos en verde claro.",
       img: "bg-3", ratio: 0.7602 },
-    { id: "v-tortuga", estilo: "black-and-grey", artista: "", video: "tortuga" },
+    { id: "v-tortuga", publicar: false, estilo: "realismo", artista: "", video: "tortuga" },
 
     // --- Fine line
-    { id: "fl-1", estilo: "fine-line", artista: "tbh", titulo: "Peonías",
+    { id: "fl-1", publicar: false, estilo: "fine-line", artista: "tbh", titulo: "Peonías",
       alt: "Peonías y flores pequeñas con hojas en línea fina y sombra suave, a lo largo del muslo.",
       img: "fl-1", ratio: 0.7876 },
-    { id: "an-2", estilo: "fine-line", artista: "", titulo: "Nicky, la aprendiz de bruja",
+    { id: "an-2", publicar: false, estilo: "fine-line", artista: "", titulo: "Nicky, la aprendiz de bruja",
       alt: "Nicky, la aprendiz de bruja, volando en su escoba con el gato Jiji, en línea fina y punteado en el brazo.",
       img: "an-2", ratio: 0.751 },
 
-    // --- Color: tradicional a color y personajes
-    { id: "tr-1", estilo: "color", artista: "fer", titulo: "",
+    // --- Color. El tradicional a color, ya en su categoría.
+    { id: "tr-1", publicar: false, estilo: "color", artista: "fer", titulo: "",
       alt: "Cara sonriente con un gorro de estrellas y lunas, en tradicional a color: línea negra gruesa, rojo, naranja y turquesa.",
       img: "tr-1", ratio: 0.7519 },
-    { id: "v-garfield", estilo: "color", artista: "pepi", video: "garfield" },
-    { id: "an-4", estilo: "color", artista: "pepi", titulo: "Garfield",
+    { id: "v-garfield", publicar: false, estilo: "color", artista: "pepi", video: "garfield" },
+    { id: "an-4", publicar: false, estilo: "color", artista: "pepi", titulo: "Garfield",
       alt: "Garfield a color con un ramo de margaritas, pequeño, en el antebrazo.",
       img: "an-4", ratio: 0.7894 },
 
     // --- Dotwork: de la pieza más sombreada a la más ligera
-    { id: "fl-2", estilo: "dotwork", artista: "tbh", titulo: "Ciervo volante",
+    { id: "fl-2", publicar: false, estilo: "dotwork", artista: "tbh", titulo: "Ciervo volante",
       alt: "Escarabajo ciervo volante con las alas abiertas, en línea fina y punteado, en la pierna.",
       img: "fl-2", ratio: 0.8489 },
-    { id: "v-anubis", estilo: "dotwork", artista: "fer", video: "anubis" },
-    { id: "an-7", estilo: "dotwork", artista: "haroz", titulo: "Bulbasaur",
+    { id: "v-anubis", publicar: false, estilo: "dotwork", artista: "fer", video: "anubis" },
+    { id: "an-7", publicar: false, estilo: "dotwork", artista: "haroz", titulo: "Bulbasaur",
       alt: "Bulbasaur, de Pokémon, en línea fina y punteado en negro, en el gemelo.",
       img: "an-7", ratio: 0.7905 },
-    { id: "an-6", estilo: "dotwork", artista: "", titulo: "Totoro",
+    { id: "an-6", publicar: false, estilo: "dotwork", artista: "", titulo: "Totoro",
       alt: "Totoro y los dos pequeños de la película de Ghibli, en fila, en línea fina y punteado en el muslo.",
       img: "an-6", ratio: 0.7514 },
 
-    // --- Anime: el terminado y su proceso juntos
-    { id: "an-1", estilo: "anime", artista: "maou", titulo: "Luffy",
+    // --- Anime de antes (sacado de Instagram): lo sustituyen las oficiales.
+    { id: "an-1", publicar: false, estilo: "anime", artista: "maou", titulo: "Luffy",
       alt: "Luffy, de One Piece, gritando con los puños apretados, en negro y rojo en el brazo, con el cartel de «Wanted» abajo.",
       img: "an-1", ratio: 0.79 },
-    { id: "v-aot", estilo: "anime", artista: "pepi", video: "aot" },
-    { id: "an-3", estilo: "anime", artista: "maou", titulo: "",
+    { id: "v-aot", publicar: false, estilo: "anime", artista: "pepi", video: "aot" },
+    { id: "an-3", publicar: false, estilo: "anime", artista: "maou", titulo: "",
       alt: "Manga de anime en negro y grises en el antebrazo: un chico de pelo de punta que sonríe entre rayos y sombras.",
       img: "an-3", ratio: 0.7986 },
-    { id: "an-5", estilo: "anime", artista: "maou", titulo: "",
+    { id: "an-5", publicar: false, estilo: "anime", artista: "maou", titulo: "",
       alt: "Personajes de anime en negro y grises en el antebrazo: una chica que asoma entre nubes y, debajo, otro personaje con gafas.",
       img: "an-5", ratio: 0.7959 },
-    { id: "v-perfilado", estilo: "anime", artista: "pepi", video: "perfilado" },
+    { id: "v-perfilado", publicar: false, estilo: "anime", artista: "pepi", video: "perfilado" },
 
-    // --- Otros estilos: blackwork y tradicional en negro
-    { id: "bw-1", estilo: "otros-estilos", artista: "maou", titulo: "Dragón japonés",
+    // --- Otros estilos: blackwork. El tradicional en negro, ya en su categoría.
+    { id: "bw-1", publicar: false, estilo: "otros-estilos", artista: "maou", titulo: "Dragón japonés",
       alt: "Dragón japonés en negro macizo en el antebrazo, entre remolinos de viento y agua.",
       img: "bw-1", ratio: 0.7916 },
-    { id: "tr-2", estilo: "otros-estilos", artista: "fer", titulo: "",
+    { id: "tr-2", publicar: false, estilo: "otros-estilos", artista: "fer", titulo: "",
       alt: "Mujer con velo y una flor en el pecho, en tradicional en negro, en el muslo.",
       img: "tr-2", ratio: 0.7602 },
-    { id: "bw-2", estilo: "otros-estilos", artista: "maou", titulo: "Parca",
+    { id: "bw-2", publicar: false, estilo: "otros-estilos", artista: "maou", titulo: "Parca",
       alt: "Parca en negro y grises en el brazo: una calavera encapuchada que sostiene un reloj de arena.",
       img: "bw-2", ratio: 0.7959 }
   ],
@@ -748,15 +1052,18 @@ window.STUDIO = {
     // FUENTE: el estudio nombra sus fotos con el Instagram de cada uno
     // (24/09/2026).
     { slug: "haroz", nombre: "Haroz", instagram: "haroz.tattoo" },
+    // FUENTE: el estudio (05/10/2026): su fine line y puntillismo va en una
+    // cuenta aparte.
+    { slug: "haroz-lineales", nombre: "Haroz", instagram: "haroz.tattoo.lineales" },
     { slug: "raul",  nombre: "Raúl",  instagram: "raulalvareztattoo" },
-    // PROVISIONAL: se da por hecho que @fernandovoyeur es Fer.
-    { slug: "fer",   nombre: "Fer",   instagram: "fernandovoyeur" },
-    // PROVISIONAL: nombre sacado de su Instagram; pendiente de cómo quiere salir.
+    // FUENTE: el estudio, con sus fotos oficiales (05/10/2026).
+    { slug: "fer",   nombre: "Fernando", instagram: "fernandovoyeur" },
     { slug: "maou",  nombre: "Maou",  instagram: "maou_tattoo" },
+    { slug: "ezel",  nombre: "Ezel",  instagram: "ezel_tattoo.studio" },
     // FUENTE: firma sus fotos y reels como «Pepi Marcos, artista».
     { slug: "pepi",  nombre: "Pepi Marcos", instagram: "pepi_marcoss" },
-    // FUENTE: su destacado dice «Láser en Loco Blow desde 2015» y enlaza
-    // @origenlasertatuajes.
+    // FUENTE: el estudio (05/10/2026): fundador de Loco Blow y al frente de
+    // Origen Láser (@origenlasertatuajes) desde 2020.
     { slug: "riki",  nombre: "Riki",  instagram: "origenlasertatuajes" },
     // FUENTE: sus fotos llegan con su Instagram y la marca del estudio
     // (25/09/2026).  PROVISIONAL: pendiente de cómo se llama y quiere salir.

@@ -530,10 +530,10 @@ a.muestra__artista { display: inline-block; padding-block: 6px; margin-block: -6
   position: absolute;
   inset: 0;
   background: linear-gradient(to top,
-    rgb(11 11 10 / 0.96) 0%,
-    rgb(11 11 10 / 0.9) 32%,
-    rgb(11 11 10 / 0.62) 58%,
-    rgb(11 11 10 / 0.18) 100%);
+    rgb(20 19 17 / 0.96) 0%,
+    rgb(20 19 17 / 0.9) 32%,
+    rgb(20 19 17 / 0.62) 58%,
+    rgb(20 19 17 / 0.18) 100%);
 }
 .oficio__enlace::after { content: ""; position: absolute; inset: 0; z-index: 1; }
 .oficio__enlace:focus-visible { outline: none; }
@@ -952,6 +952,41 @@ a.muestra__artista { display: inline-block; padding-block: 6px; margin-block: -6
 .datos > div { padding-top: var(--s2); border-top: var(--hair) solid var(--filete); }
 .datos dd { margin: var(--s1) 0 0; font-size: var(--fs-sm); }
 
+/* Un servicio con su propio texto (el láser: Origen Láser). El lema, en
+   negrita; los párrafos, a tamaño de texto; el remate, como se diría en voz
+   alta, y la firma con su Instagram.                                     */
+.scab__lema {
+  font-size: var(--fs-d4);
+  font-weight: var(--w-titulo);
+  line-height: var(--lh-d4);
+  letter-spacing: var(--tr-d4);
+  text-wrap: balance;
+}
+.scab__parrafo { max-width: 56ch; color: var(--tinta-2); }
+.scab__remate {
+  max-width: 34ch;
+  font-size: var(--fs-lead);
+  font-weight: var(--w-titulo);
+  line-height: var(--lh-lead);
+  text-wrap: balance;
+}
+.scab__firma { display: flex; flex-wrap: wrap; gap: var(--s1) var(--s3); align-items: baseline; color: var(--tinta-3); }
+.scab__insta {
+  display: inline-block;
+  padding-block: 10px;
+  margin-block: -10px;
+  color: var(--tinta);
+  text-transform: none;
+  letter-spacing: 0;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+}
+/* Con cuatro, de dos en dos: tres y uno suelto dejan un hueco, y el
+   modelo del láser no cabe en un tercio sin partirse.                    */
+@media (min-width: 30rem) {
+  .datos:has(> :nth-child(4):last-child) { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
 @media (min-width: 60rem) {
   /* Composición de cartel: el titular arriba a la izquierda, lo que hay que
      saber abajo, y el vídeo o la foto a la derecha, de arriba abajo.       */
@@ -1143,39 +1178,319 @@ a.muestra__artista { display: inline-block; padding-block: 6px; margin-block: -6
 }
 
 /* --- UN ESTILO ------------------------------------------------------------------ */
-/* En escritorio, el nombre y el botón a la izquierda, quietos mientras pasan
-   las fotos a la derecha. En el móvil, uno encima de otro.                  */
+/* Cada estilo, una pantalla: arriba su regla (número y cuántos trabajos), el
+   nombre en grande y, al lado, qué es, de quién y el botón; debajo, su
+   carrete de fotos de lado a lado. En el móvil, uno encima de otro.         */
 
 .estilo {
-  display: grid;
-  gap: var(--s5);
   padding-block: var(--s7);
   border-bottom: var(--hair) solid var(--filete);
   scroll-margin-top: var(--alto-estilos);   /* la barra fija ya la reserva <html> */
 }
-.estilo__cab { display: grid; gap: var(--s3); align-content: start; min-width: 0; container-type: inline-size; }
-.estilo__cab > * { justify-self: start; }
-/* El nombre, entero en su columna: «Microrealismo» no cabe a tamaño d2
-   junto a las fotos, y partido a media palabra no se lee. Tope por la
-   palabra más larga (--letras), como los titulares de cada servicio.   */
-.estilo__nombre { font-size: min(var(--fs-d2), calc(100cqi / (var(--letras, 9) * 0.6))); }
-.estilo__desc { color: var(--tinta-2); max-width: 40ch; }
-.estilo__accion { margin-top: var(--s2); }
-.estilo__obras { min-width: 0; }
+/* Siete filas con sesenta fotos: las que quedan lejos no se maquetan hasta
+   acercarse. El navegador recuerda lo que miden (auto), así que la barra
+   de scroll no baila al volver.                                          */
+.estilo + .estilo {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 56rem;
+}
+.estilo__cab {
+  display: grid;
+  gap: var(--s4);
+  align-items: end;
+  min-width: 0;
+  container-type: inline-size;
+}
+/* La regla: «01 ———————— 17 TRABAJOS», un filete con sus dos datos. */
+.estilo__regla {
+  display: flex;
+  align-items: center;
+  gap: var(--s3);
+  color: var(--tinta-3);
+}
+.estilo__regla > :first-child { color: var(--tinta); }
+.estilo__regla::after {
+  content: "";
+  order: 1;
+  flex: 1;
+  border-top: var(--hair) solid var(--filete);
+}
+.estilo__cuenta { order: 2; }
+/* El nombre, entero en su columna y lo más grande que quepa: tope por la
+   palabra más larga (--letras), como los titulares de cada servicio.     */
+.estilo__nombre {
+  font-size: min(var(--fs-d1), calc(100cqi / (var(--letras, 9) * 0.62)));
+  margin-top: var(--s2);
+}
+.estilo__texto { display: grid; gap: var(--s3); justify-items: start; }
+.estilo__desc { color: var(--tinta-2); max-width: 42ch; }
+.estilo__artistas { font-size: var(--fs-sm); color: var(--tinta-2); }
+.estilo__artista {
+  display: inline-block;
+  padding-block: 6px;
+  margin-block: -6px;
+  font-weight: var(--w-label);
+  color: var(--tinta);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+}
+.estilo__obras { min-width: 0; margin-top: var(--s5); container-type: inline-size; }
+/* El carrete mide su sangre con el ancho de su caja (cqw): la de cada
+   estilo o la de las fotos de un servicio.                                */
+.carrete-marco { min-width: 0; container-type: inline-size; }
+.estilo__obras > .estilo__accion { margin-top: var(--s4); }
 
 @media (min-width: 60rem) {
-  .estilo {
-    grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
-    column-gap: var(--s8);
-    padding-block: var(--s9);
-  }
+  .estilo { padding-block: var(--s9) var(--s8); }
   .estilo__cab {
-    position: sticky;
-    top: calc(var(--alto-nav) + var(--alto-estilos) + var(--s6));
-    align-self: start;
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    column-gap: var(--s8);
   }
+  .estilo__regla { grid-column: 1 / -1; }
+  /* En su columna, el nombre cabe en 7/12 del ancho. */
+  .estilo__nombre { font-size: min(var(--fs-d1), calc(100cqi * 0.56 / (var(--letras, 9) * 0.62))); }
+  .estilo__texto { padding-bottom: 0.35rem; }
+  .estilo__obras { margin-top: var(--s6); }
 }
 
+/* --- EL CARRETE ------------------------------------------------------------------ */
+/* Las fotos de un estilo en fila, a la misma altura y enteras: cada una con
+   su proporción, sin recorte. La fila sale de la columna hasta el borde de
+   la pantalla (--sangre) y arranca alineada con el texto; lo que asoma a la
+   derecha dice que hay más. Es un scroll lateral normal: el dedo, el
+   trackpad y el teclado lo mueven solos. paginas.js añade los mandos.     */
+
+.carrete {
+  --sangre: calc(50vw - 50cqw);
+  --alto: min(100vw, 60svh);
+  --hueco: var(--s3);
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-areas: "filtro" "pista" "mandos" "accion";
+}
+.carrete__filtro { grid-area: filtro; }
+.carrete__pista  { grid-area: pista; }
+.carrete__mandos { grid-area: mandos; }
+.carrete > .estilo__accion { grid-area: accion; margin-top: var(--s5); }
+.carrete > .estilo__accion .btn { width: 100%; }
+@media (min-width: 48rem) {
+  .carrete {
+    --alto: clamp(20rem, 56svh, 36rem);
+    --hueco: var(--s5);
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas: "filtro accion" "pista pista" "mandos mandos";
+    align-items: end;
+  }
+  .carrete > .estilo__accion { margin: 0 0 var(--s4); }
+  .carrete > .estilo__accion .btn { width: auto; }
+}
+
+.carrete__pista {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--hueco);
+  margin: 0 calc(var(--sangre) * -1);
+  padding: 4px 0 4px var(--sangre);   /* 4 px: el anillo de foco no se corta */
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-padding-inline: var(--sangre);
+  scrollbar-width: none;
+}
+.carrete__pista::-webkit-scrollbar { display: none; }
+/* El margen del final: el relleno derecho de una fila con scroll no lo
+   respetan todos los navegadores; un hueco vacío, sí.                   */
+.carrete__pista::after { content: ""; flex: 0 0 calc(var(--sangre) - var(--hueco)); }
+
+/* Con el dedo, cada foto se queda en su sitio al soltar. Con ratón y
+   trackpad, libre: lo encaja la flecha.                                  */
+@media (pointer: coarse) {
+  .carrete__pista { scroll-snap-type: x mandatory; }
+  .carrete__item { scroll-snap-align: start; }
+}
+
+.carrete__item {
+  flex: 0 0 auto;
+  width: calc(var(--alto) * var(--r, 0.8));
+  min-width: 0;
+}
+.carrete__lamina {
+  aspect-ratio: auto;
+  height: var(--alto);
+}
+.carrete__item .video { --ratio: var(--r, 0.8); height: var(--alto); }
+.carrete__item .rejilla__pie { padding-top: var(--s3); }
+
+/* El final de la fila: el bloque negro que pide cita. */
+.carrete__fin {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: var(--s3);
+  min-width: min(17rem, 78vw);
+  height: var(--alto);
+  padding: var(--s5);
+}
+.carrete__fin > :first-child { margin-bottom: auto; color: var(--noche-2); }
+.carrete__fin-titular {
+  font-size: var(--fs-d3);
+  font-weight: var(--w-display);
+  line-height: var(--lh-d3);
+  letter-spacing: var(--tr-d3);
+  text-wrap: balance;
+}
+.carrete__fin-texto { font-size: var(--fs-sm); color: var(--noche-2); max-width: 24ch; }
+.carrete__fin-accion { margin-top: var(--s3); }
+.carrete__fin .btn { width: 100%; }
+
+/* Elegir artista: chips con su cuenta. El elegido, en negro. */
+.carrete__filtro {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s2);
+  margin-bottom: var(--s4);
+}
+.carrete__chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  min-height: var(--touch);
+  padding: 0 var(--s4);
+  border: var(--hair) solid var(--filete-fn);
+  background: transparent;
+  color: var(--tinta);
+  font-size: var(--fs-label);
+  font-weight: var(--w-label);
+  font-stretch: 125%;
+  letter-spacing: var(--tr-label);
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background-color var(--t-fast) ease, color var(--t-fast) ease,
+              border-color var(--t-fast) ease, transform var(--t-press) var(--ease-out);
+}
+.carrete__chip:active { transform: scale(0.97); }
+.carrete__chip-n { font-weight: var(--w-texto); color: var(--tinta-3); }
+.carrete__chip[aria-pressed="true"] { background: var(--tinta); border-color: var(--tinta); color: var(--claro); }
+.carrete__chip[aria-pressed="true"] .carrete__chip-n { color: var(--noche-2); }
+@media (hover: hover) and (pointer: fine) {
+  .carrete__chip[aria-pressed="false"]:hover { border-color: var(--tinta); }
+}
+
+/* Los mandos: la barra de avance (lo que se ve de la fila, en negro), la
+   posición y las dos flechas. Sin JavaScript no salen: la fila se pasa
+   igual con el dedo o el trackpad.                                        */
+.carrete__mandos {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto auto;
+  align-items: center;
+  gap: var(--s2) var(--s4);
+  margin-top: var(--s5);
+}
+.carrete:not([data-listo]) .carrete__mandos,
+.carrete:not([data-listo]) .carrete__filtro { display: none; }
+.carrete__barra {
+  position: relative;
+  height: var(--hair);
+  background: var(--filete);
+}
+.carrete__avance {
+  position: absolute;
+  left: 0;
+  top: -1px;
+  height: 3px;
+  width: 30%;
+  background: var(--tinta);
+}
+.carrete__pos { color: var(--tinta-3); white-space: nowrap; }
+.carrete__pos [data-carrete-pos] { color: var(--tinta); }
+.carrete__flecha {
+  display: grid;
+  place-items: center;
+  width: var(--touch);
+  height: var(--touch);
+  border: var(--hair) solid var(--filete-fn);
+  background: transparent;
+  color: var(--tinta);
+  cursor: pointer;
+  transition: background-color var(--t-fast) ease, color var(--t-fast) ease,
+              border-color var(--t-fast) ease, transform var(--t-press) var(--ease-out);
+}
+.carrete__flecha + .carrete__flecha { margin-left: calc(var(--s4) * -1 + var(--s1)); }
+.carrete__flecha .flecha { translate: -0.12em 0; }
+.carrete__flecha--atras .flecha { rotate: 225deg; translate: 0.12em 0; }
+.carrete__flecha:active:not(:disabled) { transform: scale(0.94); }
+.carrete__flecha:disabled { color: var(--tinta-off); border-color: var(--filete); cursor: default; }
+@media (hover: hover) and (pointer: fine) {
+  .carrete__flecha:not(:disabled):hover { background: var(--tinta); border-color: var(--tinta); color: var(--claro); }
+}
+/* Con el dedo, la fila se pasa sola: las flechas sobran. */
+@media (pointer: coarse) {
+  .carrete__mandos { grid-template-columns: minmax(0, 1fr) auto; }
+  .carrete__flecha { display: none; }
+}
+
+/* Con ratón: se arrastra, y la foto a la que apuntas manda; las demás se
+   apagan a gris. El cursor de la fila dice qué pasa si pulsas.            */
+@media (hover: hover) and (pointer: fine) {
+  .carrete[data-listo] .carrete__pista { cursor: grab; }
+  .carrete[data-arrastrando] .carrete__pista { cursor: grabbing; user-select: none; }
+  .carrete[data-arrastrando] .rejilla__boton { cursor: grabbing; pointer-events: none; }
+  .carrete__lamina img,
+  .carrete__item .video video {
+    transition: filter 420ms var(--ease-out), opacity 420ms var(--ease-out),
+                transform var(--t-panel) var(--ease-out);
+  }
+  .carrete[data-listo]:not([data-arrastrando]) .carrete__pista:has(.rejilla__boton:hover) .carrete__item:not(:hover) :is(.carrete__lamina img, .video video) {
+    filter: grayscale(1);
+    opacity: 0.55;
+  }
+}
+.carrete__cursor {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 3;
+  margin: 18px 0 0 18px;
+  padding: 7px 10px 6px;
+  background: var(--tinta);
+  color: var(--claro);
+  pointer-events: none;
+  opacity: 0;
+  scale: 0.6;
+  transform-origin: 0 0;
+  transition: opacity var(--t-fast) ease, scale var(--t-ui) var(--ease-out);
+}
+.carrete__cursor[data-visible] { opacity: 1; scale: 1; }
+
+/* Al pasar la fila, lo que entra por la derecha llega un poco más pequeño
+   y apagado, y se asienta al llegar a su sitio. Va con el propio scroll
+   (no hay tiempo que esperar) y solo donde el navegador lo sabe hacer.   */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    /* Se encoge la pieza entera y se apaga solo la foto: un texto a medio
+       transparentar no llegaría al contraste mínimo ni un instante.     */
+    .carrete__item {
+      animation: carrete-entra linear both;
+      animation-timeline: view(inline);
+      animation-range: entry 0% entry 100%;
+    }
+    .carrete__lamina img,
+    .carrete__item .video video {
+      animation: carrete-enciende linear both;
+      animation-timeline: view(inline);
+      animation-range: entry 0% entry 100%;
+    }
+  }
+}
+@keyframes carrete-entra {
+  from { transform: scale(0.94); }
+  to   { transform: none; }
+}
+@keyframes carrete-enciende {
+  from { opacity: 0.5; }
+  to   { opacity: 1; }
+}
 
 /* El camino a la guía, bajo las tarjetas de los oficios. */
 .oficios__cuidados {
@@ -1243,6 +1558,8 @@ a.muestra__artista { display: inline-block; padding-block: 6px; margin-block: -6
   text-decoration: none;
 }
 .insta__nombre { font-size: var(--fs-d4); font-weight: var(--w-titulo); letter-spacing: var(--tr-d4); }
+/* Lo que hace, debajo del nombre: con dos cuentas, dice cuál es cuál. */
+.insta__que { display: block; margin-top: 2px; color: var(--tinta-3); }
 .insta__usuario { font-size: var(--fs-xs); color: var(--tinta-3); overflow-wrap: anywhere; text-align: right; }
 @media (hover: hover) and (pointer: fine) {
   .insta__artista:hover .insta__nombre { text-decoration: underline 1px; text-underline-offset: 0.15em; }
