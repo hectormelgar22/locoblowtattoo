@@ -164,7 +164,9 @@ window.STUDIO = {
           { cifra: "+10", texto: "años de trayectoria en el centro de A Coruña" },
           { cifra: "{nota}", texto: "de media en Google, con {resenas} reseñas" },
           { cifra: "4", texto: "especialidades en un mismo estudio" },
-          { cifra: "1.os", texto: "premios en convenciones de tatuaje" }
+          // FUENTE: el estudio (06/10/2026): «hemos ganado varios primeros
+          // premios», y nada más.
+          { cifra: "1.os", texto: "premios: hemos ganado varios en convenciones de tatuaje" }
         ],
         puntos: [
           // Ajustado a las cuatro categorías oficiales (05/10/2026).
@@ -416,6 +418,9 @@ window.STUDIO = {
     },
     {
       id: "piercing", pagina: "piercing", menu: "Piercing",
+      // FUENTE: el estudio (06/10/2026): los botones de WhatsApp de piercing
+      // y láser van a este número, no al general.
+      whatsapp: "34655578432",
       etiqueta: "Piercing", nombre: "Piercing",
       titular: "Piercing.",
       // PROVISIONAL: pendiente de que el estudio revise todo el texto del
@@ -516,6 +521,8 @@ window.STUDIO = {
     },
     {
       id: "laser", pagina: "laser", menu: "Láser",
+      // FUENTE: el estudio (06/10/2026), el mismo número que piercing.
+      whatsapp: "34655578432",
       etiqueta: "Láser", nombre: "Eliminación de tatuajes con láser",
       titular: "Láser.",
       // FUENTE: el texto de Origen Láser (05/10/2026), tal cual, en la
@@ -772,6 +779,14 @@ window.STUDIO = {
     { id: "haroz-8", estilo: "realismo", artista: "haroz", titulo: "Virgen",
       alt: "Virgen rezando, con el manto sobre la cabeza y un rosario entre las manos, en negro y grises en el brazo.",
       img: "haroz-8", ratio: 0.7561 },
+    // Los primeros premios (06/10/2026): las fotos con el premio en la mano,
+    // junto a las de realismo. En la segunda fila, no de portada.
+    { id: "haroz-30", estilo: "realismo", artista: "haroz", titulo: "Primer premio",
+      alt: "Haroz y su cliente en una convención de tatuaje, con el trofeo del primer premio.",
+      img: "haroz-30", ratio: 0.5625 },
+    { id: "haroz-32", estilo: "realismo", artista: "haroz", titulo: "Primer premio",
+      alt: "Haroz con su cliente, sentado y con la placa del primer premio, entre el público de una convención de tatuaje.",
+      img: "haroz-32", ratio: 1.0025 },
     { id: "haroz-9", estilo: "realismo", artista: "haroz", titulo: "Retrato",
       alt: "Retrato realista de un hombre mayor en negro y grises en el antebrazo, con las arrugas marcadas a sombra.",
       img: "haroz-9", ratio: 0.7716 },
@@ -1391,7 +1406,8 @@ window.STUDIO = {
     { slug: "haroz", nombre: "Haroz", instagram: "haroz.tattoo" },
     // FUENTE: el estudio (05/10/2026): su fine line y puntillismo va en una
     // cuenta aparte.
-    { slug: "haroz-lineales", nombre: "Haroz", instagram: "haroz.tattoo.lineales" },
+    // `cuenta`: con dos cuentas, cuál es cuál en la banda de Instagram.
+    { slug: "haroz-lineales", nombre: "Haroz", instagram: "haroz.tattoo.lineales", cuenta: "Lineales" },
     { slug: "raul",  nombre: "Raúl",  instagram: "raulalvareztattoo" },
     // FUENTE: el estudio, con sus fotos oficiales (05/10/2026).
     { slug: "fer",   nombre: "Fernando", instagram: "fernandovoyeur" },

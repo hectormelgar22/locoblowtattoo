@@ -1018,7 +1018,7 @@
         '<div><dt class="etiqueta etiqueta--suave">Cita</dt>' +
           "<dd>" + esc(S.studio.cita) + "</dd></div>" +
         '<div><dt class="etiqueta etiqueta--suave">WhatsApp</dt>' +
-          '<dd><a class="num" href="' + esc(N.wasapURL(S.studio.botonWhatsapp.mensaje)) +
+          '<dd><a class="num" href="' + esc(N.wasapURL(S.studio.botonWhatsapp.mensaje, S.studio.whatsapp)) +
             '" target="_blank" rel="noopener">' + esc(S.studio.whatsappVisible) + NUEVA + "</a></dd></div>" +
         (S.studio.instagram
           ? '<div><dt class="etiqueta etiqueta--suave">' + esc(C.instagram) + "</dt>" +
@@ -1587,12 +1587,10 @@
         "</div>" +
         '<header class="album__cab">' +
           '<h2 class="d1 album__nombre" id="t-' + esc(e.id) + '" style="--letras:' + palabraMasLarga(e.nombre) + '">' + esc(e.nombre) + "</h2>" +
+          /* Sin «Por …»: un estilo no es de un solo tatuador. Quién hizo
+             cada foto lo dice la propia foto, en el visor.                */
           '<div class="album__texto">' +
             (e.descripcion ? '<p class="album__desc">' + esc(e.descripcion) + "</p>" : "") +
-            (artistas.length
-              ? '<p class="estilo__artistas">' + esc(TT.por) + " " +
-                  yLista(artistas.map(function (a) { return artistaHTML(a, "estilo__artista"); })) + "</p>"
-              : "") +
           "</div>" +
           '<div class="album__acciones">' + filtro +
             '<p class="estilo__accion">' + citaEstilo(e, null, "") + "</p></div>" +
@@ -1815,10 +1813,9 @@
     var fotos = (IG.fotos || []).map(function (id) {
       return S.obras.filter(function (o) { return o.id === id && o.img; })[0];
     }).filter(Boolean);
-    /* Cada artista con trabajos en la web, y lo que hace: sus estilos (en
-       el orden de la página de tatuajes) y los servicios donde salen sus
-       fotos. Así quien tiene dos cuentas (Haroz) deja claro cuál es cuál,
-       y quien no tiene ningún trabajo publicado no sale.                   */
+    /* Solo los artistas con algún trabajo en la web. Debajo del nombre no
+       va su estilo (un estilo no es de un solo tatuador); solo, si tiene dos
+       cuentas, cuál es cuál (`cuenta` en content.js).                     */
     function queHace(a) {
       var estilos = ESTILOS.filter(function (e) {
         return S.obras.some(function (o) { return o.artista === a.slug && o.estilo === e.id && publicada(o); });
@@ -1844,7 +1841,7 @@
               '<ul class="insta__artistas" role="list">' + equipo.map(function (a) {
                 return '<li><a class="insta__artista" href="' + esc(N.instaURL(a.instagram)) + '" rel="noopener">' +
                   '<span class="insta__nombre">' + esc(a.nombre) +
-                    '<span class="insta__que etiqueta">' + esc(queHace(a).join(" · ")) + "</span></span>" +
+                    (a.cuenta ? '<span class="insta__que etiqueta">' + esc(a.cuenta) + "</span>" : "") + "</span>" +
                   '<span class="insta__usuario">@' + esc(a.instagram) + "</span>" +
                   '<i class="flecha" aria-hidden="true"></i></a></li>';
               }).join("") + "</ul>" +

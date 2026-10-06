@@ -119,8 +119,12 @@
      mensaje, menos «hola» sueltos que contestar.                             */
   function instaURL(usuario) { return "https://www.instagram.com/" + usuario + "/"; }
 
-  function wasapURL(mensaje) {
-    return "https://wa.me/" + S.studio.whatsapp +
+  /* El número de los botones de WhatsApp de esta página: el del servicio
+     si tiene uno propio (láser y piercing), y si no, el del estudio. Donde
+     se enseña el número del estudio escrito, el enlace es el del estudio. */
+  function numeroWasap() { return (SERVICIO && SERVICIO.whatsapp) || S.studio.whatsapp; }
+  function wasapURL(mensaje, numero) {
+    return "https://wa.me/" + (numero || numeroWasap()) +
       (mensaje ? "?text=" + encodeURIComponent(mensaje) : "");
   }
 
@@ -296,7 +300,7 @@
         '<div class="pie__bloque">' +
           '<p class="etiqueta etiqueta--suave">Cita</p>' +
           '<p class="pie__dir sm">' + esc(S.studio.cita) + "<br>" +
-            '<a href="' + esc(wasapURL(S.studio.botonWhatsapp.mensaje)) + '" rel="noopener" class="num">' +
+            '<a href="' + esc(wasapURL(S.studio.botonWhatsapp.mensaje, S.studio.whatsapp)) + '" rel="noopener" class="num">' +
               "WhatsApp " + esc(S.studio.whatsappVisible) + "</a>" +
           "</p>" +
         "</div>" +

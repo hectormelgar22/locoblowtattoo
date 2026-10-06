@@ -2520,6 +2520,34 @@
     ]
   },
   {
+    "archivo": "haroz-30",
+    "alt": "Haroz y su cliente en una convención de tatuaje, con el trofeo del primer premio.",
+    "autor": "@haroz.tattoo",
+    "fuente": "Original del estudio",
+    "proporcion": 0.5625,
+    "anchos": [
+      900,
+      900,
+      720,
+      600,
+      380
+    ]
+  },
+  {
+    "archivo": "haroz-32",
+    "alt": "Haroz con su cliente, sentado y con la placa del primer premio, entre el público de una convención de tatuaje.",
+    "autor": "@haroz.tattoo",
+    "fuente": "Original del estudio",
+    "proporcion": 1.0025,
+    "anchos": [
+      1206,
+      900,
+      720,
+      600,
+      380
+    ]
+  },
+  {
     "archivo": "laser-3",
     "alt": "Una luna con colgantes en el antebrazo y otro tatuaje pequeño en la muñeca: el original, a las 3 sesiones y a las 6, ya sin tinta.",
     "autor": "@origenlasertatuajes",
