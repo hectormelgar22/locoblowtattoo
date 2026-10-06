@@ -1698,27 +1698,6 @@ a.muestra__artista { display: inline-block; padding-block: 6px; margin-block: -6
 .insta__entradilla { color: var(--tinta-2); max-width: 36ch; }
 .insta__accion { margin-top: var(--s2); }
 
-.insta__equipo { justify-self: stretch; margin-top: var(--s5); }
-.insta__equipo .etiqueta { margin-bottom: var(--s3); }
-.insta__artistas { border-top: var(--hair) solid var(--filete-fn); }
-.insta__artista {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto auto;
-  align-items: center;
-  gap: var(--s4);
-  min-height: calc(var(--touch) + var(--s2));
-  border-bottom: var(--hair) solid var(--filete);
-  color: var(--tinta);
-  text-decoration: none;
-}
-.insta__nombre { font-size: var(--fs-d4); font-weight: var(--w-titulo); letter-spacing: var(--tr-d4); }
-/* Lo que hace, debajo del nombre: con dos cuentas, dice cuál es cuál. */
-.insta__que { display: block; margin-top: 2px; color: var(--tinta-3); }
-.insta__usuario { font-size: var(--fs-xs); color: var(--tinta-3); overflow-wrap: anywhere; text-align: right; }
-@media (hover: hover) and (pointer: fine) {
-  .insta__artista:hover .insta__nombre { text-decoration: underline 1px; text-underline-offset: 0.15em; }
-  .insta__artista:hover .flecha { translate: 0.15em 0; }
-}
 
 .insta__rejilla {
   display: grid;

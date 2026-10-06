@@ -1587,10 +1587,12 @@
         "</div>" +
         '<header class="album__cab">' +
           '<h2 class="d1 album__nombre" id="t-' + esc(e.id) + '" style="--letras:' + palabraMasLarga(e.nombre) + '">' + esc(e.nombre) + "</h2>" +
-          /* Sin «Por …»: un estilo no es de un solo tatuador. Quién hizo
-             cada foto lo dice la propia foto, en el visor.                */
           '<div class="album__texto">' +
             (e.descripcion ? '<p class="album__desc">' + esc(e.descripcion) + "</p>" : "") +
+            (artistas.length
+              ? '<p class="estilo__artistas">' + esc(TT.por) + " " +
+                  yLista(artistas.map(function (a) { return artistaHTML(a, "estilo__artista"); })) + "</p>"
+              : "") +
           "</div>" +
           '<div class="album__acciones">' + filtro +
             '<p class="estilo__accion">' + citaEstilo(e, null, "") + "</p></div>" +
@@ -1797,8 +1799,8 @@
 
   /* ============================================================================
      INSTAGRAM · al final de todas las páginas
-     El perfil del estudio en grande, que es lo que hay que recordar, y el
-     de cada artista debajo. La cuadrícula de trabajos es un guiño a la del
+     El perfil del estudio en grande, que es lo que hay que recordar. Cada
+     artista se enlaza desde sus fotos. La cuadrícula de trabajos es un guiño a la del
      perfil: lleva al mismo sitio que el titular, así que para el teclado y
      el lector de pantalla no existe (no repite el enlace).
      ============================================================================ */
@@ -1813,19 +1815,6 @@
     var fotos = (IG.fotos || []).map(function (id) {
       return S.obras.filter(function (o) { return o.id === id && o.img; })[0];
     }).filter(Boolean);
-    /* Solo los artistas con algún trabajo en la web. Debajo del nombre no
-       va su estilo (un estilo no es de un solo tatuador); solo, si tiene dos
-       cuentas, cuál es cuál (`cuenta` en content.js).                     */
-    function queHace(a) {
-      var estilos = ESTILOS.filter(function (e) {
-        return S.obras.some(function (o) { return o.artista === a.slug && o.estilo === e.id && publicada(o); });
-      }).map(function (e) { return e.nombre; });
-      var servicios = S.servicios.filter(function (sv) {
-        return (sv.fotos || []).some(function (f) { return f.artista === a.slug && f.img; });
-      }).map(function (sv) { return sv.menu; });
-      return estilos.concat(servicios);
-    }
-    var equipo = S.artistas.filter(function (a) { return a.instagram && queHace(a).length; });
     host.innerHTML =
       '<div class="insta__texto">' +
         '<p class="etiqueta corchetes">' + esc(IG.etiqueta) + "</p>" +
@@ -1835,18 +1824,6 @@
         '<p class="lead insta__entradilla">' + esc(IG.texto) + "</p>" +
         '<p class="insta__accion"><a class="btn btn--grande" href="' + esc(url) + '" rel="noopener">' +
           N.CAMARA + "<span>" + esc(IG.boton) + "</span></a></p>" +
-        (equipo.length
-          ? '<div class="insta__equipo">' +
-              '<h3 class="etiqueta etiqueta--suave">' + esc(IG.equipo) + "</h3>" +
-              '<ul class="insta__artistas" role="list">' + equipo.map(function (a) {
-                return '<li><a class="insta__artista" href="' + esc(N.instaURL(a.instagram)) + '" rel="noopener">' +
-                  '<span class="insta__nombre">' + esc(a.nombre) +
-                    (a.cuenta ? '<span class="insta__que etiqueta">' + esc(a.cuenta) + "</span>" : "") + "</span>" +
-                  '<span class="insta__usuario">@' + esc(a.instagram) + "</span>" +
-                  '<i class="flecha" aria-hidden="true"></i></a></li>';
-              }).join("") + "</ul>" +
-            "</div>"
-          : "") +
       "</div>" +
       (fotos.length
         ? '<a class="insta__rejilla" href="' + esc(url) + '" rel="noopener" tabindex="-1" aria-hidden="true">' +

@@ -333,13 +333,12 @@ window.STUDIO = {
     },
 
     // La banda de Instagram, al final de todas las páginas: el perfil del
-    // estudio en grande y, debajo, el de cada artista.
+    // estudio en grande. Cada artista se enlaza desde sus fotos.
     // PROVISIONAL: pendiente de que el estudio revise el texto.
     instagram: {
       etiqueta: "Instagram",
       texto: "Lo último del estudio sale antes allí: trabajos recién terminados y reels del proceso.",
       boton: "Seguir en Instagram",
-      equipo: "Y cada artista, en el suyo",
       // Los trabajos de la cuadrícula (los `id` de la lista 5, solo fotos).
       // Mejor distintos de los que salen en la muestra del inicio.
       fotos: ["haroz-26", "ezel-4", "lineal-23", "fernando-5", "maou-8", "lineal-37"]
@@ -1406,8 +1405,7 @@ window.STUDIO = {
     { slug: "haroz", nombre: "Haroz", instagram: "haroz.tattoo" },
     // FUENTE: el estudio (05/10/2026): su fine line y puntillismo va en una
     // cuenta aparte.
-    // `cuenta`: con dos cuentas, cuál es cuál en la banda de Instagram.
-    { slug: "haroz-lineales", nombre: "Haroz", instagram: "haroz.tattoo.lineales", cuenta: "Lineales" },
+    { slug: "haroz-lineales", nombre: "Haroz", instagram: "haroz.tattoo.lineales" },
     { slug: "raul",  nombre: "Raúl",  instagram: "raulalvareztattoo" },
     // FUENTE: el estudio, con sus fotos oficiales (05/10/2026).
     { slug: "fer",   nombre: "Fernando", instagram: "fernandovoyeur" },
