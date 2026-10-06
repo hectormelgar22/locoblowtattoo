@@ -1177,46 +1177,222 @@ a.muestra__artista { display: inline-block; padding-block: 6px; margin-block: -6
   .estilos-nav__lista { padding-inline: 0; margin-left: calc(var(--s3) * -1); }
 }
 
-/* --- UN ESTILO ------------------------------------------------------------------ */
-/* Cada estilo, una pantalla: arriba su regla (número y cuántos trabajos), el
-   nombre en grande y, al lado, qué es, de quién y el botón; debajo, su
-   carrete de fotos de lado a lado. En el móvil, uno encima de otro.         */
+/* --- LA GALERÍA · una carpeta por estilo ------------------------------------------- */
+/* Como los álbumes del móvil: primero las carpetas; al entrar en una, todas
+   sus fotos en cuadrícula. Las carpetas por dentro empiezan escondidas: así
+   el navegador no maqueta 180 miniaturas que aún nadie ha pedido. Se abre
+   la de la dirección (:target), también sin JavaScript; con él, la que
+   diga paginas.js (data-vista, data-abierto).                             */
 
-.estilo {
-  padding-block: var(--s7);
-  border-bottom: var(--hair) solid var(--filete);
-  scroll-margin-top: var(--alto-estilos);   /* la barra fija ya la reserva <html> */
+.album { display: none; }
+.album:target,
+.galeria[data-vista] .album[data-abierto] { display: block; }
+.galeria[data-vista] .album:not([data-abierto]) { display: none; }
+.galeria[data-vista="album"] .carpetas { display: none; }
+
+/* Las carpetas: la portada de cada estilo con dos hojas asomando por
+   detrás, su nombre y cuántas fotos tiene.                                */
+.carpetas { padding-block: var(--s7) var(--s8); }
+.carpetas__lista {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--s6) var(--s3);
+  margin-top: var(--s6);
 }
-.estilo__cab {
+@media (min-width: 60rem) {
+  .carpetas { padding-block: var(--s9); }
+  .carpetas__lista { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--s5); }
+}
+.carpeta {
+  display: grid;
+  gap: var(--s1);
+  color: var(--tinta);
+  text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.carpeta__portada {
+  position: relative;
+  isolation: isolate;
+  display: block;
+  aspect-ratio: 1;
+  margin: 12px 0 var(--s2);
+  background: var(--suelo-hondo);
+  transition: transform var(--t-press) var(--ease-out);
+}
+.carpeta__portada::before,
+.carpeta__portada::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: 0 6px auto;
+  height: 100%;
+  translate: 0 -6px;
+  border: var(--hair) solid var(--filete);
+  background: var(--suelo-hondo);
+  transition: translate var(--t-panel) var(--ease-out);
+}
+.carpeta__portada::after { inset-inline: 12px; translate: 0 -12px; z-index: -2; }
+.carpeta__portada img { position: relative; display: block; width: 100%; height: 100%; object-fit: cover; }
+.carpeta__nombre {
+  font-size: var(--fs-d4);
+  font-weight: var(--w-titulo);
+  line-height: var(--lh-d4);
+  letter-spacing: var(--tr-d4);
+  text-wrap: balance;
+}
+.carpeta__n { color: var(--tinta-3); }
+/* Respuesta al apretar, no al soltar. */
+.carpeta:active .carpeta__portada { transform: scale(0.98); }
+@media (hover: hover) and (pointer: fine) {
+  .carpeta:hover .carpeta__portada::before { translate: 0 -9px; }
+  .carpeta:hover .carpeta__portada::after { translate: 0 -17px; }
+  .carpeta:hover .carpeta__nombre { text-decoration: underline 1px; text-underline-offset: 0.15em; }
+}
+.carpeta:focus-visible { outline-offset: 6px; }
+
+/* Una carpeta por dentro. */
+.album { padding-bottom: var(--s8); }
+
+/* La barra: «‹ Estilos» para volver, el nombre en pequeño cuando el grande
+   ya se ha ido arriba y cuántas fotos hay. Translúcida, como la del móvil:
+   las fotos pasan por debajo.                                              */
+.album__barra {
+  position: sticky;
+  top: var(--alto-nav);
+  z-index: var(--z-sticky);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  gap: var(--s3);
+  min-height: var(--touch);
+  margin-inline: calc(var(--gutter) * -1);
+  padding-inline: var(--gutter);
+  border-bottom: var(--hair) solid var(--filete);
+}
+.album__barra::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: color-mix(in srgb, var(--suelo) 88%, transparent);
+  backdrop-filter: blur(16px) saturate(120%);
+  -webkit-backdrop-filter: blur(16px) saturate(120%);
+}
+@media (prefers-reduced-transparency: reduce) {
+  .album__barra::before { background: var(--suelo); backdrop-filter: none; -webkit-backdrop-filter: none; }
+}
+.album__volver {
+  justify-self: start;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s2);
+  min-height: var(--touch);
+  padding-right: var(--s3);
+  color: var(--tinta);
+  font-size: var(--fs-label);
+  font-weight: var(--w-label);
+  font-stretch: 125%;
+  letter-spacing: var(--tr-label);
+  text-transform: uppercase;
+  text-decoration: none;
+}
+.album__volver .flecha { rotate: 225deg; translate: 0.1em 0; }
+@media (hover: hover) and (pointer: fine) {
+  .album__volver:hover .flecha { translate: -0.1em 0; }
+  .album__volver:hover span { text-decoration: underline 1px; text-underline-offset: 0.2em; }
+}
+.album__corto {
+  max-width: 50vw;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: var(--fs-sm);
+  font-weight: var(--w-titulo);
+  opacity: 0;
+  transition: opacity var(--t-ui) ease;
+}
+.album__barra[data-compacta] .album__corto { opacity: 1; }
+.album__n { justify-self: end; color: var(--tinta-3); }
+
+.album__cab {
   display: grid;
   gap: var(--s4);
   align-items: end;
-  min-width: 0;
+  padding-top: var(--s6);
   container-type: inline-size;
 }
-/* La regla: «01 ———————— 17 TRABAJOS», un filete con sus dos datos. */
-.estilo__regla {
+.album__nombre { font-size: min(var(--fs-d1), calc(100cqi / (var(--letras, 9) * 0.62))); }
+.album__texto { display: grid; gap: var(--s3); justify-items: start; }
+.album__desc { color: var(--tinta-2); max-width: 42ch; }
+.album__acciones {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
+  justify-content: space-between;
   gap: var(--s3);
-  color: var(--tinta-3);
-}
-.estilo__regla > :first-child { color: var(--tinta); }
-.estilo__regla::after {
-  content: "";
-  order: 1;
-  flex: 1;
-  border-top: var(--hair) solid var(--filete);
-}
-.estilo__cuenta { order: 2; }
-/* El nombre, entero en su columna y lo más grande que quepa: tope por la
-   palabra más larga (--letras), como los titulares de cada servicio.     */
-.estilo__nombre {
-  font-size: min(var(--fs-d1), calc(100cqi / (var(--letras, 9) * 0.62)));
   margin-top: var(--s2);
 }
-.estilo__texto { display: grid; gap: var(--s3); justify-items: start; }
-.estilo__desc { color: var(--tinta-2); max-width: 42ch; }
+.album__filtro { display: flex; flex-wrap: wrap; gap: var(--s2); }
+.album__acciones .estilo__accion { margin-left: auto; }
+@media (min-width: 60rem) {
+  .album__cab { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); column-gap: var(--s8); padding-top: var(--s7); }
+  .album__nombre { font-size: min(var(--fs-d1), calc(100cqi * 0.56 / (var(--letras, 9) * 0.62))); }
+  .album__texto { padding-bottom: 0.35rem; }
+  .album__acciones { grid-column: 1 / -1; }
+}
+
+/* Las fotos: cuadradas y pegadas, de lado a lado en el móvil (3), más en
+   pantallas grandes. Enteras se ven en el visor.                          */
+.album__rejilla {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 2px;
+  margin: var(--s5) calc(var(--gutter) * -1) 0;
+}
+@media (min-width: 36rem) { .album__rejilla { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+@media (min-width: 60rem) { .album__rejilla { grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 3px; margin-inline: 0; } }
+.album__item { min-width: 0; }
+.album__foto {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1;
+  padding: 0;
+  border: 0;
+  overflow: hidden;
+  background: var(--suelo-hondo);
+  cursor: zoom-in;
+  -webkit-tap-highlight-color: transparent;
+}
+.album__foto img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--t-panel) var(--ease-out), filter 120ms ease;
+}
+/* Al apretar se oscurece al instante, como en el móvil. */
+.album__foto:active img { filter: brightness(0.82); transition-duration: 0ms; }
+@media (hover: hover) and (pointer: fine) {
+  .album__foto:hover img { transform: scale(1.04); }
+}
+.album__foto:focus-visible { outline: 2px solid var(--claro); outline-offset: -4px; box-shadow: inset 0 0 0 2px var(--tinta); }
+.album__total { padding-block: var(--s5) var(--s6); text-align: center; color: var(--tinta-3); }
+
+/* El final: el bloque negro que pide cita, como al acabar un carrete. */
+.album__fin {
+  display: grid;
+  gap: var(--s3);
+  margin-inline: calc(var(--gutter) * -1);
+  padding: var(--s6) var(--gutter);
+}
+.album__fin > :first-child { color: var(--noche-2); }
+@media (min-width: 48rem) {
+  .album__fin { margin-inline: 0; padding: var(--s7); grid-template-columns: minmax(0, 1fr) auto; align-items: end; column-gap: var(--s6); }
+  .album__fin > :not(.carrete__fin-accion) { grid-column: 1; }
+  .album__fin .carrete__fin-accion { grid-column: 2; grid-row: 1 / span 3; align-self: end; }
+}
+
+/* De quién es el estilo y su botón, también fuera de la galería. */
 .estilo__artistas { font-size: var(--fs-sm); color: var(--tinta-2); }
 .estilo__artista {
   display: inline-block;
@@ -1227,24 +1403,7 @@ a.muestra__artista { display: inline-block; padding-block: 6px; margin-block: -6
   text-decoration-thickness: 1px;
   text-underline-offset: 0.2em;
 }
-.estilo__obras { min-width: 0; margin-top: var(--s5); container-type: inline-size; }
-/* El carrete mide su sangre con el ancho de su caja (cqw): la de cada
-   estilo o la de las fotos de un servicio.                                */
-.carrete-marco { min-width: 0; container-type: inline-size; }
-.estilo__obras > .estilo__accion { margin-top: var(--s4); }
-
-@media (min-width: 60rem) {
-  .estilo { padding-block: var(--s9) var(--s8); }
-  .estilo__cab {
-    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
-    column-gap: var(--s8);
-  }
-  .estilo__regla { grid-column: 1 / -1; }
-  /* En su columna, el nombre cabe en 7/12 del ancho. */
-  .estilo__nombre { font-size: min(var(--fs-d1), calc(100cqi * 0.56 / (var(--letras, 9) * 0.62))); }
-  .estilo__texto { padding-bottom: 0.35rem; }
-  .estilo__obras { margin-top: var(--s6); }
-}
+.estilo__accion { margin: 0; }
 
 /* --- EL CARRETE ------------------------------------------------------------------ */
 /* Las fotos de un estilo en fila, a la misma altura y enteras: cada una con

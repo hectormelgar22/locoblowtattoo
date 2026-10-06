@@ -55,7 +55,9 @@
   /* Devuelve el <img> completo. `ratio` evita el salto de layout: la caja
      reserva su altura antes de que la imagen llegue.                         */
   function imgHTML(o) {
-    var anchos = ANCHOS[o.tipo] || ANCHOS.obra;
+    /* `anchos` (opcional): solo algunos de los que hay, para una miniatura
+       que nunca necesitará la grande.                                     */
+    var anchos = o.anchos || ANCHOS[o.tipo] || ANCHOS.obra;
     var srcset = anchos.map(function (w) {
       return "assets/img/" + o.base + "-" + w + ".webp " + w + "w";
     }).join(", ");
@@ -511,6 +513,15 @@
       a.setAttribute("aria-label", cfg.etiqueta + ": " + cfg.titulo + " (se abre en una pestaña nueva)");
       a.innerHTML = BOCADILLO + '<span class="wasap__texto">' + esc(cfg.etiqueta) + "</span>";
       document.body.appendChild(a);
+    }
+    /* Dentro de su propia región: así, cuando aparece, el lector de
+       pantalla sabe en qué parte de la página está.                       */
+    if (!a.parentElement.matches("aside[data-wasap-caja]")) {
+      var caja = document.createElement("aside");
+      caja.setAttribute("data-wasap-caja", "");
+      caja.setAttribute("aria-label", cfg.etiqueta);
+      a.parentElement.insertBefore(caja, a);
+      caja.appendChild(a);
     }
 
     /* Mientras se ve el botón de cita de la cabecera, el flotante no sale:

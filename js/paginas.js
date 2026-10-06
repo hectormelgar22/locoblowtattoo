@@ -1171,20 +1171,6 @@
       flecha(CU.textos.enServicio, N.hrefPagina(CU.pagina) + "#" + g.servicio, "btn--grande") + "</p>";
   }
 
-  /* ============================================================================
-     TATUAJES: POR ESTILOS
-     Una sección por estilo, en el orden de content.js, con su barra para
-     saltar de uno a otro. Todo son anclas: funciona sin JavaScript y cada
-     estilo tiene su dirección (tatuajes#anime).
-     ============================================================================ */
-
-  set("[data-estilos-nav]",
-    '<ul class="estilos-nav__lista" role="list">' + ESTILOS.map(function (e) {
-      var n = obrasDe(e).length;
-      return '<li><a class="estilos-nav__link" href="#' + esc(e.id) + '">' + esc(e.nombre) +
-        (n ? ' <span class="estilos-nav__n num">' + n + "</span>" : "") + "</a></li>";
-    }).join("") + "</ul>");
-
   /* Los artistas de un estilo, en el orden en que salen sus trabajos. */
   function artistasDe(obras) {
     var vistos = [];
@@ -1271,40 +1257,6 @@
       '<p class="carrete__fin-texto">' + esc(texto) + "</p>" +
       '<p class="carrete__fin-accion" data-carrete-cita>' + boton + "</p>";
   }
-
-  set("[data-estilos]", ESTILOS.map(function (e, k) {
-    var obras = obrasDe(e);
-    N.grupos["estilo:" + e.id] = conFoto(obras);
-    var n = obras.length;
-    var artistas = artistasDe(obras);
-    var accion = '<p class="estilo__accion">' +
-      botonWasap(TT.botonEstilo, N.rellenar(TT.mensajeEstilo, { estilo: e.nombre.toLowerCase() }),
-                 "", ": " + e.nombre) + "</p>";
-    return '<section class="estilo" id="' + esc(e.id) + '" aria-labelledby="t-' + esc(e.id) + '">' +
-      '<header class="estilo__cab">' +
-        '<p class="estilo__regla etiqueta num"><span>' + String(k + 1).padStart(2, "0") + "</span>" +
-          (n ? '<span class="estilo__cuenta">' + esc(N.rellenar(TT.trabajos, { n: n })) + "</span>" : "") + "</p>" +
-        '<h2 class="d1 estilo__nombre" id="t-' + esc(e.id) + '" style="--letras:' + palabraMasLarga(e.nombre) + '">' +
-          esc(e.nombre) + "</h2>" +
-        '<div class="estilo__texto">' +
-          (e.descripcion ? '<p class="estilo__desc">' + esc(e.descripcion) + "</p>" : "") +
-          (artistas.length
-            ? '<p class="estilo__artistas">' + esc(TT.por) + " " +
-                yLista(artistas.map(function (a) { return artistaHTML(a, "estilo__artista"); })) + "</p>"
-            : "") +
-        "</div>" +
-      "</header>" +
-      '<div class="estilo__obras">' +
-        (n ? carreteHTML({
-               id: e.id, nombre: e.nombre, obras: obras, grupo: "estilo:" + e.id, accion: accion, filtro: true,
-               fin: finHTML(e.nombre, TT.finTitular, TT.finTexto,
-                            botonWasap(TT.botonEstilo, N.rellenar(TT.mensajeEstilo, { estilo: e.nombre.toLowerCase() }),
-                                       "btn--macizo", ": " + e.nombre))
-             })
-           : pendienteHTML(e.nombre, TT.pendiente) + accion) +
-      "</div>" +
-    "</section>";
-  }).join(""));
 
   /* Lo que hace del carrete algo más que una fila con scroll: mandos,
      arrastre con ratón, avance, filtro por artista y el cursor que dice
@@ -1564,21 +1516,251 @@
     }
   });
 
-  /* Direcciones viejas de los estilos (tatuajes#black-and-grey, #anime):
-     enlaces que alguien ya compartió llevan a la sección que los recoge. */
-  (function direccionesViejas() {
-    if (!$("[data-estilos]")) return;
-    function ir() {
-      var viejo = decodeURIComponent(location.hash.slice(1));
-      if (!viejo || document.getElementById(viejo)) return;
-      var e = S.estilos.filter(function (x) { return (x.antes || []).indexOf(viejo) > -1; })[0];
-      var destino = e && document.getElementById(e.id);
-      if (!destino) return;
-      history.replaceState(null, "", location.pathname + location.search + "#" + e.id);
-      destino.scrollIntoView();
+  /* ============================================================================
+     TATUAJES: UNA CARPETA POR ESTILO
+     Como los álbumes del móvil. Primero las carpetas, cada una con su
+     portada y cuántas fotos tiene. Al entrar, todas sus fotos en cuadrícula,
+     cuadradas y pegadas; al tocar una, el visor (visor.js), que deja pasar
+     de una a otra deslizando. «‹ Estilos» vuelve a las carpetas.
+     Cada carpeta tiene su dirección (tatuajes#anime) y el «atrás» del
+     navegador vuelve a las carpetas. Sin JavaScript todo está en la página,
+     una carpeta detrás de otra, y los enlaces son anclas.
+     ============================================================================ */
+
+  var GA = TT.galeria;
+
+  function miniaturaHTML(p, grupo) {
+    return '<li class="album__item" id="obra-' + esc(p.id) + '" data-artista="' + esc(p.artista || "") + '">' +
+      '<button class="album__foto" type="button" data-abrir="' + esc(p.id) + '" data-grupo="' + esc(grupo) + '">' +
+        N.imgHTML({ base: p.img, tipo: "obra", alt: p.alt, ratio: p.ratio, foco: p.foco, anchos: [380, 600],
+                    sizes: "(min-width: 60rem) 15vw, (min-width: 36rem) 25vw, 34vw" }) +
+      "</button></li>";
+  }
+
+  function citaEstilo(e, a, clase) {
+    return a
+      ? botonWasap(N.rellenar(TT.botonArtista, { artista: a.nombre }),
+                   N.rellenar(TT.mensajeArtista, { estilo: e.nombre.toLowerCase(), artista: a.nombre }), clase, ": " + e.nombre)
+      : botonWasap(TT.botonEstilo, N.rellenar(TT.mensajeEstilo, { estilo: e.nombre.toLowerCase() }), clase, ": " + e.nombre);
+  }
+
+  set("[data-galeria]", (function () {
+    var carpetas = ESTILOS.map(function (e) {
+      var obras = conFoto(obrasDe(e));
+      var portada = (e.portada && obras.filter(function (o) { return o.id === e.portada; })[0]) || obras[0];
+      var n = N.rellenar(GA.fotos, { n: obras.length });
+      return '<li class="carpetas__item">' +
+        '<a class="carpeta" href="#' + esc(e.id) + '" data-carpeta="' + esc(e.id) + '"' +
+          ' aria-label="' + esc(N.rellenar(GA.abrir, { estilo: e.nombre, n: obras.length })) + '">' +
+          '<span class="carpeta__portada">' +
+            (portada
+              ? N.imgHTML({ base: portada.img, tipo: "obra", alt: "", ratio: portada.ratio, foco: portada.foco,
+                            anchos: [380, 600, 900], sizes: "(min-width: 60rem) 22vw, 45vw" })
+              : "") +
+          "</span>" +
+          '<span class="carpeta__nombre">' + esc(e.nombre) + "</span>" +
+          '<span class="carpeta__n etiqueta num">' + esc(n) + "</span>" +
+        "</a></li>";
+    }).join("");
+
+    var albumes = ESTILOS.map(function (e) {
+      var obras = conFoto(obrasDe(e));
+      var grupo = "estilo:" + e.id;
+      N.grupos[grupo] = obras;
+      var artistas = artistasDe(obras);
+      var n = N.rellenar(GA.fotos, { n: obras.length });
+      var filtro = artistas.length > 1
+        ? '<div class="album__filtro" role="group" aria-label="' + esc(TT.filtrar + " " + e.nombre) + '">' +
+            [{ slug: "", nombre: TT.todos, n: obras.length }].concat(artistas.map(function (a) {
+              return { slug: a.slug, nombre: a.nombre, n: obras.filter(function (o) { return o.artista === a.slug; }).length };
+            })).map(function (x, k) {
+              return '<button class="carrete__chip" type="button" data-filtro="' + esc(x.slug) + '" aria-pressed="' + (k === 0) + '">' +
+                esc(x.nombre) + ' <span class="carrete__chip-n num">' + x.n + "</span></button>";
+            }).join("") +
+          "</div>"
+        : "";
+      return '<section class="album" id="' + esc(e.id) + '" aria-labelledby="t-' + esc(e.id) + '" data-album="' + esc(e.id) + '">' +
+        '<div class="album__barra">' +
+          '<a class="album__volver" href="#estilos" data-volver><i class="flecha" aria-hidden="true"></i><span>' + esc(GA.volver) + "</span></a>" +
+          '<p class="album__corto" aria-hidden="true">' + esc(e.nombre) + "</p>" +
+          '<p class="album__n etiqueta num" data-album-n>' + esc(n) + "</p>" +
+        "</div>" +
+        '<header class="album__cab">' +
+          '<h2 class="d1 album__nombre" id="t-' + esc(e.id) + '" style="--letras:' + palabraMasLarga(e.nombre) + '">' + esc(e.nombre) + "</h2>" +
+          '<div class="album__texto">' +
+            (e.descripcion ? '<p class="album__desc">' + esc(e.descripcion) + "</p>" : "") +
+            (artistas.length
+              ? '<p class="estilo__artistas">' + esc(TT.por) + " " +
+                  yLista(artistas.map(function (a) { return artistaHTML(a, "estilo__artista"); })) + "</p>"
+              : "") +
+          "</div>" +
+          '<div class="album__acciones">' + filtro +
+            '<p class="estilo__accion">' + citaEstilo(e, null, "") + "</p></div>" +
+        "</header>" +
+        (obras.length
+          ? '<ul class="album__rejilla" role="list" aria-label="' + esc(e.nombre) + '">' +
+              obras.map(function (p) { return miniaturaHTML(p, grupo); }).join("") + "</ul>" +
+            '<p class="album__total etiqueta num" data-album-total>' + esc(n) + "</p>"
+          : pendienteHTML(e.nombre, TT.pendiente)) +
+        '<div class="album__fin en-negro">' +
+          '<p class="etiqueta corchetes">' + esc(e.nombre) + "</p>" +
+          '<p class="carrete__fin-titular">' + esc(TT.finTitular) + "</p>" +
+          '<p class="carrete__fin-texto">' + esc(TT.finTexto) + "</p>" +
+          '<p class="carrete__fin-accion" data-album-cita>' + citaEstilo(e, null, "btn--macizo") + "</p>" +
+        "</div>" +
+      "</section>";
+    }).join("");
+
+    return '<section class="carpetas" id="estilos" aria-labelledby="t-estilos">' +
+        '<header class="cab carpetas__cab"><p class="etiqueta corchetes">' + esc(GA.etiqueta) + "</p>" +
+          '<h2 class="d2" id="t-estilos">' + esc(GA.titular) + "</h2>" +
+          (GA.entradilla ? '<p class="lead">' + esc(GA.entradilla) + "</p>" : "") + "</header>" +
+        '<ul class="carpetas__lista" role="list">' + carpetas + "</ul>" +
+      "</section>" + albumes;
+  })());
+
+  /* La galería en marcha: ir y volver de las carpetas, el título pequeño en
+     la barra al bajar, y elegir artista dentro de una carpeta.            */
+  (function galeria() {
+    var gal = $("[data-galeria]");
+    if (!gal) return;
+    var carpetas = $(".carpetas", gal);
+    var albumes = $$(".album", gal);
+    var abierto = null;
+
+    function albumDe(hash) {
+      var id = decodeURIComponent(String(hash || "").replace(/^#/, ""));
+      if (!id) return null;
+      var m = /^obra-(.+)$/.exec(id);
+      if (m) {
+        var li = document.getElementById(id);
+        var sec = li && li.closest(".album");
+        return sec ? sec.id : null;
+      }
+      if (albumes.some(function (a) { return a.id === id; })) return id;
+      /* Direcciones de listas viejas (#black-and-grey, #dotwork). */
+      var e = S.estilos.filter(function (x) { return (x.antes || []).indexOf(id) > -1; })[0];
+      return e && albumes.some(function (a) { return a.id === e.id; }) ? e.id : null;
     }
-    ir();
-    window.addEventListener("hashchange", ir);
+
+    /* El visor pregunta a qué dirección volver al cerrar: la de la carpeta. */
+    N.hashBase = function () { return abierto ? "#" + abierto : ""; };
+
+    /* Entrar y salir por el mismo camino: la carpeta entra desde la
+       derecha y, al volver, las carpetas regresan desde la izquierda.     */
+    function animar(el, desde) {
+      if (N.quieto() || !el.animate) return;
+      el.animate([{ opacity: 0, transform: "translateX(" + desde + ")" }, { opacity: 1, transform: "none" }],
+                 { duration: 420, easing: "cubic-bezier(0.32, 0.72, 0, 1)" });
+    }
+
+    function mostrar(id, conAnimacion) {
+      var antes = abierto;
+      abierto = id;
+      gal.setAttribute("data-vista", id ? "album" : "carpetas");
+      albumes.forEach(function (a) { a.toggleAttribute("data-abierto", a.id === id); });
+      var tope = gal.getBoundingClientRect().top + scrollY - (parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop) || 0);
+      if (id) {
+        var sec = document.getElementById(id);
+        if (antes !== id) {
+          window.scrollTo(0, Math.max(0, tope));
+          if (conAnimacion) {
+            animar(sec, "8%");
+            /* Las primeras fotos entran en cascada, como al abrir un álbum. */
+            if (!N.quieto()) $$(".album__item", sec).slice(0, 18).forEach(function (li, i) {
+              li.animate([{ opacity: 0, transform: "scale(0.94)" }, { opacity: 1, transform: "none" }],
+                         { duration: 380, delay: 60 + i * 14, easing: "cubic-bezier(0.23, 1, 0.32, 1)", fill: "backwards" });
+            });
+          }
+        }
+      } else if (antes) {
+        /* De vuelta, la carpeta de la que se venía, a la vista. */
+        var c = $('[data-carpeta="' + CSS.escape(antes) + '"]', gal);
+        window.scrollTo(0, Math.max(0, tope));
+        if (c && c.getBoundingClientRect().bottom > innerHeight) c.scrollIntoView({ block: "center" });
+        if (conAnimacion) animar(carpetas, "-8%");
+        if (c) c.focus({ preventScroll: true });
+      }
+    }
+
+    gal.addEventListener("click", function (ev) {
+      var a = ev.target.closest("[data-carpeta]");
+      if (a) {
+        ev.preventDefault();
+        var id = a.getAttribute("data-carpeta");
+        history.pushState({ carpeta: id }, "", location.pathname + location.search + "#" + id);
+        mostrar(id, true);
+        var t = document.getElementById("t-" + id);
+        if (t) { t.setAttribute("tabindex", "-1"); t.focus({ preventScroll: true }); }
+        return;
+      }
+      if (ev.target.closest("[data-volver]")) {
+        ev.preventDefault();
+        /* Si se entró desde las carpetas, «atrás» deshace ese paso; si se
+           llegó con un enlace directo, se va a las carpetas sin más.       */
+        if (history.state && history.state.carpeta) history.back();
+        else { history.replaceState(null, "", location.pathname + location.search + "#estilos"); mostrar(null, true); }
+      }
+    });
+
+    window.addEventListener("popstate", function () {
+      if (history.state && history.state.visor) return;
+      mostrar(albumDe(location.hash), true);
+    });
+    window.addEventListener("hashchange", function () {
+      var id = albumDe(location.hash);
+      if (id !== abierto && !/^#obra-/.test(location.hash)) mostrar(id, false);
+    });
+
+    /* Al llegar: la carpeta de la dirección (o la de la foto enlazada). Una
+       dirección vieja (#dotwork) se cambia por la de su carpeta.          */
+    var pedida = decodeURIComponent(location.hash.slice(1));
+    var inicial = albumDe(location.hash);
+    if (inicial && pedida && !document.getElementById(pedida)) {
+      history.replaceState(null, "", location.pathname + location.search + "#" + inicial);
+    }
+    mostrar(inicial, false);
+
+    /* El título pequeño de la barra aparece cuando el grande se va arriba. */
+    if ("IntersectionObserver" in window) {
+      var obs = new IntersectionObserver(function (es) {
+        es.forEach(function (x) {
+          var barra = x.target.closest(".album").querySelector(".album__barra");
+          barra.toggleAttribute("data-compacta", !x.isIntersecting && x.boundingClientRect.top < 0);
+        });
+      }, { rootMargin: "-120px 0px 0px 0px" });
+      $$(".album__nombre", gal).forEach(function (h) { obs.observe(h); });
+    }
+
+    /* Elegir artista: se quedan sus fotos, el visor pasa solo por ellas y
+       el bloque final pide cita con esa persona.                          */
+    albumes.forEach(function (sec) {
+      var chips = $$("[data-filtro]", sec);
+      if (!chips.length) return;
+      var e = N.estiloPor(sec.id), grupo = "estilo:" + sec.id, todas = N.grupos[grupo];
+      chips.forEach(function (chip) {
+        chip.addEventListener("click", function () {
+          if (chip.getAttribute("aria-pressed") === "true") return;
+          var slug = chip.getAttribute("data-filtro");
+          chips.forEach(function (c) { c.setAttribute("aria-pressed", String(c === chip)); });
+          var lis = $$(".album__item", sec), vis = [];
+          lis.forEach(function (li) {
+            li.hidden = !!slug && li.getAttribute("data-artista") !== slug;
+            if (!li.hidden) vis.push(li);
+          });
+          N.grupos[grupo] = todas.filter(function (o) { return !slug || o.artista === slug; });
+          var a = slug ? N.artistaPor(slug) : null;
+          var n = N.rellenar(GA.fotos, { n: vis.length });
+          $("[data-album-total]", sec).textContent = n;
+          $("[data-album-n]", sec).textContent = n;
+          $("[data-album-cita]", sec).innerHTML = citaEstilo(e, a, "btn--macizo");
+          if (!N.quieto()) vis.slice(0, 18).forEach(function (li, i) {
+            li.animate([{ opacity: 0, transform: "scale(0.94)" }, { opacity: 1, transform: "none" }],
+                       { duration: 340, delay: i * 14, easing: "cubic-bezier(0.23, 1, 0.32, 1)", fill: "backwards" });
+          });
+        });
+      });
+    });
   })();
 
   /* La barra de estilos (y la de las guías de cuidados) marca con
