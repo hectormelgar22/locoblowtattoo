@@ -1261,7 +1261,7 @@ a.muestra__artista { display: inline-block; padding-block: 6px; margin-block: -6
   top: var(--alto-nav);
   z-index: var(--z-sticky);
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  grid-template-columns: auto minmax(0, 1fr) auto;
   align-items: center;
   gap: var(--s3);
   min-height: var(--touch);
@@ -1302,7 +1302,8 @@ a.muestra__artista { display: inline-block; padding-block: 6px; margin-block: -6
   .album__volver:hover span { text-decoration: underline 1px; text-underline-offset: 0.2em; }
 }
 .album__corto {
-  max-width: 50vw;
+  min-width: 0;
+  text-align: center;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -1312,7 +1313,8 @@ a.muestra__artista { display: inline-block; padding-block: 6px; margin-block: -6
   transition: opacity var(--t-ui) ease;
 }
 .album__barra[data-compacta] .album__corto { opacity: 1; }
-.album__n { justify-self: end; color: var(--tinta-3); }
+.album__n { justify-self: end; color: var(--tinta-3); white-space: nowrap; }
+.album__volver span { white-space: nowrap; }
 
 .album__cab {
   display: grid;
