@@ -1877,3 +1877,41 @@ a.muestra__artista { display: inline-block; padding-block: 6px; margin-block: -6
   }
   .error__nombre { font-size: var(--fs-d3); letter-spacing: var(--tr-d3); }
 }
+
+/* ============================================================================
+   LEGAL · aviso legal, privacidad y cookies
+   Texto largo para leer: una sola columna de buen ancho, cada sección con su
+   filete y su número, sin adornos. Un hueco sin rellenar se ve marcado.
+   ============================================================================ */
+
+.legal { padding-block: var(--s7) var(--s9); }
+.legal__cab { display: grid; gap: var(--s4); max-width: 60rem; }
+.legal__h1 { font-size: min(var(--fs-d1), calc(100cqi / (var(--letras, 9) * 0.62))); container-type: inline-size; }
+.legal .lead { color: var(--tinta-2); max-width: 44ch; }
+.legal__cuerpo { margin-top: var(--s7); max-width: 46rem; }
+.legal__seccion { padding-block: var(--s5); border-top: var(--hair) solid var(--filete); }
+.legal__seccion > * + * { margin-top: var(--s3); }
+.legal__titulo { display: flex; gap: var(--s3); align-items: baseline; }
+.legal__num { flex: none; min-width: 2ch; color: var(--tinta-3); font-size: var(--fs-label); font-weight: var(--w-label); font-stretch: 125%; letter-spacing: var(--tr-label); }
+.legal__seccion p, .legal__lista { max-width: 62ch; color: var(--tinta-2); }
+.legal__lista { padding-left: 1.25em; list-style: square; }
+.legal__lista li + li { margin-top: var(--s2); }
+.legal__lista li::marker { color: var(--tinta-3); }
+.legal__fecha { margin-top: var(--s6); color: var(--tinta-3); }
+.legal__otras { margin-top: var(--s6); padding-top: var(--s4); border-top: var(--hair) solid var(--filete); max-width: 46rem; }
+.legal__otras ul { display: flex; flex-wrap: wrap; gap: var(--s2) var(--s5); margin-top: var(--s2); }
+
+.legal__borrador { display: grid; gap: var(--s2); margin-top: var(--s6); padding: var(--s4) var(--s5); max-width: 46rem; }
+.legal__borrador .etiqueta { color: var(--noche-2); }
+
+/* Un dato que aún falta: se ve, no se puede pasar por alto. */
+.hueco-legal {
+  padding: 1px 6px;
+  background: var(--suelo-hondo);
+  color: var(--tinta);
+  border: var(--hair) dashed var(--filete-fn);
+  font-weight: var(--w-label);
+  font-size: 0.92em;
+  overflow-wrap: anywhere;
+}
+@media print { .legal__borrador, .legal__otras { display: none; } }

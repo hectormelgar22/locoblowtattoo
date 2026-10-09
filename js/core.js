@@ -24,6 +24,16 @@
   /* La página de error: sin dirección propia (sale en cualquiera que no
      exista), así que ni canónica ni datos para Google.                     */
   var ERROR = PAGINA === "404";
+  /* Una de las tres páginas legales (aviso legal, privacidad, cookies). */
+  var LEGAL = (S.legal && S.legal.paginas.filter(function (p) { return p.pagina === PAGINA; })[0]) || null;
+  /* Datos obligatorios del titular que aún faltan: mientras falte alguno, la
+     página es un borrador y no se indexa.                                  */
+  function legalPendiente() {
+    if (!S.legal) return [];
+    return Object.keys(S.legal.datos).filter(function (k) {
+      return S.legal.opcionales.indexOf(k) === -1 && !S.legal.datos[k];
+    });
+  }
   /* El dominio sale de content.js, no de location.origin: si saliera de ahí,
      tools/sync-contenido.py congelaría en el código fuente la dirección del
      servidor local con el que se volcó la página.                          */
@@ -354,7 +364,7 @@
   }
 
   function montarSchema() {
-    if (ERROR) return;
+    if (ERROR || LEGAL) return;
     var datos;
     if (SERVICIO) {
       datos = {
@@ -720,7 +730,7 @@
      Google y la vista previa de WhatsApp.                                    */
 
   function montarCabecera() {
-    var t = SERVICIO ? SERVICIO.meta : CUIDADOS ? CUIDADOS.meta :
+    var t = SERVICIO ? SERVICIO.meta : CUIDADOS ? CUIDADOS.meta : LEGAL ? LEGAL.meta :
             ERROR ? S.textos.noEncontrada.meta : S.textos.meta;
     var url = urlPagina(PAGINA);
     document.title = t.titulo;
@@ -730,6 +740,11 @@
       n.setAttribute("content", valor);
     }
     meta("name", "description", t.descripcion);
+    if (LEGAL) {
+      /* Borrador mientras falten datos: no se indexa. Completa, se indexa. */
+      if (legalPendiente().length) meta("name", "robots", "noindex");
+      else { var r = $('meta[name="robots"]'); if (r) r.remove(); }
+    }
     if (ERROR) return;
     meta("property", "og:title", t.titulo);
     meta("property", "og:description", t.compartir || t.descripcion);
@@ -755,7 +770,7 @@
   window.LB = {
     $: $, $$: $$, esc: esc, quieto: quieto, mqQuieto: mqQuieto,
     imgHTML: imgHTML, huecoHTML: huecoHTML, fotoHTML: fotoHTML,
-    PAGINA: PAGINA, SERVICIO: SERVICIO, CUIDADOS: CUIDADOS,
+    PAGINA: PAGINA, SERVICIO: SERVICIO, CUIDADOS: CUIDADOS, LEGAL: LEGAL, legalPendiente: legalPendiente,
     artistaPor: artistaPor, estiloPor: estiloPor, rellenar: rellenar,
     hrefPagina: hrefPagina, urlPagina: urlPagina,
     wasapURL: wasapURL, instaURL: instaURL, marcaHTML: marcaHTML, mapaURL: mapaURL,

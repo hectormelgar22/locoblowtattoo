@@ -1798,6 +1798,60 @@
   }
 
   /* ============================================================================
+     LEGAL · aviso legal, privacidad y cookies
+     Las tres salen del mismo molde: un título, una entradilla y una lista de
+     secciones. Los textos llevan huecos {titular}, {nif}… que se rellenan una
+     vez en legal.datos. Un hueco vacío sale marcado y la página avisa de que
+     es un borrador; con todo relleno, sale limpia.
+     ============================================================================ */
+
+  (function legal() {
+    var host = $("[data-legal]");
+    if (!host || !N.LEGAL) return;
+    var LG = S.legal, P = N.LEGAL, X = LG.textos;
+
+    function conHuecos(t) {
+      return String(t).split(/(\{[a-z]+\})/).map(function (parte) {
+        var m = /^\{([a-z]+)\}$/.exec(parte);
+        if (!m) return esc(parte);
+        var v = LG.datos[m[1]];
+        return v ? esc(v) : '<mark class="hueco-legal">[' + esc(LG.huecos[m[1]] || m[1].toUpperCase()) + "]</mark>";
+      }).join("");
+    }
+
+    var pendientes = N.legalPendiente();
+    var otras = LG.paginas.filter(function (p) { return p.pagina !== P.pagina; });
+
+    host.innerHTML =
+      '<header class="legal__cab">' +
+        '<p class="etiqueta corchetes">' + esc(P.etiqueta) + "</p>" +
+        '<h1 class="d1 legal__h1" id="t-legal" style="--letras:' + palabraMasLarga(P.titular) + '">' + esc(P.titular) + "</h1>" +
+        '<p class="lead">' + esc(P.entradilla) + "</p>" +
+      "</header>" +
+      (pendientes.length
+        ? '<div class="legal__borrador en-negro" role="note"><p class="etiqueta corchetes">' + esc(X.borrador) + "</p>" +
+            "<p>" + esc(X.borradorTexto) + "</p></div>"
+        : "") +
+      '<div class="legal__cuerpo">' + P.secciones.map(function (s, i) {
+        return '<section class="legal__seccion" aria-labelledby="t-legal-' + (i + 1) + '">' +
+          '<h2 class="d3 legal__titulo" id="t-legal-' + (i + 1) + '"><span class="legal__num num" aria-hidden="true">' +
+            String(i + 1).padStart(2, "0") + "</span>" + esc(s.titulo) + "</h2>" +
+          s.piezas.map(function (pz) {
+            return typeof pz === "string"
+              ? "<p>" + conHuecos(pz) + "</p>"
+              : '<ul class="legal__lista">' + pz.lista.map(function (li) { return "<li>" + conHuecos(li) + "</li>"; }).join("") + "</ul>";
+          }).join("") +
+        "</section>";
+      }).join("") + "</div>" +
+      '<p class="legal__fecha etiqueta">' + conHuecos(X.actualizado) + "</p>" +
+      '<nav class="legal__otras" aria-label="' + esc(X.otras) + '"><p class="etiqueta etiqueta--suave">' + esc(X.otras) + "</p><ul>" +
+        otras.map(function (p) {
+          return '<li><a class="enlace-flecha" href="' + esc(N.hrefPagina(p.pagina)) + '">' + esc(p.menu) +
+            '<i class="flecha" aria-hidden="true"></i></a></li>';
+        }).join("") + "</ul></nav>";
+  })();
+
+  /* ============================================================================
      INSTAGRAM · al final de todas las páginas
      El perfil del estudio en grande, que es lo que hay que recordar. Cada
      artista se enlaza desde sus fotos. La cuadrícula de trabajos es un guiño a la del

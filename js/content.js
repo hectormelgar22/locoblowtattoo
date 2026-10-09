@@ -1770,14 +1770,225 @@ window.STUDIO = {
     ]
   },
 
+  /* --- 9c. LEGAL · aviso legal, privacidad y cookies ------------------------------ */
+  // PLANTILLAS (09/10/2026): redactadas por la web a partir de la LSSI-CE, el
+  // RGPD y la LOPDGDD, para que las revise una gestoría o un abogado antes de
+  // publicar. No son asesoramiento jurídico.
+  //
+  // Los textos llevan huecos entre llaves: {titular}, {nif}… Se rellenan UNA
+  // vez en `datos` y valen para las tres páginas. Mientras falte uno de los
+  // obligatorios, el hueco sale marcado en la página, sale un aviso de
+  // borrador y la página lleva noindex. Los `opcionales` no frenan eso: si no
+  // aplican, se escribe «No aplica».
+  //
+  // Cada sección es un título y una lista de piezas: un texto (un párrafo) o
+  // { lista: [...] } (viñetas).
+  legal: {
+    datos: {
+      titular: null,        // nombre y apellidos (autónomo) o razón social (sociedad)
+      nif: null,            // NIF o CIF
+      domicilio: null,      // domicilio fiscal completo
+      email: null,          // correo para el aviso legal y para ejercer derechos de datos
+      telefono: null,       // teléfono del estudio
+      web: null,            // dirección definitiva de la web, con https://
+      fecha: null,          // última actualización, p. ej. «9 de octubre de 2026»
+      conservacion: null,   // cuánto se guardan las consultas sin cita, p. ej. «12 meses»
+      hosting: "Vercel Inc., EE. UU.",   // PROVISIONAL: según dónde se publique
+      registro: null,       // Registro Mercantil (solo sociedades)
+      autorizacion: null,   // autorización sanitaria del local (Xunta)
+      origen: null,         // Origen Láser: nombre y NIF si es otra empresa
+      gestoria: null        // gestoría o asesoría que recibe datos de clientes
+    },
+    opcionales: ["registro", "autorizacion", "origen", "gestoria", "hosting"],
+    // Cómo se ve cada hueco mientras está vacío.
+    huecos: {
+      titular: "NOMBRE Y APELLIDOS O RAZÓN SOCIAL",
+      nif: "NIF / CIF",
+      domicilio: "DOMICILIO FISCAL",
+      email: "CORREO ELECTRÓNICO",
+      telefono: "TELÉFONO",
+      web: "DIRECCIÓN DE LA WEB",
+      fecha: "FECHA DE ACTUALIZACIÓN",
+      conservacion: "PLAZO, p. ej. 12 meses",
+      hosting: "PROVEEDOR DE ALOJAMIENTO",
+      registro: "REGISTRO MERCANTIL: tomo, folio y hoja (solo sociedades; si no, «No aplica»)",
+      autorizacion: "AUTORIZACIÓN SANITARIA DEL LOCAL: número y organismo",
+      origen: "ORIGEN LÁSER: nombre y NIF si es otra empresa; si no, «el mismo titular»",
+      gestoria: "GESTORÍA O ASESORÍA (si recibe datos de clientes; si no, «No aplica»)"
+    },
+    textos: {
+      borrador: "Borrador con huecos",
+      borradorTexto: "Esta página es una plantilla: faltan datos del titular (marcados abajo) y la tiene que revisar un profesional antes de publicarse.",
+      otras: "Más información legal",
+      actualizado: "Última actualización: {fecha}."
+    },
+
+    paginas: [
+      {
+        pagina: "aviso-legal", menu: "Aviso legal",
+        etiqueta: "Legal", titular: "Aviso legal.",
+        entradilla: "Quién está detrás de esta web y con qué condiciones se usa.",
+        meta: {
+          titulo: "Aviso legal · Loco Blow Tattoo",
+          descripcion: "Aviso legal de la web de Loco Blow Tattoo: titular, condiciones de uso, propiedad intelectual y legislación aplicable."
+        },
+        secciones: [
+          { titulo: "Titular del sitio web", piezas: [
+            "En cumplimiento del artículo 10 de la Ley 34/2002, de Servicios de la Sociedad de la Información y de Comercio Electrónico (LSSI-CE), se informa de que este sitio web pertenece a:",
+            { lista: [
+              "Titular: {titular}",
+              "NIF/CIF: {nif}",
+              "Domicilio: {domicilio}",
+              "Correo electrónico: {email}",
+              "Teléfono: {telefono}",
+              "Sitio web: {web}",
+              "Registro Mercantil: {registro}",
+              "Autorización sanitaria del establecimiento: {autorizacion}"
+            ] },
+            "Nombre comercial: Loco Blow Tattoo. Servicios: tatuaje, piercing y micropigmentación capilar, y eliminación de tatuajes con láser, que se presta a través de Origen Láser ({origen})."
+          ] },
+          { titulo: "Objeto y aceptación", piezas: [
+            "Esta web da a conocer el estudio, sus trabajos y sus servicios, y permite contactar por WhatsApp. Usarla supone aceptar este aviso legal. Si no estás de acuerdo, no la uses."
+          ] },
+          { titulo: "Información sobre los servicios", piezas: [
+            "Los textos, fotografías y vídeos de esta web son informativos y no constituyen una oferta vinculante. El resultado de un tatuaje, un piercing, una sesión de láser o una micropigmentación depende de cada persona (piel, zona, cuidados), así que no se garantiza un resultado concreto.",
+            "Nada de lo que aquí se cuenta sustituye la valoración en persona ni el consejo de un profesional sanitario. Si tienes una enfermedad, una alergia, estás embarazada o tomas medicación, díselo al artista antes de la cita.",
+            "Las guías de cuidados son orientativas. Ante cualquier signo de infección o ante una duda, consulta con un médico."
+          ] },
+          { titulo: "Propiedad intelectual e industrial", piezas: [
+            "El nombre, el logotipo y el diseño de la web, y sus textos, fotografías y vídeos, pertenecen a {titular} o a sus autores y están protegidos por la normativa de propiedad intelectual e industrial. Los diseños de los tatuajes son obra de cada tatuador.",
+            "No se pueden copiar, distribuir ni usar con fines comerciales sin permiso por escrito. Sí puedes compartir el enlace a una página o a una foto.",
+            "El mapa de la web se basa en datos de © OpenStreetMap contributors (licencia ODbL). La tipografía Mona Sans se usa bajo la licencia SIL Open Font License."
+          ] },
+          { titulo: "Personas que salen en las fotos", piezas: [
+            "Las fotografías y los vídeos de trabajos se publican con el permiso de las personas que aparecen. Si eres una de ellas y quieres que quitemos una imagen, escribe a {email} y la retiramos."
+          ] },
+          { titulo: "Enlaces a otras webs", piezas: [
+            "La web enlaza con WhatsApp, Instagram, Google Maps y otros servicios. No controlamos esos sitios ni respondemos de su contenido ni de su política de privacidad."
+          ] },
+          { titulo: "Responsabilidad", piezas: [
+            "Procuramos que la información sea correcta y esté al día, pero puede haber errores o cambios (servicios, teléfonos, horarios). No respondemos de los daños que pueda causar usarla ni de interrupciones del servicio ajenas a nosotros."
+          ] },
+          { titulo: "Reclamaciones", piezas: [
+            "Tienes a tu disposición hojas de reclamaciones en el establecimiento, según la normativa de consumo de Galicia. También puedes escribirnos a {email} para resolver cualquier queja."
+          ] },
+          { titulo: "Legislación y jurisdicción", piezas: [
+            "Este aviso legal se rige por la legislación española. Para cualquier conflicto serán competentes los juzgados y tribunales que correspondan según la normativa aplicable; si eres consumidor, los de tu domicilio."
+          ] }
+        ]
+      },
+
+      {
+        pagina: "privacidad", menu: "Privacidad",
+        etiqueta: "Legal", titular: "Política de privacidad.",
+        entradilla: "Qué datos tratamos, para qué, durante cuánto tiempo y qué derechos tienes.",
+        meta: {
+          titulo: "Política de privacidad · Loco Blow Tattoo",
+          descripcion: "Cómo trata Loco Blow Tattoo tus datos personales: responsable, finalidades, plazos, destinatarios y tus derechos."
+        },
+        secciones: [
+          { titulo: "Responsable del tratamiento", piezas: [
+            { lista: [
+              "Responsable: {titular}",
+              "NIF/CIF: {nif}",
+              "Domicilio: {domicilio}",
+              "Contacto para cualquier cuestión de protección de datos: {email}"
+            ] }
+          ] },
+          { titulo: "Qué hace esta web con tus datos", piezas: [
+            "Esta web no tiene formularios, cuentas de usuario, comentarios ni tienda. No usa cookies de análisis ni de publicidad y no te rastrea.",
+            "Como cualquier web, el servidor que la aloja ({hosting}) registra de forma automática datos técnicos de cada visita, como tu dirección IP, el navegador y la fecha y la hora. Los usa para que la web funcione y para su seguridad, y los conserva el tiempo que fija el proveedor. Nosotros no los usamos para identificarte."
+          ] },
+          { titulo: "Cuando nos escribes por WhatsApp", piezas: [
+            "Los botones de la web abren una conversación de WhatsApp con el estudio. A partir de ahí tratamos los datos que nos mandes: tu nombre, tu número de teléfono, tus mensajes y las fotos o referencias que adjuntes. WhatsApp (Meta) trata además sus propios datos según su política de privacidad. Los botones de láser y de piercing llevan al teléfono de ese servicio.",
+            "Te pedimos que no mandes por chat datos de salud que no hagan falta: los hablaremos en la cita."
+          ] },
+          { titulo: "Para qué usamos tus datos y con qué base legal", piezas: [
+            { lista: [
+              "Responder a tus consultas y darte cita: tu consentimiento al escribirnos y las medidas precontractuales que nos pides (art. 6.1.a y 6.1.b del RGPD).",
+              "Prestarte el servicio, incluida la ficha y el consentimiento informado en el estudio: ejecución del contrato (art. 6.1.b). Para los datos de salud (alergias, medicación, embarazo…), tu consentimiento explícito (art. 9.2.a).",
+              "Cumplir obligaciones fiscales, contables y sanitarias: obligación legal (art. 6.1.c).",
+              "Publicar fotos o vídeos de tu trabajo en la web y en redes: tu consentimiento por escrito, que puedes retirar cuando quieras (art. 6.1.a).",
+              "Mantener la seguridad de la web: interés legítimo (art. 6.1.f)."
+            ] }
+          ] },
+          { titulo: "Cuánto tiempo los conservamos", piezas: [
+            { lista: [
+              "Consultas que no llegan a cita: {conservacion} desde el último mensaje.",
+              "Datos de clientes y su documentación: mientras dure el servicio y, después, bloqueados durante los plazos legales (en general, entre 4 y 6 años por obligaciones fiscales y mercantiles; para la documentación sanitaria, el que fije la normativa autonómica).",
+              "Fotos y vídeos publicados: hasta que retires tu consentimiento."
+            ] }
+          ] },
+          { titulo: "Quién puede recibir tus datos", piezas: [
+            "No vendemos tus datos. Pueden acceder a ellos, solo para lo necesario: WhatsApp (Meta), nuestro proveedor de alojamiento ({hosting}), nuestra gestoría o asesoría ({gestoria}) y las administraciones públicas cuando la ley lo exija.",
+            "Si pulsas el mapa se carga contenido de Google, y los enlaces a Instagram te llevan a Meta. En ambos casos, a partir de ahí rige la política de cada uno."
+          ] },
+          { titulo: "Transferencias internacionales", piezas: [
+            "Algunos de esos proveedores tratan datos fuera de la Unión Europea, por ejemplo en Estados Unidos. Lo hacen con las garantías que exige el RGPD: el Marco de Privacidad de Datos UE-EE. UU. o las cláusulas contractuales tipo de la Comisión Europea."
+          ] },
+          { titulo: "Tus derechos", piezas: [
+            "Puedes pedirnos el acceso a tus datos, su rectificación o su supresión, oponerte a su tratamiento, limitarlo, recibirlos en un formato que puedas llevarte (portabilidad) y retirar un consentimiento en cualquier momento.",
+            "Escribe a {email} diciendo qué derecho quieres ejercer; si hace falta identificarte, te pediremos una copia de tu documento de identidad. Respondemos en un mes como máximo.",
+            "Si crees que no hemos tratado bien tus datos, puedes reclamar ante la Agencia Española de Protección de Datos (www.aepd.es)."
+          ] },
+          { titulo: "Menores de edad", piezas: [
+            // PROVISIONAL: pendiente de confirmar la política con menores (la misma que la de las preguntas frecuentes)
+            "Si tienes menos de 14 años, necesitamos el consentimiento de tu madre, tu padre o tu tutor legal. En el estudio, un menor solo se atiende con el consentimiento por escrito de su madre, su padre o su tutor legal, y con esa persona presente en la cita."
+          ] },
+          { titulo: "Seguridad", piezas: [
+            "Aplicamos medidas técnicas y de organización razonables: conexión cifrada (HTTPS), acceso restringido a los datos y copias de seguridad. Si hubiera una brecha que te afectara con riesgo para tus derechos, te la comunicaríamos."
+          ] },
+          { titulo: "Cambios en esta política", piezas: [
+            "Si cambia algo importante, lo actualizaremos aquí y cambiará la fecha."
+          ] }
+        ]
+      },
+
+      {
+        pagina: "cookies", menu: "Cookies",
+        etiqueta: "Legal", titular: "Política de cookies.",
+        entradilla: "Qué guarda esta web en tu navegador y para qué.",
+        meta: {
+          titulo: "Política de cookies · Loco Blow Tattoo",
+          descripcion: "Qué almacena la web de Loco Blow Tattoo en tu navegador: solo lo imprescindible, sin cookies de análisis ni de publicidad."
+        },
+        secciones: [
+          { titulo: "Qué son", piezas: [
+            "Una cookie es un pequeño archivo que una web guarda en tu navegador. El navegador también puede guardar datos sin cookies, en el llamado almacenamiento local. La normativa (art. 22.2 de la LSSI-CE) trata las dos cosas igual."
+          ] },
+          { titulo: "Lo que usa esta web", piezas: [
+            "Esta web no usa cookies de análisis, de publicidad ni de seguimiento. Solo guarda en tu navegador lo imprescindible:",
+            { lista: [
+              "locoblow:edad (almacenamiento local, propio): recuerda que has confirmado tu edad en la franja de aviso, durante 180 días, para no volver a preguntártelo en cada visita. Es técnico y necesario, y no requiere tu consentimiento."
+            ] }
+          ] },
+          { titulo: "Contenido de otras webs", piezas: [
+            "Google Maps: el mapa de la web es una imagen propia. Solo si pulsas para moverte por él, se carga el mapa de Google, que puede guardar sus propias cookies y registrar tu dirección IP. Si no lo pulsas, no se carga nada de Google. Más información en policies.google.com.",
+            "Los enlaces a WhatsApp e Instagram te llevan a sitios de Meta, con sus propias políticas. La web no carga nada de ellos hasta que los pulsas."
+          ] },
+          { titulo: "Si en el futuro añadimos otras", piezas: [
+            "Si añadimos herramientas que usen cookies no necesarias (por ejemplo, de analítica), te lo pediremos antes, con un aviso en el que podrás aceptar o rechazar con la misma facilidad, y actualizaremos esta página."
+          ] },
+          { titulo: "Cómo borrarlas o bloquearlas", piezas: [
+            "Desde los ajustes de tu navegador puedes ver, bloquear o borrar lo que guarda esta web. Si lo borras, lo único que pasará es que la franja de edad te volverá a preguntar."
+          ] },
+          { titulo: "Responsable", piezas: [
+            "{titular}, NIF/CIF {nif}. Para cualquier duda sobre esta política, escribe a {email}."
+          ] }
+        ]
+      }
+    ]
+  },
+
   /* --- 10. PIE ------------------------------------------------------------- */
   pie: {
     creditos: "© 2026 Loco Blow Tattoo · A Coruña",
-    // PROVISIONAL: las páginas legales se hacen con el nombre fiscal y el NIF
-    // del estudio (fase 5).
+    // Las tres páginas legales (sección legal). Se rellenan con los datos del
+    // titular en legal.datos.
     enlaces: [
-      { texto: "Aviso legal", href: "#" },
-      { texto: "Privacidad", href: "#" }
+      { texto: "Aviso legal", href: "aviso-legal" },
+      { texto: "Privacidad", href: "privacidad" },
+      { texto: "Cookies", href: "cookies" }
     ]
   }
 };
