@@ -1198,9 +1198,10 @@
     var obras = c.obras, grupo = c.grupo;
     var artistas = c.filtro ? artistasDe(obras) : [];
     var items = obras.map(function (p, i) {
-      /* Se revelan al llegar solo las que se ven al bajar hasta la fila;
-         las de más a la derecha ya entran con el propio scroll lateral. */
-      var revelar = i < 4 ? ' data-revelar data-revelar-orden="' + i + '"' : "";
+      /* Sin animación de entrada: en una fila que se pasa de lado, una foto
+         escondida a la espera de «llegar» puede quedarse en blanco. Las fotos
+         se ven siempre; ya entran con el propio scroll lateral.            */
+      var revelar = "";
       if (p.video) {
         var v = S.videos[p.video];
         return '<li class="carrete__item carrete__item--video" id="obra-' + esc(p.id) + '"' +

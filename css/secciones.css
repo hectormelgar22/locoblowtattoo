@@ -1534,9 +1534,11 @@ a.muestra__artista { display: inline-block; padding-block: 6px; margin-block: -6
 /* Los mandos: la barra de avance (lo que se ve de la fila, en negro), la
    posición y las dos flechas. Sin JavaScript no salen: la fila se pasa
    igual con el dedo o el trackpad.                                        */
+/* Las flechas, a la izquierda: el botón flotante de WhatsApp vive abajo a la
+   derecha y, a la derecha, las tapaba.                                     */
 .carrete__mandos {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto auto auto;
+  grid-template-columns: auto auto auto minmax(0, 1fr);
   align-items: center;
   gap: var(--s2) var(--s4);
   margin-top: var(--s5);
@@ -1570,7 +1572,10 @@ a.muestra__artista { display: inline-block; padding-block: 6px; margin-block: -6
   transition: background-color var(--t-fast) ease, color var(--t-fast) ease,
               border-color var(--t-fast) ease, transform var(--t-press) var(--ease-out);
 }
-.carrete__flecha + .carrete__flecha { margin-left: calc(var(--s4) * -1 + var(--s1)); }
+.carrete__mandos .carrete__flecha--atras { order: 1; }
+.carrete__mandos .carrete__flecha:not(.carrete__flecha--atras) { order: 2; margin-left: calc(var(--s2) * -1 + var(--s1)); }
+.carrete__mandos .carrete__pos { order: 3; }
+.carrete__mandos .carrete__barra { order: 4; }
 .carrete__flecha .flecha { translate: -0.12em 0; }
 .carrete__flecha--atras .flecha { rotate: 225deg; translate: 0.12em 0; }
 .carrete__flecha:active:not([aria-disabled="true"]) { transform: scale(0.94); }
@@ -1580,7 +1585,7 @@ a.muestra__artista { display: inline-block; padding-block: 6px; margin-block: -6
 }
 /* Con el dedo, la fila se pasa sola: las flechas sobran. */
 @media (pointer: coarse) {
-  .carrete__mandos { grid-template-columns: minmax(0, 1fr) auto; }
+  .carrete__mandos { grid-template-columns: auto minmax(0, 1fr); }
   .carrete__flecha { display: none; }
 }
 

@@ -47,7 +47,7 @@
           '<div class="visor__datos" data-visor-datos></div>' +
           '<p class="visor__pista-texto">' + esc(V.pista) + "</p>" +
         "</div>" +
-        '<a class="btn btn--macizo" data-visor-quiero href="#" target="_blank" rel="noopener">' + N.BOCADILLO +
+        '<a class="btn btn--macizo" data-visor-quiero href="' + esc(N.wasapURL("")) + '" target="_blank" rel="noopener">' + N.BOCADILLO +
           "<span>" + esc(V.quiero) + '</span><span class="visually-hidden"> (se abre en WhatsApp)</span></a>' +
       "</div>" +
       /* La tira repite lo que ya hacen las flechas: para el lector de
