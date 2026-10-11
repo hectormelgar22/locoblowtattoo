@@ -1443,7 +1443,7 @@ window.STUDIO = {
   videos: {
     laser: {
       base: "laser", ratio: 0.8, rotulo: "Láser",
-      alt: "Vídeo sin sonido: eliminación de un tatuaje con láser en el estudio. El cabezal sobre la piel, la camilla y el tatuaje en tratamiento.",
+      alt: "Vídeo sin sonido: Riki trata con láser un tatuaje tribal en la espalda de un cliente tumbado en la camilla. Primeros planos del cabezal sobre la piel, con el destello amarillo, y un plano general de la sala.",
       publicar: true
     },
     estudio: {
