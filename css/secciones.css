@@ -944,13 +944,32 @@ a.muestra__artista { display: inline-block; padding-block: 6px; margin-block: -6
 }
 
 /* EL COMPARADOR (micropigmentación): el después encima del antes, recortado
-   hasta la raya. La raya es un filete claro con un mando cuadrado; los
-   rótulos, en las esquinas de abajo, se apagan cuando la raya los tapa.   */
+   hasta la raya. La raya es un filete claro con un mando cuadrado.     */
 @property --pos { syntax: "<number>"; inherits: true; initial-value: 50; }
-.comparar {
+/* El marco: la foto montada en negro, como una copia en paspartú, con un
+   filete por fuera a unos milímetros y el pie con lo que se compara.     */
+.comparar-marco {
   position: relative;
   margin: 0;
   max-width: 30rem;
+  padding: var(--s3) var(--s3) 0;
+  background: var(--tinta);
+  color: var(--claro);
+  outline: var(--hair) solid var(--filete-fn);
+  outline-offset: var(--s2);
+}
+.comparar__pie {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--s3);
+  min-height: var(--touch);
+  color: var(--noche-2);
+}
+.comparar__pie > :first-child, .comparar__pie > :last-child { color: var(--claro); }
+.comparar__pista-txt { color: var(--noche-3); text-align: center; }
+.comparar {
+  position: relative;
   aspect-ratio: var(--ratio);
   overflow: hidden;
   background: var(--suelo-hondo);
@@ -996,19 +1015,6 @@ a.muestra__artista { display: inline-block; padding-block: 6px; margin-block: -6
 .comparar--arrastre .comparar__mango { scale: 0.88; }
 .comparar__mando { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; pointer-events: none; }
 .comparar:has(.comparar__mando:focus-visible) .comparar__mango { outline: 2px solid var(--claro); outline-offset: 3px; }
-.comparar__rotulo {
-  position: absolute;
-  bottom: var(--s3);
-  padding: var(--s1) var(--s2);
-  background: var(--tinta);
-  color: var(--claro);
-  pointer-events: none;
-}
-.comparar__rotulo--antes   { left: var(--s3); }
-.comparar__rotulo--despues { right: var(--s3); }
-/* La raya se come el rótulo de su lado al acercarse al borde. */
-.comparar__rotulo--antes   { opacity: clamp(0, (var(--pos) - 22) / 6, 1); }
-.comparar__rotulo--despues { opacity: clamp(0, (78 - var(--pos)) / 6, 1); }
 /* El primer vistazo: la raya va a enseñar el después, vuelve a mirar el
    antes y se queda en medio. Solo una vez y sin movimiento reducido.    */
 .comparar--paseo { animation: comparar-paseo 2.2s var(--ease-in-out) 0.3s both; }
@@ -1078,7 +1084,7 @@ a.muestra__artista { display: inline-block; padding-block: 6px; margin-block: -6
   }
   .scab__texto { align-self: end; }
   .scab__media { align-self: end; }
-  .scab__media .video, .scab__media > img, .scab__media .comparar { margin-left: auto; }
+  .scab__media .video, .scab__media > img, .scab__media .comparar-marco { margin-left: auto; }
 
   /* Sin vídeo ni foto: el texto a la izquierda y lo que hay que saber a la
      derecha, a ras del pie.                                                */

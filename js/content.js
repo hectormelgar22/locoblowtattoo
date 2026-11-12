@@ -644,7 +644,13 @@ window.STUDIO = {
       titular: "Micropigmentación capilar.",
       // FUENTE: Haroz, 24/09/2026 («micropigmentación capilar, que es lo que
       // tengo yo»).  PROVISIONAL: pendiente de que Haroz revise el texto.
-      entradilla: "Pigmento en el cuero cabelludo, punto a punto, para que parezca pelo rapado donde falta. Sirve para disimular calvas y entradas, dar densidad al pelo fino o tapar cicatrices.",
+      // El lema y el texto salen del cartel oficial (12/11/2026), mezclados
+      // con lo que ya había.  PROVISIONAL: pendiente de que Haroz lo revise.
+      entradilla: "Recupera tu imagen. Recupera tu confianza.",
+      cuerpo: [
+        "La micropigmentación capilar es la solución estética más natural para la alopecia: pigmento en el cuero cabelludo, punto a punto, para que parezca pelo rapado donde falta.",
+        "Sirve para disimular calvas y entradas, dar densidad al pelo fino o tapar cicatrices. Efecto rapado realista, diseño personalizado y resultados progresivos, sesión a sesión."
+      ],
       resumen: "Para disimular calvas y entradas, dar densidad o tapar cicatrices.",
       // PROVISIONAL: pendiente de que Haroz revise los pasos
       pasos: [
@@ -665,10 +671,10 @@ window.STUDIO = {
         antes:   { img: "micro-antes",   alt: "Hombre calvo, de frente, antes de la micropigmentación capilar." },
         despues: { img: "micro-despues", alt: "El mismo hombre después: la cabeza con efecto de pelo rapado y una línea de frente natural." },
         ratio: 0.9089,
-        etiquetas: { antes: "Antes", despues: "Después", mando: "Desliza para comparar el antes y el después" }
+        etiquetas: { antes: "Antes", despues: "Después", pie: "Desliza para comparar", mando: "Desliza para comparar el antes y el después" }
       },
       // Fotos oficiales de Haroz, 12/11/2026.
-      fotosTitulo: { etiqueta: "Resultados", titular: "Recupera tu imagen." },
+      fotosTitulo: { etiqueta: "Resultados", titular: "Punto a punto." },
       fotos: [
         { id: "micro-1", artista: "haroz", titulo: "Coronilla, antes y después",
           alt: "Cabeza rapada vista desde arriba con la micropigmentación hecha; en un círculo, la misma coronilla antes, con el pelo clareando.",

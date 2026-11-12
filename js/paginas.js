@@ -1101,7 +1101,8 @@
     if (cab) cab.classList.toggle("scab--sin-media", !media);
     var mediaNueva = $("[data-servicio-cab] .scab__media");
     var imgPrevia = mediaPrevia && $("img", mediaPrevia), imgNueva = mediaNueva && $("img", mediaNueva);
-    if (mediaNueva !== mediaPrevia && imgPrevia && imgNueva &&
+    // Solo con una foto suelta: el comparador cambia de estructura, no solo de foto.
+    if (mediaNueva !== mediaPrevia && imgPrevia && imgNueva && imgNueva.parentNode === mediaNueva &&
         imgPrevia.getAttribute("srcset") === imgNueva.getAttribute("srcset")) {
       mediaNueva.replaceWith(mediaPrevia);
     }
@@ -1156,13 +1157,16 @@
       return N.imgHTML({ base: f.img, tipo: "obra", alt: f.alt, ratio: c.ratio, clase: clase,
                          sizes: "(min-width: 60rem) 30rem, 92vw", eager: eager, prioridad: eager });
     };
-    return '<figure class="comparar" data-comparar style="--pos:50;--ratio:' + c.ratio + '">' +
+    return '<figure class="comparar-marco">' +
+      '<div class="comparar" data-comparar style="--pos:50;--ratio:' + c.ratio + '">' +
       foto(c.antes, "comparar__antes", true) +
       '<div class="comparar__despues">' + foto(c.despues, "", true) + "</div>" +
-      '<span class="comparar__rotulo comparar__rotulo--antes etiqueta" aria-hidden="true">' + esc(E.antes) + "</span>" +
-      '<span class="comparar__rotulo comparar__rotulo--despues etiqueta" aria-hidden="true">' + esc(E.despues) + "</span>" +
       '<span class="comparar__raya" aria-hidden="true"><span class="comparar__mango"></span></span>' +
       '<input class="comparar__mando" type="range" min="0" max="100" value="50" step="1" aria-label="' + esc(E.mando) + '">' +
+      "</div>" +
+      '<figcaption class="comparar__pie etiqueta">' +
+        "<span>" + esc(E.antes) + '</span><span class="comparar__pista-txt">' + esc(E.pie) + "</span><span>" + esc(E.despues) + "</span>" +
+      "</figcaption>" +
     "</figure>";
   }
 
@@ -1180,7 +1184,7 @@
       mando.value = v;
       mando.setAttribute("aria-valuetext", rotulos[0] + " " + v + " %, " + rotulos[1] + " " + (100 - v) + " %");
     }
-    var rotulos = [].map.call(cmp.querySelectorAll(".comparar__rotulo"), function (r) { return r.textContent; });
+    var rotulos = [].map.call(cmp.parentNode.querySelectorAll(".comparar__pie > :not(.comparar__pista-txt)"), function (r) { return r.textContent; });
     mando.addEventListener("input", function () { cmp.classList.remove("comparar--paseo"); poner(+mando.value); });
     function desde(e) { var r = cmp.getBoundingClientRect(); poner((e.clientX - r.left) / r.width * 100); }
     cmp.addEventListener("pointerdown", function (e) {
@@ -1460,7 +1464,10 @@
       gesto.sy += Math.abs(dy);
       if (!gesto.eje && gesto.sx + gesto.sy > 10) gesto.eje = gesto.sx > gesto.sy * 1.2 ? "x" : "y";
       if (gesto.eje === "x") return;
-      if (gesto.eje === "y" && !dx) return;
+      /* Lo vertical puro (cada golpe de rueda) lo baja el navegador, con su
+         suavizado. Y si Chrome ya no deja cancelar el evento, moverla aquí
+         también la bajaría el doble: eso era el tirón al pasar por las fotos. */
+      if (!dx || !ev.cancelable) return;
       ev.preventDefault();
       if (!gesto.eje) pista.scrollLeft += dx;   /* aún sin decidir: cada uno lo suyo */
       window.scrollBy(0, dy);
