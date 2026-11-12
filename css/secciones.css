@@ -943,6 +943,82 @@ a.muestra__artista { display: inline-block; padding-block: 6px; margin-block: -6
   .scab__acciones .btn { flex: 0 0 auto; }
 }
 
+/* EL COMPARADOR (micropigmentación): el después encima del antes, recortado
+   hasta la raya. La raya es un filete claro con un mando cuadrado; los
+   rótulos, en las esquinas de abajo, se apagan cuando la raya los tapa.   */
+@property --pos { syntax: "<number>"; inherits: true; initial-value: 50; }
+.comparar {
+  position: relative;
+  margin: 0;
+  max-width: 30rem;
+  aspect-ratio: var(--ratio);
+  overflow: hidden;
+  background: var(--suelo-hondo);
+  cursor: ew-resize;
+  touch-action: pan-y;          /* en vertical, la página sigue bajando   */
+  user-select: none;
+  -webkit-user-select: none;
+}
+.comparar img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; pointer-events: none; }
+.comparar__despues { position: absolute; inset: 0; clip-path: inset(0 0 0 calc(var(--pos) * 1%)); }
+.comparar__raya {
+  position: absolute;
+  inset-block: 0;
+  left: calc(var(--pos) * 1%);
+  width: var(--hair);
+  margin-left: calc(var(--hair) / -2);
+  background: var(--claro);
+  pointer-events: none;
+}
+.comparar__mango {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: var(--touch);
+  height: var(--touch);
+  translate: -50% -50%;
+  background: var(--tinta);
+  border: var(--hair) solid var(--claro);
+  transition: scale var(--t-fast) var(--ease-out);
+}
+/* Dos puntas de flecha, a izquierda y derecha: se arrastra de lado. */
+.comparar__mango::before, .comparar__mango::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: 7px;
+  height: 7px;
+  border: solid var(--claro);
+  border-width: 0 0 1.5px 1.5px;
+}
+.comparar__mango::before { left: 11px; translate: 0 -50%; rotate: 45deg; }
+.comparar__mango::after  { right: 11px; translate: 0 -50%; rotate: -135deg; }
+.comparar--arrastre .comparar__mango { scale: 0.88; }
+.comparar__mando { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; pointer-events: none; }
+.comparar:has(.comparar__mando:focus-visible) .comparar__mango { outline: 2px solid var(--claro); outline-offset: 3px; }
+.comparar__rotulo {
+  position: absolute;
+  bottom: var(--s3);
+  padding: var(--s1) var(--s2);
+  background: var(--tinta);
+  color: var(--claro);
+  pointer-events: none;
+}
+.comparar__rotulo--antes   { left: var(--s3); }
+.comparar__rotulo--despues { right: var(--s3); }
+/* La raya se come el rótulo de su lado al acercarse al borde. */
+.comparar__rotulo--antes   { opacity: clamp(0, (var(--pos) - 22) / 6, 1); }
+.comparar__rotulo--despues { opacity: clamp(0, (78 - var(--pos)) / 6, 1); }
+/* El primer vistazo: la raya va a enseñar el después, vuelve a mirar el
+   antes y se queda en medio. Solo una vez y sin movimiento reducido.    */
+.comparar--paseo { animation: comparar-paseo 2.2s var(--ease-in-out) 0.3s both; }
+@keyframes comparar-paseo {
+  0%   { --pos: 50; }
+  38%  { --pos: 16; }
+  74%  { --pos: 80; }
+  100% { --pos: 50; }
+}
+
 /* Lo que hay que saber: pares dato–valor, con un filete encima de cada uno. */
 .datos {
   display: grid;
@@ -1002,7 +1078,7 @@ a.muestra__artista { display: inline-block; padding-block: 6px; margin-block: -6
   }
   .scab__texto { align-self: end; }
   .scab__media { align-self: end; }
-  .scab__media .video, .scab__media > img { margin-left: auto; }
+  .scab__media .video, .scab__media > img, .scab__media .comparar { margin-left: auto; }
 
   /* Sin vídeo ni foto: el texto a la izquierda y lo que hay que saber a la
      derecha, a ras del pie.                                                */

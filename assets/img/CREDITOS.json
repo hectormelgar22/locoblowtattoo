@@ -3262,6 +3262,76 @@
     ]
   },
   {
+    "archivo": "micro-antes",
+    "alt": "Hombre calvo, de frente, antes de la micropigmentación capilar.",
+    "autor": "Loco Blow Tattoo",
+    "fuente": "Original del estudio",
+    "proporcion": 0.9089,
+    "anchos": [
+      479,
+      479,
+      479,
+      479,
+      380
+    ]
+  },
+  {
+    "archivo": "micro-despues",
+    "alt": "El mismo hombre después: la cabeza con efecto de pelo rapado y una línea de frente natural.",
+    "autor": "Loco Blow Tattoo",
+    "fuente": "Original del estudio",
+    "proporcion": 0.9089,
+    "anchos": [
+      479,
+      479,
+      479,
+      479,
+      380
+    ]
+  },
+  {
+    "archivo": "micro-1",
+    "alt": "Cabeza rapada vista desde arriba con la micropigmentación hecha; en un círculo, la misma coronilla antes, con el pelo clareando.",
+    "autor": "Loco Blow Tattoo",
+    "fuente": "Original del estudio",
+    "proporcion": 0.747,
+    "anchos": [
+      1500,
+      900,
+      720,
+      600,
+      380
+    ]
+  },
+  {
+    "archivo": "micro-2",
+    "alt": "Cabeza rapada de lado: los puntos de pigmento imitan el pelo corto y dibujan una línea de frente natural.",
+    "autor": "Loco Blow Tattoo",
+    "fuente": "Original del estudio",
+    "proporcion": 0.75,
+    "anchos": [
+      1200,
+      900,
+      720,
+      600,
+      380
+    ]
+  },
+  {
+    "archivo": "micro-3",
+    "alt": "Perfil de una cabeza rapada recostada, en blanco y negro: la micropigmentación de cerca, punto a punto.",
+    "autor": "Loco Blow Tattoo",
+    "fuente": "Original del estudio",
+    "proporcion": 0.5331,
+    "anchos": [
+      853,
+      853,
+      720,
+      600,
+      380
+    ]
+  },
+  {
     "archivo": "resena-1",
     "alt": "Retrato de una perrita sonriendo, en negro y grises, en el muslo.",
     "autor": "Reseña de Google",

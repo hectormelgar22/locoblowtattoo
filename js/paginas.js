@@ -1067,7 +1067,7 @@
     var video = SV.video ? N.videoHTML(SV.video, true) : "";
     /* A la cabecera va el vídeo del servicio o, si no tiene, su primera
        foto. Sin ninguna de las dos, la cabecera es solo texto.              */
-    var media = video || (fotosSV[0]
+    var media = video || compararHTML(SV.comparar) || (fotosSV[0]
       ? N.imgHTML({ base: fotosSV[0].img, tipo: "obra", alt: fotosSV[0].alt, ratio: fotosSV[0].ratio,
                     foco: fotosSV[0].foco, sizes: "(min-width: 60rem) 30vw, 92vw", eager: true })
       : "");
@@ -1144,6 +1144,69 @@
         faqHTML(SV.preguntas) + guiaEnlace(SV)
       : "");
   }
+
+  /* EL COMPARADOR: el antes y el después, uno encima del otro; el después se
+     recorta hasta la raya (--pos) y la raya se arrastra con el dedo o el
+     ratón. Un <input type=range> lleva el teclado y el lector de pantalla.
+     Sin JavaScript se queda a la mitad, que ya enseña los dos.            */
+  function compararHTML(c) {
+    if (!c) return "";
+    var E = c.etiquetas;
+    var foto = function (f, clase, eager) {
+      return N.imgHTML({ base: f.img, tipo: "obra", alt: f.alt, ratio: c.ratio, clase: clase,
+                         sizes: "(min-width: 60rem) 30rem, 92vw", eager: eager, prioridad: eager });
+    };
+    return '<figure class="comparar" data-comparar style="--pos:50;--ratio:' + c.ratio + '">' +
+      foto(c.antes, "comparar__antes", true) +
+      '<div class="comparar__despues">' + foto(c.despues, "", true) + "</div>" +
+      '<span class="comparar__rotulo comparar__rotulo--antes etiqueta" aria-hidden="true">' + esc(E.antes) + "</span>" +
+      '<span class="comparar__rotulo comparar__rotulo--despues etiqueta" aria-hidden="true">' + esc(E.despues) + "</span>" +
+      '<span class="comparar__raya" aria-hidden="true"><span class="comparar__mango"></span></span>' +
+      '<input class="comparar__mando" type="range" min="0" max="100" value="50" step="1" aria-label="' + esc(E.mando) + '">' +
+    "</figure>";
+  }
+
+  /* El comparador cobra vida: arrastrar en cualquier punto de la foto (en
+     vertical la página sigue bajando), el teclado por el range, y una
+     primera pasada de la raya al verlo, para que se entienda que se mueve. */
+  (function comparar() {
+    var cmp = $("[data-comparar]");
+    if (!cmp) return;
+    var mando = $(".comparar__mando", cmp);
+    function poner(v) {
+      v = Math.max(0, Math.min(100, v));
+      cmp.style.setProperty("--pos", v);
+      v = Math.round(v);
+      mando.value = v;
+      mando.setAttribute("aria-valuetext", rotulos[0] + " " + v + " %, " + rotulos[1] + " " + (100 - v) + " %");
+    }
+    var rotulos = [].map.call(cmp.querySelectorAll(".comparar__rotulo"), function (r) { return r.textContent; });
+    mando.addEventListener("input", function () { cmp.classList.remove("comparar--paseo"); poner(+mando.value); });
+    function desde(e) { var r = cmp.getBoundingClientRect(); poner((e.clientX - r.left) / r.width * 100); }
+    cmp.addEventListener("pointerdown", function (e) {
+      if (e.button !== 0) return;
+      cmp.classList.remove("comparar--paseo");
+      cmp.setPointerCapture(e.pointerId);
+      cmp.classList.add("comparar--arrastre");
+      // Con el dedo no salta al tocar: puede ser el principio de bajar la página.
+      if (e.pointerType !== "touch") desde(e);
+    });
+    cmp.addEventListener("pointermove", function (e) { if (cmp.hasPointerCapture(e.pointerId)) desde(e); });
+    ["pointerup", "pointercancel"].forEach(function (t) {
+      cmp.addEventListener(t, function () { cmp.classList.remove("comparar--arrastre"); });
+    });
+    /* El paseo: una vez, al entrar en pantalla, y nunca con movimiento reducido. */
+    if (!("IntersectionObserver" in window) || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    var io = new IntersectionObserver(function (es) {
+      if (!es[0].isIntersecting) return;
+      io.disconnect();
+      cmp.classList.add("comparar--paseo");
+      cmp.addEventListener("animationend", function () {
+        if (cmp.classList.contains("comparar--paseo")) { cmp.classList.remove("comparar--paseo"); poner(50); }
+      }, { once: true });
+    }, { threshold: 0.6 });
+    io.observe(cmp);
+  })();
 
   /* El texto de un servicio que se cuenta con más de una línea (el láser,
      con el de Origen Láser): sus párrafos, el remate y la firma, con el

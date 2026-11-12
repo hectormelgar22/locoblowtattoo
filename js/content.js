@@ -658,9 +658,27 @@ window.STUDIO = {
         { dato: "Cita", valor: "Previa, con una valoración antes" },          // PROVISIONAL: pendiente de confirmar
         { dato: "Sesiones", valor: "Varias, con días de descanso entre una y otra" } // PROVISIONAL: pendiente de confirmar
       ],
+      // El antes y después de la cabecera, con un deslizador. Sale del cartel
+      // oficial de micropigmentación (12/11/2026): las dos fotos, recortadas
+      // y alineadas para que la cara no se mueva al deslizar.
+      comparar: {
+        antes:   { img: "micro-antes",   alt: "Hombre calvo, de frente, antes de la micropigmentación capilar." },
+        despues: { img: "micro-despues", alt: "El mismo hombre después: la cabeza con efecto de pelo rapado y una línea de frente natural." },
+        ratio: 0.9089,
+        etiquetas: { antes: "Antes", despues: "Después", mando: "Desliza para comparar el antes y el después" }
+      },
+      // Fotos oficiales de Haroz, 12/11/2026.
+      fotosTitulo: { etiqueta: "Resultados", titular: "Recupera tu imagen." },
       fotos: [
-        // Un antes y después solo con permiso por escrito de la persona.
-        // { id: "micro-1", artista: "haroz", titulo: "Entradas, tras 3 sesiones", alt: "…", img: "micro-1", ratio: 0.8 },
+        { id: "micro-1", artista: "haroz", titulo: "Coronilla, antes y después",
+          alt: "Cabeza rapada vista desde arriba con la micropigmentación hecha; en un círculo, la misma coronilla antes, con el pelo clareando.",
+          img: "micro-1", ratio: 0.7471 },
+        { id: "micro-2", artista: "haroz", titulo: "Línea de frente",
+          alt: "Cabeza rapada de lado: los puntos de pigmento imitan el pelo corto y dibujan una línea de frente natural.",
+          img: "micro-2", ratio: 0.75 },
+        { id: "micro-3", artista: "haroz", titulo: "De cerca, punto a punto",
+          alt: "Perfil de una cabeza rapada recostada, en blanco y negro: la micropigmentación de cerca, punto a punto.",
+          img: "micro-3", ratio: 0.5331 }
       ],
       mensaje: "Hola, os escribo desde la web. Quiero información sobre la micropigmentación capilar.",
       boton: "Pedir una valoración",
