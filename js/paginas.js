@@ -879,7 +879,8 @@
   })();
 
   /* La lista de opiniones (la del inicio y la de un servicio). Una reseña
-     sin foto lleva en su sitio un cartel negro con la comilla: el mismo
+     sin foto lleva en su sitio un cartel negro de puntos, como el pigmento
+     (densos arriba y cada vez más sueltos), con su palabra clave: el mismo
      marco, el mismo giro y el nombre montado encima.                       */
   function opinionesHTML(lista, O, G) {
     return '<ol class="opiniones" role="list">' + lista.map(function (o, i) {
@@ -892,7 +893,8 @@
             (o.img
               ? N.imgHTML({ base: o.img, tipo: "obra", alt: o.alt, ratio: o.ratio, clase: "opinion__img",
                             sizes: "(min-width: 60rem) 28rem, 80vw" })
-              : '<span class="opinion__img opinion__comilla" aria-hidden="true">«</span>') +
+              : '<span class="opinion__img opinion__puntos" aria-hidden="true"></span>' +
+                (o.palabra ? '<span class="opinion__palabra" aria-hidden="true">' + esc(o.palabra) + "</span>" : "")) +
           "</div>" +
           '<p class="opinion__quien etiqueta" id="op-' + i + '">' + esc(o.nombre) + "</p>" +
         "</div>" +

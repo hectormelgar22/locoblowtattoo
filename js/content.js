@@ -690,7 +690,8 @@ window.STUDIO = {
       ],
       // Las reseñas de su propia ficha de Google (MPC Coruña), con las mismas
       // reglas que las del inicio (más abajo, en `opiniones`). No traen foto:
-      // en su sitio sale un cartel negro con la comilla.
+      // en su sitio sale un cartel negro de puntos con `palabra`, la idea de
+      // la reseña en dos o tres palabras.
       // FUENTE: Google Maps, 22/11/2026: 5,0 con 19 reseñas. La nota y el
       // número se copian a mano: conviene ponerlos al día de vez en cuando.
       opiniones: {
@@ -700,16 +701,16 @@ window.STUDIO = {
           leer: "Verla en Google"
         },
         lista: [
-          { nombre: "Diego", fecha: "Diciembre de 2025", nota: 5,
+          { nombre: "Diego", palabra: "Natural.", fecha: "Diciembre de 2025", nota: 5,
             texto: "El cambio es muy grande, se ve muy natural. Jorge es un gran profesional, muy meticuloso y perfeccionista.",
             enlace: "https://maps.google.com/?cid=17283589939077887297" },
-          { nombre: "MiJeDi", fecha: "2024", nota: 5,
+          { nombre: "MiJeDi", palabra: "Ni se aprecia.", fecha: "2024", nota: 5,
             texto: "Muy bueno hasta para una cicatriz bastante grande que tenía en la cabeza y que ya ni se aprecia.",
             enlace: "https://maps.google.com/?cid=17283589939077887297" },
-          { nombre: "dpb", fecha: "2024", nota: 5,
+          { nombre: "dpb", palabra: "Nadie lo nota.", fecha: "2024", nota: 5,
             texto: "Con 8 meses después de la micro estoy con todo el color al 100 % y nadie se ha dado cuenta de lo que me hice.",
             enlace: "https://maps.google.com/?cid=17283589939077887297" },
-          { nombre: "Álvaro L.", fecha: "Enero de 2026", nota: 5,
+          { nombre: "Álvaro L.", palabra: "Sin dolor.", fecha: "Enero de 2026", nota: 5,
             texto: "Después de la primera sesión los resultados ya son muy buenos: la cabeza queda muy homogénea, se ve muy natural y no duele nada.",
             enlace: "https://maps.google.com/?cid=17283589939077887297" }
         ]

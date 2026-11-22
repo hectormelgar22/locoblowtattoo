@@ -678,15 +678,32 @@ a.muestra__artista { display: inline-block; padding-block: 6px; margin-block: -6
   will-change: transform;
 }
 
-/* Sin foto: el marco es un cartel negro con una comilla enorme. */
+/* Sin foto: el cartel negro de puntos. Dos tramas desfasadas, densas
+   arriba y cada vez más sueltas hacia abajo, como el pigmento en la
+   cabeza; se desliza dentro del marco al girar, como haría la foto. Encima,
+   la palabra clave de la reseña.                                        */
 .opinion__marco--cita { background: var(--tinta); }
-.opinion__comilla {
-  display: grid;
-  place-items: center;
-  font-size: clamp(9rem, 30vw, 16rem);
+.opinion__puntos {
+  background-image:
+    radial-gradient(circle, var(--claro) 0 1.4px, transparent 1.9px),
+    radial-gradient(circle, var(--noche-2) 0 1px, transparent 1.5px);
+  background-size: 11px 11px, 7px 7px;
+  background-position: 0 0, 3px 5px;
+  -webkit-mask-image: linear-gradient(to bottom, #000 0%, rgb(0 0 0 / 0.6) 35%, transparent 80%);
+          mask-image: linear-gradient(to bottom, #000 0%, rgb(0 0 0 / 0.6) 35%, transparent 80%);
+}
+.opinion__palabra {
+  position: absolute;
+  left: var(--s5);
+  right: var(--s5);
+  bottom: calc(var(--s5) + 3.5rem);
+  font-size: var(--fs-d2);
   font-weight: var(--w-display);
-  line-height: 1;
+  font-feature-settings: "ss01" 1;
+  line-height: 0.92;
+  letter-spacing: var(--tr-d2);
   color: var(--claro);
+  text-wrap: balance;
 }
 
 .opinion__quien {
