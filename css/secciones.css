@@ -678,6 +678,17 @@ a.muestra__artista { display: inline-block; padding-block: 6px; margin-block: -6
   will-change: transform;
 }
 
+/* Sin foto: el marco es un cartel negro con una comilla enorme. */
+.opinion__marco--cita { background: var(--tinta); }
+.opinion__comilla {
+  display: grid;
+  place-items: center;
+  font-size: clamp(9rem, 30vw, 16rem);
+  font-weight: var(--w-display);
+  line-height: 1;
+  color: var(--claro);
+}
+
 .opinion__quien {
   position: absolute;
   left: calc(var(--s3) * -1);

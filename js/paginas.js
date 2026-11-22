@@ -875,15 +875,24 @@
     if (lead && G) lead.textContent = N.rellenar(O.entradilla, { nota: G.nota, n: G.resenas });
     var seccion = host.closest("section");
     if (seccion) seccion.hidden = !lista.length;
-    pintar(host, '<ol class="opiniones" role="list">' + lista.map(function (o, i) {
+    pintar(host, opinionesHTML(lista, O, G));
+  })();
+
+  /* La lista de opiniones (la del inicio y la de un servicio). Una reseña
+     sin foto lleva en su sitio un cartel negro con la comilla: el mismo
+     marco, el mismo giro y el nombre montado encima.                       */
+  function opinionesHTML(lista, O, G) {
+    return '<ol class="opiniones" role="list">' + lista.map(function (o, i) {
       var a = o.artista ? N.artistaPor(o.artista) : null;
       var estrellas = "";
       for (var k = 0; k < 5; k++) estrellas += "<i" + (k < o.nota ? "" : ' class="apagada"') + "></i>";
       return '<li class="opinion">' +
         '<div class="opinion__foto">' +
-          '<div class="opinion__marco">' +
-            N.imgHTML({ base: o.img, tipo: "obra", alt: o.alt, ratio: o.ratio, clase: "opinion__img",
-                        sizes: "(min-width: 60rem) 28rem, 80vw" }) +
+          '<div class="opinion__marco' + (o.img ? "" : " opinion__marco--cita en-negro") + '">' +
+            (o.img
+              ? N.imgHTML({ base: o.img, tipo: "obra", alt: o.alt, ratio: o.ratio, clase: "opinion__img",
+                            sizes: "(min-width: 60rem) 28rem, 80vw" })
+              : '<span class="opinion__img opinion__comilla" aria-hidden="true">«</span>') +
           "</div>" +
           '<p class="opinion__quien etiqueta" id="op-' + i + '">' + esc(o.nombre) + "</p>" +
         "</div>" +
@@ -903,7 +912,23 @@
     }).join("") + "</ol>" +
     (G ? '<p class="opiniones__todas"><a class="btn btn--grande" href="' + esc(G.ficha) + '" target="_blank" rel="noopener">' +
           esc(N.rellenar(O.todas, { n: G.resenas })) + '<i class="flecha" aria-hidden="true"></i>' +
-          '<span class="visually-hidden"> (se abre en Google Maps)</span></a></p>' : ""));
+          '<span class="visually-hidden"> (se abre en Google Maps)</span></a></p>' : "");
+  }
+
+  /* Las opiniones de un servicio con su propia ficha de Google
+     (micropigmentación: la de MPC Coruña). Los textos que no trae, los del
+     inicio.                                                                */
+  (function opinionesServicio() {
+    var host = $("[data-servicio-opiniones]");
+    if (!host) return;
+    var SO = SV && SV.opiniones;
+    host.hidden = !(SO && SO.lista.length);
+    if (host.hidden) return;
+    var O = Object.assign({}, I.opiniones, SO.textos);
+    pintar(host, '<header class="cab"><p class="etiqueta corchetes">' + esc(O.etiqueta) + "</p>" +
+        '<h2 class="d2" id="t-opiniones">' + esc(O.titular) + "</h2>" +
+        '<p class="lead">' + esc(N.rellenar(O.entradilla, { nota: SO.google.nota, n: SO.google.resenas })) + "</p></header>" +
+      opinionesHTML(SO.lista, O, SO.google));
   })();
 
   /* El giro de las opiniones, adaptado de «Smooth Scrolling Image Effects»
