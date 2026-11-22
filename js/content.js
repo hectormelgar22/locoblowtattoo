@@ -180,7 +180,7 @@ window.STUDIO = {
             enlaces: "servicios" },
           { titulo: "Calidad, higiene y trato",
             texto: "Cuidamos la calidad, la higiene y el trato: queremos que, desde el primer mensaje hasta que sales por la puerta, sepas qué vamos a hacer y te sientas a gusto durante todo el proceso.",
-            fotos: ["estudio-1"] },
+            fotos: ["local-1", "local-2"] },
           { titulo: "Todo por WhatsApp",
             texto: "Todas las consultas, presupuestos y citas se gestionan directamente a través de WhatsApp, para centralizar la atención y poder llevar un mejor seguimiento de cada cliente.",
             tarjeta: "whatsapp" }
@@ -660,7 +660,9 @@ window.STUDIO = {
         { titulo: "Repaso", texto: "Con los años el pigmento se aclara un poco. Un repaso lo deja como el primer día." }
       ],
       puntos: [
-        { dato: "Quién", valor: "Haroz" },                                   // FUENTE: Haroz, 24/09/2026 · PROVISIONAL
+        // FUENTE: el estudio (22/11/2026): en micropigmentación firma Jorge;
+        // «Haroz» es el nombre que usa para los tatuajes.
+        { dato: "Quién", valor: "Jorge" },
         { dato: "Cita", valor: "Previa, con una valoración antes" },          // PROVISIONAL: pendiente de confirmar
         { dato: "Sesiones", valor: "Varias, con días de descanso entre una y otra" } // PROVISIONAL: pendiente de confirmar
       ],
@@ -670,19 +672,19 @@ window.STUDIO = {
       comparar: {
         antes:   { img: "micro-antes",   alt: "Hombre calvo, de frente, antes de la micropigmentación capilar." },
         despues: { img: "micro-despues", alt: "El mismo hombre después: la cabeza con efecto de pelo rapado y una línea de frente natural." },
-        ratio: 0.9089,
+        ratio: 0.801,
         etiquetas: { antes: "Antes", despues: "Después", pie: "Desliza para comparar", mando: "Desliza para comparar el antes y el después" }
       },
       // Fotos oficiales de Haroz, 12/11/2026.
       fotosTitulo: { etiqueta: "Resultados", titular: "Punto a punto." },
       fotos: [
-        { id: "micro-1", artista: "haroz", titulo: "Coronilla, antes y después",
+        { id: "micro-1", artista: "jorge", titulo: "Coronilla, antes y después",
           alt: "Cabeza rapada vista desde arriba con la micropigmentación hecha; en un círculo, la misma coronilla antes, con el pelo clareando.",
           img: "micro-1", ratio: 0.7471 },
-        { id: "micro-2", artista: "haroz", titulo: "Línea de frente",
+        { id: "micro-2", artista: "jorge", titulo: "Línea de frente",
           alt: "Cabeza rapada de lado: los puntos de pigmento imitan el pelo corto y dibujan una línea de frente natural.",
           img: "micro-2", ratio: 0.75 },
-        { id: "micro-3", artista: "haroz", titulo: "De cerca, punto a punto",
+        { id: "micro-3", artista: "jorge", titulo: "De cerca, punto a punto",
           alt: "Perfil de una cabeza rapada recostada, en blanco y negro: la micropigmentación de cerca, punto a punto.",
           img: "micro-3", ratio: 0.5331 }
       ],
@@ -1440,6 +1442,10 @@ window.STUDIO = {
     // FUENTE: el estudio (05/10/2026): fundador de Loco Blow y al frente de
     // Origen Láser (@origenlasertatuajes) desde 2020.
     { slug: "riki",  nombre: "Riki",  instagram: "origenlasertatuajes" },
+    // FUENTE: el estudio (22/11/2026): la micropigmentación la firma Jorge.
+    // PROVISIONAL: pendiente de si tiene Instagram propio (el cartel dice
+    // @micropigmentacion_coruna).
+    { slug: "jorge", nombre: "Jorge", instagram: "" },
     // FUENTE: sus fotos llegan con su Instagram y la marca del estudio
     // (25/09/2026).  PROVISIONAL: pendiente de cómo se llama y quiere salir.
     { slug: "tbh",   nombre: "TBH",   instagram: "tbhtattoo" }
@@ -1448,13 +1454,23 @@ window.STUDIO = {
   /* --- 7. EL ESTUDIO · fotos del local ------------------------------------- */
   // Salen en el inicio, junto al vídeo del estudio. Para añadir una foto
   // (tools/originales/estudio/): otra línea con su `img` y su `ratio`.
-  // PROVISIONAL: sacada de Instagram; pendiente de fotos del local.
+  // Fotos oficiales del local (22/11/2026). Las dos primeras van en el punto
+  // «Calidad, higiene y trato»; las demás, en el mosaico de debajo.
   estudio: {
     video: "estudio",
     fotos: [
-      { id: "estudio-1", titulo: "Maou, trabajando",
-        alt: "Maou tatuando, con gafas, barba y guantes negros, bajo la lámpara del puesto.",
-        img: "estudio-1", ratio: 0.7954 }
+      { id: "local-1", titulo: "El estudio",
+        alt: "El estudio por dentro: camillas y sillones negros, lámparas de aro y focos, con el suelo negro brillante.",
+        img: "local-1", ratio: 1.5 },
+      { id: "local-2", titulo: "Los puestos",
+        alt: "Los puestos de trabajo en fila, cada uno con su camilla, su sillón y su lámpara de aro.",
+        img: "local-2", ratio: 1.5 },
+      { id: "local-3", titulo: "El ancla de la casa",
+        alt: "Una camilla y una lámpara de aro en penumbra, delante del cristal con el ancla de Loco Blow Tattoo & Shop.",
+        img: "local-3", ratio: 0.6667 },
+      { id: "local-4", titulo: "Al fondo, el logo",
+        alt: "El estudio en penumbra, con las lámparas de aro encendidas y el ancla de Loco Blow al fondo.",
+        img: "local-4", ratio: 0.6667 }
     ]
   },
 

@@ -3266,7 +3266,7 @@
     "alt": "Hombre calvo, de frente, antes de la micropigmentación capilar.",
     "autor": "Loco Blow Tattoo",
     "fuente": "Original del estudio",
-    "proporcion": 0.9089,
+    "proporcion": 0.801,
     "anchos": [
       479,
       479,
@@ -3280,7 +3280,7 @@
     "alt": "El mismo hombre después: la cabeza con efecto de pelo rapado y una línea de frente natural.",
     "autor": "Loco Blow Tattoo",
     "fuente": "Original del estudio",
-    "proporcion": 0.9089,
+    "proporcion": 0.801,
     "anchos": [
       479,
       479,
@@ -3329,6 +3329,54 @@
       720,
       600,
       380
+    ]
+  },
+  {
+    "archivo": "local-1",
+    "alt": "El estudio por dentro: camillas y sillones negros, lámparas de aro y focos, con el suelo negro brillante.",
+    "autor": "Loco Blow Tattoo",
+    "fuente": "Original del estudio",
+    "proporcion": 1.5005,
+    "anchos": [
+      1400,
+      900,
+      560
+    ]
+  },
+  {
+    "archivo": "local-2",
+    "alt": "Los puestos de trabajo en fila, cada uno con su camilla, su sillón y su lámpara de aro.",
+    "autor": "Loco Blow Tattoo",
+    "fuente": "Original del estudio",
+    "proporcion": 1.5005,
+    "anchos": [
+      1400,
+      900,
+      560
+    ]
+  },
+  {
+    "archivo": "local-3",
+    "alt": "Una camilla y una lámpara de aro en penumbra, delante del cristal con el ancla de Loco Blow Tattoo & Shop.",
+    "autor": "Loco Blow Tattoo",
+    "fuente": "Original del estudio",
+    "proporcion": 0.6667,
+    "anchos": [
+      1280,
+      900,
+      560
+    ]
+  },
+  {
+    "archivo": "local-4",
+    "alt": "El estudio en penumbra, con las lámparas de aro encendidas y el ancla de Loco Blow al fondo.",
+    "autor": "Loco Blow Tattoo",
+    "fuente": "Original del estudio",
+    "proporcion": 0.6667,
+    "anchos": [
+      1280,
+      900,
+      560
     ]
   },
   {
